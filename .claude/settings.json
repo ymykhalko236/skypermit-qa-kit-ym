@@ -5,6 +5,18 @@
       "WebSearch"
     ]
   },
+  "hooks": {
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-cost-report.mjs\""
+          }
+        ]
+      }
+    ]
+  },
   "statusLine": {
     "type": "command",
     "command": "bash \"$(git rev-parse --show-toplevel)/.claude/statusline-command.sh\""
