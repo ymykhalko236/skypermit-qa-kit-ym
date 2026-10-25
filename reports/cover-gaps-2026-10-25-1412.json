@@ -1,0 +1,49 @@
+{
+  "run_at": "2026-10-25T12:12:34Z",
+  "arguments": { "max": 3, "gate": "TIME_WINDOW" },
+  "coverage_before": { "rules_in_scope": 6, "covered": 0, "gaps": 6 },
+  "coverage_after": { "rules_in_scope": 6, "covered": 3, "gaps": 3 },
+  "rules": [
+    {
+      "rule_id": "BR-TIME-LEAD-TIME",
+      "condition": "Lead time too short",
+      "rule_reference": "TSD-4 §2.1",
+      "covered_after_run": true,
+      "test_cases": [
+        { "id": "TC-CHK-001", "file": "test-cases/checks/TC-CHK-001-lead-time-under-6-hours-is-refused.md", "verdict": "COMPLIANT", "action": "kept", "reason": null },
+        { "id": "TC-CHK-002", "file": "test-cases/checks/TC-CHK-002-lead-time-over-6-hours-passes.md", "verdict": "COMPLIANT", "action": "kept", "reason": null }
+      ]
+    },
+    {
+      "rule_id": "BR-TIME-MAX-ADVANCE",
+      "condition": "Booked too far in advance",
+      "rule_reference": "TSD-4 §2.2",
+      "covered_after_run": true,
+      "test_cases": [
+        { "id": "TC-CHK-003", "file": "test-cases/checks/TC-CHK-003-booking-over-60-days-ahead-is-refused.md", "verdict": "COMPLIANT", "action": "kept", "reason": null },
+        { "id": "TC-CHK-004", "file": "test-cases/checks/TC-CHK-004-booking-under-60-days-ahead-passes.md", "verdict": "COMPLIANT", "action": "kept", "reason": null }
+      ]
+    },
+    {
+      "rule_id": "BR-TIME-DURATION",
+      "condition": "Duration out of range",
+      "rule_reference": "TSD-4 §3",
+      "covered_after_run": true,
+      "test_cases": [
+        { "id": "TC-CHK-005", "file": "test-cases/checks/TC-CHK-005-duration-14-minutes-is-refused.md", "verdict": "COMPLIANT", "action": "kept", "reason": null },
+        { "id": "TC-CHK-006", "file": "test-cases/checks/TC-CHK-006-duration-241-minutes-is-refused.md", "verdict": "COMPLIANT", "action": "kept", "reason": null },
+        { "id": "TC-CHK-007", "file": "test-cases/checks/TC-CHK-007-duration-15-minutes-passes.md", "verdict": "COMPLIANT", "action": "kept", "reason": null },
+        {
+          "id": "TC-CHK-008",
+          "file": "test-cases/checks/TC-CHK-008-duration-240-minutes-passes.md",
+          "verdict": "NOT COMPLIANT",
+          "action": "removed",
+          "reason": "Editorial only: Postconditions say 'use a new T0' but the variable is S; Source describes 'lead time 24 h' although the rule is ≥ 6 h (06-business-rules.md:94). Expected results were confirmed correct against docs and code (time-window-gate.ts:28-31)."
+        }
+      ]
+    }
+  ],
+  "totals": { "test_cases_created": 8, "kept": 7, "removed": 1, "open_questions": 0, "likely_product_defects": 0 },
+  "gaps_not_attempted": ["BR-TIME-CURFEW-A7", "BR-TIME-CURFEW-BASE", "BR-TIME-OVERLAP"],
+  "unmapped_rules": []
+}

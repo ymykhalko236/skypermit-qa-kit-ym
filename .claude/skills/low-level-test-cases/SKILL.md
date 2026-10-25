@@ -1,6 +1,7 @@
 ---
 name: low-level-test-cases
 description: Generate low-level, atomic test cases as Markdown files in test-cases/, one file per test case, with ID, summary, dates, preconditions, numbered steps with an expected result for every step, postconditions, priority and source. Works from a file the user provides, from the SkyPermit requirements in ../ct-gen-ai-skypermit/docs/, or from a description given in the chat. Use it whenever the user asks to write, generate, create, add or update test cases, including detailed, low-level or manual test cases, or test cases for a specific requirement, rule, feature or bug. Don't use it for test plans, test scenarios, end-to-end flows or automated test scripts.
+model: sonnet
 ---
 
 # Low-level test cases
@@ -64,7 +65,7 @@ Store test cases under `test-cases/`, in one folder per functional area. Each ar
 
 If a new area is needed, agree its folder name and prefix with the user, then add it to this table.
 
-- **ID:** the area prefix plus a three-digit number, for example `TC-FR-007`. Find the highest number already used in that area's folder and add one. Never reuse a number, even if an older test case was deleted. When creating several test cases in one area, number them in the order of the priority-sorted list, so lower numbers go to higher priorities within that batch.
+- **ID:** the area prefix plus a three-digit number, for example `TC-FR-007`. Find the highest number already used in that area's folder, or listed in `test-cases/retired-ids.txt` (IDs of deleted test cases, one per line), and add one. Never reuse a number, even if an older test case was deleted. When creating several test cases in one area, number them in the order of the priority-sorted list, so lower numbers go to higher priorities within that batch.
 - **File name:** `<ID>-<short-name>.md`, for example `TC-CHK-012-altitude-above-zone-ceiling-is-refused.md`. The short name is a few lowercase, hyphenated words from the summary.
 - Create the area folder if it doesn't exist.
 
@@ -86,6 +87,7 @@ Match its level of detail. Don't copy its content: every test case gets its own 
 
 - **Dates:** use the format `dd/mm/yyyy`. For a new test case, both dates are today's date.
 - **Assigned To:** always leave it empty. The user fills it in.
+- **Business Rule:** the ID of the business rule the test case covers, as listed by the `cover-gaps` skill's `scripts/find_gaps.mjs` (for example `BR-ZONE-ALTITUDE`). Run that script to look the ID up when a test case comes from `06-business-rules.md`. Separate several IDs with commas. Write `N/A` when the test case doesn't cover a business rule, such as registration or login. This is how `cover-gaps` tells which rules already have test cases, so an ID missing here makes the rule look uncovered. Test cases written before this field existed may lack the row; treat that as `N/A`.
 - **Preconditions:** list everything that must be true before step 1, with concrete data. For example, "Operator account `op-a@test.example` exists at authorisation level L1 and is logged in", or "Zone DNI-OPN-1 exists with a ceiling of 120 m". If nothing is needed, write "None".
 - **Steps:** one action per step, in the imperative ("Enter…", "Click…", "Send…"). Name the exact screen, field, button or API call and the exact values to use. For example, "Enter `121` in the Altitude field", not "enter an altitude above the ceiling". Technical identifiers such as endpoints, request fields and `data-testid` values are welcome here, because the readers are testers.
 - **Expected results:** every step has at least one expected result in the same row, including setup-like steps such as "the form opens". Each result is something a tester can observe and compare: a message, a status, a value, a field state or a response code. Every step, whatever its number, can have one or as many expected results as the source supports. The number of results in a row has nothing to do with the step's position. Start each result with `•` and separate them with `<br>`, even when a row has only one. Avoid vague results such as "works correctly" or "an error is shown". Say which error, and where it appears.

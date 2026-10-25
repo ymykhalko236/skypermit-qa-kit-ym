@@ -4,6 +4,7 @@
 |---|---|
 | ID | <ID> |
 | Summary | <one sentence: the condition and its expected outcome> |
+| Business Rule | <business rule ID(s) covered, for example BR-ZONE-ALTITUDE, or N/A> |
 | Date Created | <dd/mm/yyyy> |
 | Date Last Updated | <dd/mm/yyyy> |
 | Assigned To | |
