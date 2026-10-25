@@ -49,6 +49,8 @@ Keep a list of every file you created and the rule each one covers. You need it 
 
 For each new test case, launch the `test-case-reviewer` subagent with its file path. Launch all of them in one message, so they run in parallel. Give the reviewer only the path. It must judge the file on its own merits and has its own instructions. Wait until every reviewer has finished.
 
+Before you use a report, check its **Source check** section. If any cited source is marked as not opened or not verified, or the section doesn't list every source the test case cites, the review is incomplete. Launch the reviewer once more for that test case and use the second report. If the second report is incomplete too, keep the test case, treat the verdict as `CANNOT DETERMINE`, and say in the open question which source went unchecked. A verdict from a review that skipped a source isn't safe to keep or delete on.
+
 From each report, take the **Verdict** line. Also take a one-to-two sentence reason from the report's Issues or TBC items, with the evidence it cites.
 
 ## Step 4: Act on the verdicts
@@ -56,6 +58,7 @@ From each report, take the **Verdict** line. Also take a one-to-two sentence rea
 | Verdict | Action |
 |---|---|
 | `COMPLIANT` | Keep the file. |
+| `COMPLIANT WITH MINOR ISSUES` | Keep the file. Put the reviewer's list of slips and fixes in the summary's `reason`, so the user can fix them with `low-level-test-cases`. Don't fix them here. |
 | `COMPLIANT WITH DOCS, CODE DIFFERS` | Keep the file. The test case is correct and would expose a likely product defect, so flag it in the summary. |
 | `NOT COMPLIANT` | Delete the file from `test-cases/`. Append its ID to `test-cases/retired-ids.txt` (create the file if needed), so the number is never reused. |
 | `CANNOT DETERMINE` | Keep the file, and add an entry to `open-questions.md` at the repo root (format below). |
@@ -115,7 +118,8 @@ Run the script again with the same `--gate` and no `--max`, to get the coverage 
 ```
 
 Field meanings:
-- `action` is one of `kept`, `kept_product_defect` (verdict COMPLIANT WITH DOCS, CODE DIFFERS), `removed` or `open_question`.
+- `action` is one of `kept`, `kept_minor_issues` (verdict COMPLIANT WITH MINOR ISSUES), `kept_product_defect` (verdict COMPLIANT WITH DOCS, CODE DIFFERS), `removed` or `open_question`.
+- `totals` also counts `minor_issues`, the number of test cases kept with `kept_minor_issues`.
 - `covered_after_run` is true when at least one of the rule's test cases still exists. A test case logged as an open question counts, because the file is still there with its Business Rule ID.
 - `gaps_not_attempted` lists the gaps in scope that were left over because of `max`.
 - If a rule produced no test cases at all, for example because nothing about it could be written without inventing results, list it with `"test_cases": []` and add a `"note"` saying why.

@@ -3,7 +3,7 @@
 | Field | Value |
 |---|---|
 | ID | TC-CHK-004 |
-| Summary | Submitting a flight request whose `window_start` is 59 days and 23 hours after submission passes all gates, including `TIME_WINDOW`, and the request moves to `UNDER_REVIEW` |
+| Summary | Submitting a flight request whose `window_start` is 59 days and 23 hours after `T0` passes all gates, including `TIME_WINDOW`, and the request moves to `UNDER_REVIEW` |
 | Business Rule | BR-TIME-MAX-ADVANCE |
 | Date Created | 25/10/2026 |
 | Date Last Updated | 25/10/2026 |
@@ -13,7 +13,7 @@
 1. The SkyPermit API is available at `{BASE_URL}`.
 2. Operator `op-chk-004@test.example` exists with `authorisation_level` = `L1` and `status` = `ACTIVE`, and the API client holds its session cookie.
 3. Pilot `Test Pilot CHK-004` (national ID `TEST-PIL-CHK-004`) is registered under that operator with `rating` = `R_BASIC` and `certified_on` = the date 6 months before the test date (for example `2026-04-25` when testing on 25/10/2026), so the certification is still current at the flight window. Its `id` is `{PILOT_ID}`.
-4. Aircraft `TestMaker TM-1` (serial `SN-TEST-CHK-004`) is registered under that operator with `mtom_grams` = `800` (band `C0`). Its `id` is `{AIRCRAFT_ID}`. No other flight request exists for this aircraft.
+4. Aircraft `TestMaker TM-1` (serial `SN-TEST-CHK-004`) is registered under that operator with `mtom_grams` = `800` (band `C0`). Its `id` is `{AIRCRAFT_ID}`. No other flight request for this aircraft is in `APPROVED` or `UNDER_REVIEW`.
 5. Zone `DNI-OPN-1` exists as in the catalogue: class `OPEN`, ceiling 120 m, permitted bands `C0`–`C3`, no curfew, required level `L1`, active.
 6. The tester notes the current UTC time as `T0` immediately before step 1, and sends steps 1 and 2 within 5 minutes of `T0`.
 

@@ -13,7 +13,7 @@
 1. The SkyPermit API is available at `{BASE_URL}`.
 2. Operator `op-chk-006@test.example` exists with `authorisation_level` = `L1` and `status` = `ACTIVE`, and the API client holds its session cookie.
 3. Pilot `Test Pilot CHK-006` (national ID `TEST-PIL-CHK-006`) is registered under that operator with `rating` = `R_BASIC` and `certified_on` = the date 6 months before the test date (for example `2026-04-25` when testing on 25/10/2026), so the certification is current. Its `id` is `{PILOT_ID}`.
-4. Aircraft `TestMaker TM-1` (serial `SN-TEST-CHK-006`) is registered under that operator with `mtom_grams` = `800` (band `C0`). Its `id` is `{AIRCRAFT_ID}`. No other flight request exists for this aircraft.
+4. Aircraft `TestMaker TM-1` (serial `SN-TEST-CHK-006`) is registered under that operator with `mtom_grams` = `800` (band `C0`). Its `id` is `{AIRCRAFT_ID}`. No other flight request for this aircraft is in `APPROVED` or `UNDER_REVIEW`.
 5. Zone `DNI-OPN-1` exists as in the catalogue: class `OPEN`, ceiling 120 m, permitted bands `C0`–`C3`, no curfew, required level `L1`, active.
 6. The tester notes `S` = the current UTC time plus 24 hours, rounded down to the whole minute (for example `2026-10-26T10:00:00Z`), immediately before step 1.
 
@@ -26,7 +26,7 @@
 
 ## Postconditions
 - Flight request `{FR_ID}` is in `REJECTED`, which is terminal.
-- To run the test again, create a new flight request with a new `T0`; the operator, pilot and aircraft can be reused.
+- To run the test again, create a new flight request with a new `S`; the operator, pilot and aircraft can be reused.
 
 ## Priority
 1 — if this failed, the system would authorise windows longer than the rules allow.
