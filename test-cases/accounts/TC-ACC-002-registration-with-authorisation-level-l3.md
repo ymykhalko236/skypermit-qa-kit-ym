@@ -5,7 +5,7 @@
 | ID | TC-ACC-002 |
 | Summary | Registration through the API that includes `authorisation_level` = `L3` in the request doesn't create an operator above `L1`; whether the request is refused or accepted with the field ignored is to be confirmed |
 | Date Created | 18/10/2026 |
-| Date Last Updated | 18/10/2026 |
+| Date Last Updated | 02/11/2026 |
 | Assigned To | |
 
 ## Preconditions
@@ -29,6 +29,6 @@
 1 — if this failed, an operator could grant themselves a higher authorisation level, which the rules forbid.
 
 ## Source
-`03-api-contract.md`, "Authentication & authorisation" (`authorisation_level` is no longer self-service; registration always creates an operator at `L1`; raising it is an out-of-band admin action). `04-frontend-spec.md`, "Operator portal" (`authorisation_level` is not a registration field). `public/openapi.yaml`, `POST /operators` (`201`), `BadRequest` and `Error` responses (`400` body with an `error` field), `/auth/login` (`200`, `401`).
+[03 - API Contract](https://yaroslavmyhalko236.atlassian.net/wiki/spaces/SD1/pages/622593), "Authentication & authorisation" (`authorisation_level` is no longer self-service; registration always creates an operator at `L1`; raising it is an out-of-band admin action). [04 - Frontend Spec](https://yaroslavmyhalko236.atlassian.net/wiki/spaces/SD1/pages/98314), "Operator portal" (`authorisation_level` is not a registration field). `public/openapi.yaml`, `POST /operators` (`201`), `BadRequest` and `Error` responses (`400` body with an `error` field), `/auth/login` (`200`, `401`).
 
 **To be confirmed:** whether a registration request that includes `authorisation_level` is refused with `400` or accepted with the field ignored. Neither the docs nor `openapi.yaml` say which. Chat decision, 18/10/2026: leave as TBC until the owner of the API contract confirms.

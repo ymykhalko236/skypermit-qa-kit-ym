@@ -3,7 +3,7 @@ name: cover-gaps
 description: Find SkyPermit business rules that have no test case yet and cover them. It lists the gaps with a script, writes low-level test cases for each uncovered rule with the low-level-test-cases skill, has every new test case checked by the test-case-reviewer subagent, removes test cases that are not compliant, logs those it cannot determine as open questions, and returns a JSON summary. Arguments, both optional and in any order are the maximum number of rules to cover, and a gate (PILOT, AIRCRAFT, ZONE, TIME_WINDOW). Use it whenever the user asks to cover gaps, find uncovered or untested business rules, check business-rule coverage, or fill missing test cases for a gate, even if they don't name the skill.
 argument-hint: "[max] [PILOT|AIRCRAFT|ZONE|TIME_WINDOW]"
 disable-model-invocation: true
-allowed-tools: Read, Grep, Glob, Write(test-cases/**)
+allowed-tools: Read, Grep, Glob, Write(test-cases/**), mcp__atlassian__getConfluencePage, mcp__atlassian__getPagesInConfluenceSpace, mcp__atlassian__getConfluencePageDescendants, mcp__atlassian__searchConfluenceUsingCql
 ---
 
 # Cover gaps
@@ -26,7 +26,7 @@ Run the script from the repo root:
 node .claude/skills/cover-gaps/scripts/find_gaps.mjs --max <max> [--gate <gate>]
 ```
 
-It reads the rule table in `../ct-gen-ai-skypermit/docs/06-business-rules.md` §6 and the cancellation deadline in §5. It then applies the corrections from `07-clarifications.md`: the weight-band rule belongs to `AIRCRAFT`, and the zone-inactive citation is still unconfirmed. Each rule gets a stable ID such as `BR-ZONE-ALTITUDE`. A rule counts as covered when some test case lists its ID in the **Business Rule** row of its header table. The script prints JSON with `totals`, `covered`, `gaps` (at most `max`, in gate evaluation order) and `gaps_not_returned`.
+The script is a Node script and can't call MCP tools, so it is the one exception to "requirements come from Confluence" in this repo's `CLAUDE.md`. It reads the rule table in a local copy, `../ct-gen-ai-skypermit/docs/06-business-rules.md` §6, and the cancellation deadline in §5. It then applies the corrections from `07-clarifications.md`. If a gap's details disagree with the Confluence page `06 - Business Rules`, follow Confluence when writing the test cases and mention the mismatch in the summary. The corrections are: the weight-band rule belongs to `AIRCRAFT`, and the zone-inactive citation is still unconfirmed. Each rule gets a stable ID such as `BR-ZONE-ALTITUDE`. A rule counts as covered when some test case lists its ID in the **Business Rule** row of its header table. The script prints JSON with `totals`, `covered`, `gaps` (at most `max`, in gate evaluation order) and `gaps_not_returned`.
 
 Keep this first output, because the summary reports coverage before and after the run. If `gaps` is empty, skip to step 5 and report that there was nothing to cover.
 
@@ -39,7 +39,7 @@ Take the gaps one at a time, in the order the script returned them. For each gap
 - **No confirmation round (its section 3).** Plan the atomic test cases, sort them by priority, and write them straight away. Cover the rule with as many atomic test cases as its conditions need, for example a value at a boundary, just past it, and just inside it. Don't write variations that test the same thing twice. They make the review cost more and the coverage doesn't improve.
 - **No questions.** Where the skill would ask, decide as follows:
   - Interface: use the API. The gates show up in the `422` response (`failing_gate`, `rule_reference`), so the API is the precise place to observe them.
-  - Values or behaviour the sources don't settle, and anything that depends on an item still open in `05-open-questions.md` (the gap's `open_question` field flags these): write the result as **TBC** in the way the skill describes. Never invent an expected result. The reviewer will then give the test case CANNOT DETERMINE, and it goes into open questions, which is where it belongs.
+  - Values or behaviour the sources don't settle, and anything that depends on an item still open in the Confluence page `05 - Open Questions` (the gap's `open_question` field flags these): write the result as **TBC** in the way the skill describes. Never invent an expected result. The reviewer will then give the test case CANNOT DETERMINE, and it goes into open questions, which is where it belongs.
 - **Business Rule row:** set it to the gap's rule ID, so the next run sees the rule as covered.
 - **Area:** use the gap's `area` unless the test case clearly belongs somewhere else.
 
@@ -75,7 +75,7 @@ Create the file if needed with the heading `# Open questions` and one table:
 | 25/10/2026 | [TC-CHK-004](test-cases/checks/TC-CHK-004-....md) | BR-ZONE-ACTIVE | <what must be decided, and by whom> | <reason + evidence> | Open |
 ```
 
-Write the question so that someone who hasn't read the review can answer it, for example "Which `rule_reference` should a `422` for an inactive zone carry? Rules owner to confirm (05 row 5)". If an open row already exists for the same test case, update that row instead of adding a second one. Never write to the SkyPermit repo's `05-open-questions.md`: that repo is read-only.
+Write the question so that someone who hasn't read the review can answer it, for example "Which `rule_reference` should a `422` for an inactive zone carry? Rules owner to confirm (05 row 5)". If an open row already exists for the same test case, update that row instead of adding a second one. Never write to the Confluence page `05 - Open Questions` or to the SkyPermit repo: both are read-only for this kit.
 
 ## Step 5: Return the JSON summary
 
@@ -106,7 +106,7 @@ Run the script again with the same `--gate` and no `--max`, to get the coverage 
           "file": "test-cases/checks/TC-CHK-002-altitude-at-zone-ceiling-is-accepted.md",
           "verdict": "NOT COMPLIANT",
           "action": "removed",
-          "reason": "Uses 100 m ceiling for ODS-CTR-5; docs say 90 m (06-business-rules.md:§4)"
+          "reason": "Uses 100 m ceiling for ODS-CTR-5; docs say 90 m (06 - Business Rules §4)"
         }
       ]
     }

@@ -25,4 +25,4 @@
 <1–4> — <short reason>
 
 ## Source
-<Document and section, file name, "Chat description, dd/mm/yyyy" or "Chat decision, dd/mm/yyyy: <what was decided>">
+<[Confluence page title](page URL) and section, repo file path, "Chat description, dd/mm/yyyy" or "Chat decision, dd/mm/yyyy: <what was decided>">

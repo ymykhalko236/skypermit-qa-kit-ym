@@ -6,7 +6,7 @@
 | Summary | Submitting a flight request whose `window_start` is 59 days and 23 hours after `T0` passes all gates, including `TIME_WINDOW`, and the request moves to `UNDER_REVIEW` |
 | Business Rule | BR-TIME-MAX-ADVANCE |
 | Date Created | 25/10/2026 |
-| Date Last Updated | 25/10/2026 |
+| Date Last Updated | 02/11/2026 |
 | Assigned To | |
 
 ## Preconditions
@@ -32,4 +32,4 @@
 2 — if this failed, valid bookings made well in advance would be refused, blocking a main function.
 
 ## Source
-`06-business-rules.md` §1.4, "Maximum advance booking" (≤ 60 days before `window_start`); §1.1–§1.4, §2 and §4 for the data that passes every other gate (duration 60 min, no curfew, no overlap). `02-state-machine.md`, `DRAFT` submit → `UNDER_REVIEW` when gates pass, and `UNDER_REVIEW` cancel → `CANCELLED`. `01-data-model.md`, FlightRequest (`failing_gate` and `rule_reference` populated only on gate-failure rejection). `public/openapi.yaml`, `POST /flight-requests/{id}/submit` (`200`, moved to `UNDER_REVIEW`).
+[06 - Business Rules](https://yaroslavmyhalko236.atlassian.net/wiki/spaces/SD1/pages/688129) §1.4, "Maximum advance booking" (≤ 60 days before `window_start`); §1.1–§1.4, §2 and §4 for the data that passes every other gate (duration 60 min, no curfew, no overlap). [02 - State Machine](https://yaroslavmyhalko236.atlassian.net/wiki/spaces/SD1/pages/196808), `DRAFT` submit → `UNDER_REVIEW` when gates pass, and `UNDER_REVIEW` cancel → `CANCELLED`. [01 - Data Model](https://yaroslavmyhalko236.atlassian.net/wiki/spaces/SD1/pages/589825), FlightRequest (`failing_gate` and `rule_reference` populated only on gate-failure rejection). `public/openapi.yaml`, `POST /flight-requests/{id}/submit` (`200`, moved to `UNDER_REVIEW`).

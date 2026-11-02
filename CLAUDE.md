@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Purpose
 
-This repo (`skypermit-qa-kit`) is a kit for **generating testware**, such as test plans and test cases, for SkyPermit. The testware is derived from the requirements in the SkyPermit repo's `docs/` folder.
+This repo (`skypermit-qa-kit`) is a kit for **generating testware**, such as test plans and test cases, for SkyPermit. The testware is derived from the requirements in the **SkyPermit Docs** Confluence space.
 
 It is **not** for automated tests. Don't write test scripts, test frameworks or automation code (Playwright, Vitest, etc.) here, and don't add build or test tooling for that purpose.
 
@@ -22,34 +22,53 @@ These directories are planned and may not exist yet:
   - `.claude/skills/`: project skills for generating testware. Claude Code loads skills from this location automatically.
     - `one-page-test-plan/`: creates a one-page test plan for all stakeholders. Its `scripts/md_to_pdf.mjs` exports the Markdown to PDF using Node and headless Chrome or Edge.
     - `low-level-test-cases/`: creates and updates atomic, low-level test cases in `test-cases/`. It defines the ID prefix for each area.
-    - `cover-gaps/`: finds business rules with no test case yet (its `scripts/find_gaps.mjs` matches each test case's **Business Rule** ID against `06-business-rules.md` §5–§6 plus `07` corrections), writes test cases for them, has each one reviewed, removes non-compliant ones and logs undecidable ones in `open-questions.md`. Summaries go to `reports/cover-gaps-*.json`; IDs of removed test cases go to `test-cases/retired-ids.txt` so they are never reused.
-  - `.claude/agents/test-case-reviewer.md`: a read-only subagent that checks one test case against the SkyPermit docs and code and returns a verdict with evidence.
+    - `cover-gaps/`: finds business rules with no test case yet (its `scripts/find_gaps.mjs` matches each test case's **Business Rule** ID against `06-business-rules.md` §5–§6 plus `07` corrections, read from the local docs folder: see the exception under "Source of requirements"), writes test cases for them, has each one reviewed, removes non-compliant ones and logs undecidable ones in `open-questions.md`. Summaries go to `reports/cover-gaps-*.json`; IDs of removed test cases go to `test-cases/retired-ids.txt` so they are never reused.
+  - `.claude/agents/test-case-reviewer.md`: a read-only subagent that checks one test case against the SkyPermit docs in Confluence and the SkyPermit code, and returns a verdict with evidence.
 - `.mcp.json`: project-scoped MCP servers. It currently defines two servers, both over HTTP. Neither stores secrets in the file:
-  - `atlassian`: Jira and Confluence, using OAuth sign-in.
+  - `atlassian`: Jira and Confluence, using OAuth sign-in. It is how the kit reads the SkyPermit requirements.
   - `testomatio`: Testomat.io test management for the SkyPermit project. Its URL contains only the project slug.
 
 ## Source of requirements
 
-The requirements live in the sibling repo `../ct-gen-ai-skypermit`, in its `docs/` folder. SkyPermit is a drone airspace authorisation system. Its `CLAUDE.md` gives the recommended reading order for those docs:
+SkyPermit is a drone airspace authorisation system. Its requirements live in Confluence, in the **SkyPermit Docs** space (key `SD1`, site `yaroslavmyhalko236.atlassian.net`, cloud ID `34bbf7e9-2a64-4a58-bf3d-d5fed950d0c5`). Read them only through the `atlassian` MCP server's read tools:
+- `getConfluencePage`: reads one page. Pass `contentFormat: "markdown"`.
+- `getPagesInConfluenceSpace` / `getConfluencePageDescendants`: list the pages.
+- `searchConfluenceUsingCql`: finds a term across the space.
 
-1. `01-data-model.md`
-2. `02-state-machine.md`
-3. `03-api-contract.md`
-4. `04-frontend-spec.md`
-5. `06-business-rules.md`
-6. `05-open-questions.md`
-7. `07-clarifications.md`
+Don't read requirements from `../ct-gen-ai-skypermit/docs/` any more. The only exception is described below. If Confluence can't be reached (the server isn't connected, you aren't signed in, or a page is missing), stop and tell the user. Don't silently fall back to the local files.
 
-There is also `08-uml-diagrams.md`.
+Read the pages in this order:
 
-How the docs relate matters for test design:
-- `05-open-questions.md` is the single source of truth for whether each question is still open or resolved. A few items are still genuinely unresolved, such as `Operator.status = SUSPENDED` handling and the citation for the zone-active rule. Flag tests that depend on these items instead of inventing expected results.
-- `07-clarifications.md` explains why each question was resolved the way it was. It also contains a confirmed correction to `06-business-rules.md`: the aircraft weight-band rule belongs to the `AIRCRAFT` gate, even though the cited source text says "zone gate". When `06` and `07` disagree, follow `07`.
+| # | Page | Page ID |
+|---|---|---|
+| 1 | `01 - Data Model` | 589825 |
+| 2 | `02 - State Machine` | 196808 |
+| 3 | `03 - API Contract` | 622593 |
+| 4 | `04 - Frontend Spec` | 98314 |
+| 5 | `06 - Business Rules` | 688129 |
+| 6 | `05 - Open Questions` | 655361 |
+| 7 | `07 - Clarifications` | 589846 |
+
+There is also `08 - UML Diagrams` (196829). A page's URL is `https://yaroslavmyhalko236.atlassian.net/wiki/spaces/SD1/pages/<page ID>`.
+
+Older testware cites the old file names, such as `06-business-rules.md`. Treat each one as the Confluence page with the same number (`06 - Business Rules`).
+
+How the pages relate matters for test design:
+- `05 - Open Questions` is the single source of truth for whether each question is still open or resolved. A few items are still genuinely unresolved, such as `Operator.status = SUSPENDED` handling and the citation for the zone-active rule. Flag tests that depend on these items instead of inventing expected results.
+- `07 - Clarifications` explains why each question was resolved the way it was. It also contains a confirmed correction to `06 - Business Rules`: the aircraft weight-band rule belongs to the `AIRCRAFT` gate, even though the cited source text says "zone gate". When `06` and `07` disagree, follow `07`.
 
 If a requirement is ambiguous or contradictory, raise it with the user. Don't pick a silent default for an expected result.
+
+### Exception: `find_gaps.mjs` reads the local docs
+
+`.claude/skills/cover-gaps/scripts/find_gaps.mjs` is a Node script, and Node scripts can't call MCP tools. It keeps reading `06-business-rules.md` from `../ct-gen-ai-skypermit/docs/` (or from the folder given with `--docs`). It is the only part of the kit that reads requirements from local files. If its output disagrees with the Confluence page `06 - Business Rules`, tell the user that the local copy may be out of date.
+
+### Confluence is read-only for this kit
+
+Never create, edit or comment on pages in the SkyPermit Docs space while generating or reviewing testware.
 
 ## Restrictions on the sibling SkyPermit repo
 
 `../ct-gen-ai-skypermit` is **read-only**. Never create, edit, move or delete files there. All generated testware goes in this repo.
 
-You may read anything in that repo. `docs/` is the main source of truth. Other files, such as `public/openapi.yaml`, can fill in details the docs leave out, but if they contradict `docs/`, follow `docs/` and tell the user about the conflict.
+You may still read the repo's code (`app/`, `components/`, `lib/`, `supabase/`, `tests/`), for example to find `data-testid` selectors or to check what the code does. You may also read `public/openapi.yaml` for API details the Confluence pages leave out. If the code or `openapi.yaml` contradicts Confluence, follow Confluence and tell the user about the conflict. Apart from `find_gaps.mjs`, don't read requirements from its `docs/` folder.

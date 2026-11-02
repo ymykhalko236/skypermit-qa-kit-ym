@@ -5,7 +5,7 @@
 | ID | TC-ACC-001 |
 | Summary | Registration through the API with all operator fields valid creates the operator at authorisation level L1 and signs them in |
 | Date Created | 18/10/2026 |
-| Date Last Updated | 18/10/2026 |
+| Date Last Updated | 02/11/2026 |
 | Assigned To | |
 
 ## Preconditions
@@ -28,4 +28,4 @@
 1 — if registration fails, no operator can use the system.
 
 ## Source
-`03-api-contract.md`, "Authentication & authorisation" (registration creates the account and profile and signs the caller in; `/auth/me` returns the logged-in operator's profile; registration always creates an operator at `L1`). `04-frontend-spec.md`, "Operator portal" (registration logs the operator in immediately and starts them at `L1`). `01-data-model.md`, "Operator" (profile fields). `public/openapi.yaml`, `POST /operators` (`201` on success).
+[03 - API Contract](https://yaroslavmyhalko236.atlassian.net/wiki/spaces/SD1/pages/622593), "Authentication & authorisation" (registration creates the account and profile and signs the caller in; `/auth/me` returns the logged-in operator's profile; registration always creates an operator at `L1`). [04 - Frontend Spec](https://yaroslavmyhalko236.atlassian.net/wiki/spaces/SD1/pages/98314), "Operator portal" (registration logs the operator in immediately and starts them at `L1`). [01 - Data Model](https://yaroslavmyhalko236.atlassian.net/wiki/spaces/SD1/pages/589825), "Operator" (profile fields). `public/openapi.yaml`, `POST /operators` (`201` on success).

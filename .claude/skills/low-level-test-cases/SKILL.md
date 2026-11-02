@@ -1,7 +1,8 @@
 ---
 name: low-level-test-cases
-description: Generate low-level, atomic test cases as Markdown files in test-cases/, one file per test case, with ID, summary, dates, preconditions, numbered steps with an expected result for every step, postconditions, priority and source. Works from a file the user provides, from the SkyPermit requirements in ../ct-gen-ai-skypermit/docs/, or from a description given in the chat. Use it whenever the user asks to write, generate, create, add or update test cases, including detailed, low-level or manual test cases, or test cases for a specific requirement, rule, feature or bug. Don't use it for test plans, test scenarios, end-to-end flows or automated test scripts.
+description: Generate low-level, atomic test cases as Markdown files in test-cases/, one file per test case, with ID, summary, dates, preconditions, numbered steps with an expected result for every step, postconditions, priority and source. Works from a file the user provides, from the SkyPermit requirements in the SkyPermit Docs Confluence space, or from a description given in the chat. Use it whenever the user asks to write, generate, create, add or update test cases, including detailed, low-level or manual test cases, or test cases for a specific requirement, rule, feature or bug. Don't use it for test plans, test scenarios, end-to-end flows or automated test scripts.
 model: sonnet
+allowed-tools: mcp__atlassian__getConfluencePage, mcp__atlassian__getPagesInConfluenceSpace, mcp__atlassian__getConfluencePageDescendants, mcp__atlassian__searchConfluenceUsingCql
 ---
 
 # Low-level test cases
@@ -13,13 +14,13 @@ A low-level test case is concrete enough for any tester to run it the same way a
 Use the source the user points to, in this order:
 - **A file the user passes:** use that file.
 - **A description in the chat:** use the description. If it leaves out anything a step or expected result needs, ask; don't fill the gap from general knowledge.
-- **Otherwise:** use the SkyPermit requirements in `../ct-gen-ai-skypermit/docs/`. Read the documents that cover the requested feature, following this repo's `CLAUDE.md` on how the docs relate: `05-open-questions.md` decides what is still open, and `07-clarifications.md` wins over `06-business-rules.md`.
+- **Otherwise:** use the SkyPermit requirements in the **SkyPermit Docs** Confluence space (key `SD1`). Read the pages that cover the requested feature with `getConfluencePage` (`contentFormat: "markdown"`). The page IDs and the rules on how the pages relate are in this repo's `CLAUDE.md`: `05 - Open Questions` decides what is still open, and `07 - Clarifications` wins over `06 - Business Rules`. Don't read requirements from `../ct-gen-ai-skypermit/docs/`. If Confluence can't be reached, stop and tell the user.
 
-The SkyPermit `docs/` folder is the main source of truth. You may also read anything else in the SkyPermit folder, such as `public/openapi.yaml` for status codes, required fields and field formats, to fill in details the docs leave out. If another file contradicts `docs/`, follow `docs/` and tell the user about the conflict. Cite every file you use in the test case's **Source** field.
+The Confluence pages are the main source of truth. You may also read the SkyPermit repo (`../ct-gen-ai-skypermit`): `public/openapi.yaml` for status codes, required fields and field formats, and the code (`app/`, `components/`, …) for `data-testid` selectors. If either contradicts Confluence, follow Confluence and tell the user about the conflict. Cite every page and file you use in the test case's **Source** field.
 
 Decisions the user makes in the chat, when the sources are silent, are valid sources too. Cite them as "Chat decision, dd/mm/yyyy: <what was decided>".
 
-The SkyPermit folder is read-only. Never write anything there.
+The SkyPermit repo and the Confluence space are read-only. Never write anything to either.
 
 Every expected result has to be traceable to the source. If the source doesn't say what should happen, the test case can't be written yet. Ask, or report it as a gap. An expected result made up from "what systems usually do" produces a test case that passes or fails for the wrong reason.
 
@@ -41,12 +42,12 @@ Show the user the list of test cases you plan to create and wait for their confi
 - the ID it will get (see section 4)
 - the summary
 - the proposed priority, with a one-line reason
-- the source (document and section, file name, or "chat description")
+- the source (Confluence page and section, file name, or "chat description")
 
 Ask in the same round about anything the source doesn't settle, for example:
 - **Interface:** whether to test through the user interface or the API, if the request doesn't say.
 - **Values the rules depend on** that the source doesn't give, such as a limit, a format or an error message.
-- **Unresolved requirements:** if a test case depends on a requirement listed as open in `05-open-questions.md`, say so and ask how to handle it.
+- **Unresolved requirements:** if a test case depends on a requirement listed as open in `05 - Open Questions`, say so and ask how to handle it.
 - **Area:** if a test case doesn't fit any existing area folder, ask which area it belongs to.
 
 The user may add, remove or change test cases, or change priorities. Only write the files after they confirm.
@@ -79,7 +80,7 @@ Also read the finished example in `examples/TC-ACC-001-valid-registration-create
 - several observable expected results in one row
 - postconditions that explain how to re-run the test
 - a priority with a reason
-- a source that names document sections
+- a source that links the Confluence pages and names their sections
 
 Match its level of detail. Don't copy its content: every test case gets its own data, steps and results from its own source.
 
@@ -87,7 +88,7 @@ Match its level of detail. Don't copy its content: every test case gets its own 
 
 - **Dates:** use the format `dd/mm/yyyy`. For a new test case, both dates are today's date.
 - **Assigned To:** always leave it empty. The user fills it in.
-- **Business Rule:** the ID of the business rule the test case covers, as listed by the `cover-gaps` skill's `scripts/find_gaps.mjs` (for example `BR-ZONE-ALTITUDE`). Run that script to look the ID up when a test case comes from `06-business-rules.md`. Separate several IDs with commas. Write `N/A` when the test case doesn't cover a business rule, such as registration or login. This is how `cover-gaps` tells which rules already have test cases, so an ID missing here makes the rule look uncovered. Test cases written before this field existed may lack the row; treat that as `N/A`.
+- **Business Rule:** the ID of the business rule the test case covers, as listed by the `cover-gaps` skill's `scripts/find_gaps.mjs` (for example `BR-ZONE-ALTITUDE`). Run that script to look the ID up when a test case comes from `06 - Business Rules`. (The script reads a local copy of that page; see the exception in `CLAUDE.md`.) Separate several IDs with commas. Write `N/A` when the test case doesn't cover a business rule, such as registration or login. This is how `cover-gaps` tells which rules already have test cases, so an ID missing here makes the rule look uncovered. Test cases written before this field existed may lack the row; treat that as `N/A`.
 - **Preconditions:** list everything that must be true before step 1, with concrete data. For example, "Operator account `op-a@test.example` exists at authorisation level L1 and is logged in", or "Zone DNI-OPN-1 exists with a ceiling of 120 m". If nothing is needed, write "None".
 - **Steps:** one action per step, in the imperative ("Enter…", "Click…", "Send…"). Name the exact screen, field, button or API call and the exact values to use. For example, "Enter `121` in the Altitude field", not "enter an altitude above the ceiling". Technical identifiers such as endpoints, request fields and `data-testid` values are welcome here, because the readers are testers.
 - **Expected results:** every step has at least one expected result in the same row, including setup-like steps such as "the form opens". Each result is something a tester can observe and compare: a message, a status, a value, a field state or a response code. Every step, whatever its number, can have one or as many expected results as the source supports. The number of results in a row has nothing to do with the step's position. Start each result with `•` and separate them with `<br>`, even when a row has only one. Avoid vague results such as "works correctly" or "an error is shown". Say which error, and where it appears.
@@ -99,7 +100,7 @@ Match its level of detail. Don't copy its content: every test case gets its own 
   - **3:** a secondary function or error handling would be wrong, or a workaround exists.
   - **4:** low impact, such as wording or minor presentation.
 - **Expected results to be confirmed:** if the user decides to write a test case before the correct behaviour is known, start each affected expected result with `**TBC:**` and describe the possible outcomes. Keep every result that holds either way as a normal expected result. Add a "**To be confirmed:**" note under **Source** that says what is undecided and who needs to decide. Mention TBC test cases in your report, so they don't get forgotten.
-- **Source:** the exact document and section the expected results come from, for example `06-business-rules.md §1.3, altitude within ceiling`. This gives traceability: it shows which requirement the test case covers and which test cases to update when that requirement changes.
+- **Source:** the exact Confluence page and section the expected results come from. Write it as a Markdown link to the page, followed by the section, for example `[06 - Business Rules](https://yaroslavmyhalko236.atlassian.net/wiki/spaces/SD1/pages/688129) §1.3, altitude within ceiling`. Cite repo files such as `public/openapi.yaml` by path. This gives traceability: it shows which requirement the test case covers and which test cases to update when that requirement changes.
 
 ## 6. Check each test case
 

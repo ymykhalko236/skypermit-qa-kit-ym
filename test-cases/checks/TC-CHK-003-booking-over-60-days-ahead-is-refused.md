@@ -6,7 +6,7 @@
 | Summary | Submitting a flight request whose `window_start` is 60 days and 1 hour after submission is refused by the `TIME_WINDOW` gate with `rule_reference` `TSD-4 §2.2`, and the request moves to `REJECTED` |
 | Business Rule | BR-TIME-MAX-ADVANCE |
 | Date Created | 25/10/2026 |
-| Date Last Updated | 25/10/2026 |
+| Date Last Updated | 02/11/2026 |
 | Assigned To | |
 
 ## Preconditions
@@ -32,4 +32,4 @@
 1 — if this failed, the system would accept bookings further ahead than the rules allow.
 
 ## Source
-`06-business-rules.md` §1.4, "Maximum advance booking" (≤ 60 days before `window_start`) and §6 (`rule_reference` `TSD-4 §2.2`); §1.1–§1.3, §2 and §4 for the pilot, aircraft and zone data that pass the earlier gates. `03-api-contract.md`, "The `422` body" and "Gate pipeline". `02-state-machine.md`, `DRAFT` submit → `REJECTED` with `failing_gate` populated. `01-data-model.md`, FlightRequest (`failing_gate`, `rule_reference` stored on rejection). `public/openapi.yaml`, `POST /flight-requests` (`201`) and `POST /flight-requests/{id}/submit` (`422`, row updated to `REJECTED`).
+[06 - Business Rules](https://yaroslavmyhalko236.atlassian.net/wiki/spaces/SD1/pages/688129) §1.4, "Maximum advance booking" (≤ 60 days before `window_start`) and §6 (`rule_reference` `TSD-4 §2.2`); §1.1–§1.3, §2 and §4 for the pilot, aircraft and zone data that pass the earlier gates. [03 - API Contract](https://yaroslavmyhalko236.atlassian.net/wiki/spaces/SD1/pages/622593), "The `422` body" and "Gate pipeline". [02 - State Machine](https://yaroslavmyhalko236.atlassian.net/wiki/spaces/SD1/pages/196808), `DRAFT` submit → `REJECTED` with `failing_gate` populated. [01 - Data Model](https://yaroslavmyhalko236.atlassian.net/wiki/spaces/SD1/pages/589825), FlightRequest (`failing_gate`, `rule_reference` stored on rejection). `public/openapi.yaml`, `POST /flight-requests` (`201`) and `POST /flight-requests/{id}/submit` (`422`, row updated to `REJECTED`).

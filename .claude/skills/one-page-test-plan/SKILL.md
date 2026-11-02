@@ -1,6 +1,7 @@
 ---
 name: one-page-test-plan
-description: Create a one-page test plan (Markdown plus a one-page PDF) that both technical and non-technical stakeholders, from QA to management, can read and use to make project decisions. The plan is built from the SkyPermit requirements in ../ct-gen-ai-skypermit/docs/ or from a file the user provides. Use this skill only when the user explicitly asks for a one-page test plan, or chooses the one-page option after being asked. Do not use it for a plain "test plan" request; ask the user first whether they want a full test plan or a one-page one.
+description: Create a one-page test plan (Markdown plus a one-page PDF) that both technical and non-technical stakeholders, from QA to management, can read and use to make project decisions. The plan is built from the SkyPermit requirements in the SkyPermit Docs Confluence space or from a file the user provides. Use this skill only when the user explicitly asks for a one-page test plan, or chooses the one-page option after being asked. Do not use it for a plain "test plan" request; ask the user first whether they want a full test plan or a one-page one.
+allowed-tools: mcp__atlassian__getConfluencePage, mcp__atlassian__getPagesInConfluenceSpace, mcp__atlassian__getConfluencePageDescendants, mcp__atlassian__searchConfluenceUsingCql
 ---
 
 # One-page test plan
@@ -10,10 +11,10 @@ The plan has to fit on one A4 page and work for a mixed audience: QA engineers, 
 ## 1. Find the source
 
 - If the user passed a file or path, use it as the requirements source.
-- Otherwise use the SkyPermit requirements in `../ct-gen-ai-skypermit/docs/`. Read them in the order listed in this repo's `CLAUDE.md`. Follow its rules on how the docs relate: `05-open-questions.md` decides what is still open, and `07-clarifications.md` wins over `06-business-rules.md`.
+- Otherwise use the SkyPermit requirements in the **SkyPermit Docs** Confluence space (key `SD1`). Read the pages with `getConfluencePage` (`contentFormat: "markdown"`), in the order and with the page IDs listed in this repo's `CLAUDE.md`. Follow its rules on how the pages relate: `05 - Open Questions` decides what is still open, and `07 - Clarifications` wins over `06 - Business Rules`. Don't read requirements from `../ct-gen-ai-skypermit/docs/`. If Confluence can't be reached, stop and tell the user.
 - If the user wants a plan for only part of the system (one feature, one portal, one release), limit the plan to that part. If it isn't clear whether they want the whole system or a part, ask.
 
-The SkyPermit folder is read-only. Never write anything there. Save the plan in this repo.
+The SkyPermit repo and the Confluence space are read-only. Never write anything to either. Save the plan in this repo.
 
 ## 2. Ask before writing
 
@@ -32,7 +33,7 @@ Use this structure and order. Objective, schedule and entry criteria come first 
 ```markdown
 # Test plan: <system or feature name>
 
-**Version:** <n> · **Date:** <YYYY-MM-DD> · **Based on:** <source files or document name>
+**Version:** <n> · **Date:** <YYYY-MM-DD> · **Based on:** <Confluence pages, source files or document name>
 
 ## Objective and scope
 <2–3 sentences: what is being tested, for which release or goal, and what "success" means for the business.>
