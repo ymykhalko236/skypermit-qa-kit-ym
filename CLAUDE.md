@@ -24,6 +24,7 @@ These directories are planned and may not exist yet:
     - `low-level-test-cases/`: creates and updates atomic, low-level test cases in `test-cases/`. It defines the ID prefix for each area.
     - `cover-gaps/`: finds business rules with no test case yet (its `scripts/find_gaps.mjs` matches each test case's **Business Rule** ID against `06-business-rules.md` §5–§6 plus `07` corrections), writes test cases for them, has each one reviewed, removes non-compliant ones and logs undecidable ones in `open-questions.md`. Summaries go to `reports/cover-gaps-*.json`; IDs of removed test cases go to `test-cases/retired-ids.txt` so they are never reused.
   - `.claude/agents/test-case-reviewer.md`: a read-only subagent that checks one test case against the SkyPermit docs and code and returns a verdict with evidence.
+- `.mcp.json`: project-scoped MCP servers. It currently defines `atlassian` (Jira and Confluence over HTTP, using OAuth sign-in, so the file holds no secrets).
 
 ## Source of requirements
 
