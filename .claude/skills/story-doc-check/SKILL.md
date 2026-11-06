@@ -122,7 +122,7 @@ If the record's reference to the requirements (`confluence_url`, or a text menti
 | The user wants to… | Use instead |
 |---|---|
 | read a ticket from Jira or refresh its record | `jira-intake` |
-| write or update test cases | `low-level-test-cases` |
+| write or update UI/E2E test cases | `ui-test-case-creator` |
 | review an existing test case against the docs and the code | `test-case-reviewer` subagent |
 | find business rules that have no test case | `cover-gaps` |
 | write a test plan | `one-page-test-plan` (ask first whether they want a full or a one-page plan) |

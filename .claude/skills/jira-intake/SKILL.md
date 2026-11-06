@@ -128,7 +128,7 @@ This example is shortened: a real record lists every criterion.
 | The user wants to… | Use instead |
 |---|---|
 | check whether acceptance criteria match the docs | `story-doc-check` |
-| write or update test cases | `low-level-test-cases` |
+| write or update UI/E2E test cases | `ui-test-case-creator` |
 | review a test case against the docs and the code | `test-case-reviewer` subagent |
 | find business rules that have no test case | `cover-gaps` |
 | write a test plan | `one-page-test-plan` (ask first whether they want a full or a one-page plan) |

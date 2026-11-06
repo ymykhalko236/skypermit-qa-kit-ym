@@ -1,13 +1,25 @@
 ---
-name: low-level-test-cases
-description: Generate low-level, atomic test cases as Markdown files in test-cases/, one file per test case, with ID, summary, dates, preconditions, numbered steps with an expected result for every step, postconditions, priority and source. Works from a file the user provides, from the SkyPermit requirements in the SkyPermit Docs Confluence space, or from a description given in the chat. Use it whenever the user asks to write, generate, create, add or update test cases, including detailed, low-level or manual test cases, or test cases for a specific requirement, rule, feature or bug. Don't use it for test plans, test scenarios, end-to-end flows or automated test scripts.
+name: ui-test-case-creator
+description: Generate low-level, atomic UI/E2E test cases as Markdown files in test-cases/, one file per test case. This skill writes ONLY test cases that run through the SkyPermit web interface, using its forms and data-testid selectors. It derives every needed test case with equivalence partitioning, boundary value analysis and state transition testing. Each file has an ID, summary, dates, preconditions, numbered steps with an expected result for every step, postconditions, priority and source. Works from a file the user provides, from the SkyPermit requirements in the SkyPermit Docs Confluence space, or from a description given in the chat. Use it whenever the user asks to write, generate, create, add or update UI, E2E, form, manual or low-level test cases, or test cases for a specific requirement, rule, feature or bug, unless they ask for API test cases. Don't use it for API test cases (requests, status codes, response bodies), which belong to a separate API test case skill, or for test plans, test scenarios or automated test scripts.
 model: sonnet
 allowed-tools: mcp__atlassian__getConfluencePage, mcp__atlassian__getPagesInConfluenceSpace, mcp__atlassian__getConfluencePageDescendants, mcp__atlassian__searchConfluenceUsingCql
 ---
 
-# Low-level test cases
+# UI test case creator
 
 A low-level test case is concrete enough for any tester to run it the same way and reach the same verdict without guessing. It is also **atomic**: it checks exactly one test condition, such as one rule, one boundary value, or one allowed or forbidden action. It is not a scenario or a flow that walks through several behaviours. Atomic test cases fail for exactly one reason, which keeps defect reports clear and lets each test case be prioritised, assigned and re-run on its own.
+
+This skill writes **only UI/E2E test cases**. Each one drives the real web interface end to end: the tester fills in forms, clicks controls and observes the result on screen, and every element is named by its `data-testid`. "E2E" describes the route through the system, not the size of the test: each test case is still atomic.
+
+## When not to use this skill
+
+| The user wants to… | Use instead |
+|---|---|
+| write or update API test cases (requests, status codes, response bodies) | the separate API test case skill. If it doesn't exist yet, say so and stop. Don't write an API test case here. |
+| review a test case against the docs and the code | `test-case-reviewer` subagent |
+| find business rules that have no test case | `cover-gaps` |
+| write a test plan | `one-page-test-plan` (ask first whether they want a full or a one-page plan) |
+| write automated test scripts | not this kit: it doesn't hold automation code |
 
 ## 1. Find the source
 
@@ -16,7 +28,9 @@ Use the source the user points to, in this order:
 - **A description in the chat:** use the description. If it leaves out anything a step or expected result needs, ask; don't fill the gap from general knowledge.
 - **Otherwise:** use the SkyPermit requirements in the **SkyPermit Docs** Confluence space (key `SD1`). Read the pages that cover the requested feature with `getConfluencePage` (`contentFormat: "markdown"`). The page IDs and the rules on how the pages relate are in this repo's `CLAUDE.md`: `05 - Open Questions` decides what is still open, and `07 - Clarifications` wins over `06 - Business Rules`. Don't read requirements from `../ct-gen-ai-skypermit/docs/`. If Confluence can't be reached, stop and tell the user.
 
-The Confluence pages are the main source of truth. You may also read the SkyPermit repo (`../ct-gen-ai-skypermit`): `public/openapi.yaml` for status codes, required fields and field formats, and the code (`app/`, `components/`, …) for `data-testid` selectors. If either contradicts Confluence, follow Confluence and tell the user about the conflict. Cite every page and file you use in the test case's **Source** field.
+The Confluence pages are the main source of truth. You may also read the SkyPermit repo (`../ct-gen-ai-skypermit`): `public/openapi.yaml` for required fields and field formats, and the code (`app/`, `components/`, …) for `data-testid` selectors and for what each screen displays. If either contradicts Confluence, follow Confluence and tell the user about the conflict. Cite every page and file you use in the test case's **Source** field.
+
+Find every `data-testid` in the code of the screen under test. Never guess or invent one. If an element the test case needs has no `data-testid`, report it as a gap: `04 - Frontend Spec` says every interactive element must carry one.
 
 Decisions the user makes in the chat, when the sources are silent, are valid sources too. Cite them as "Chat decision, dd/mm/yyyy: <what was decided>".
 
@@ -26,7 +40,23 @@ Every expected result has to be traceable to the source. If the source doesn't s
 
 ## 2. Break the request into atomic test cases
 
-Work out which test conditions the request covers. A single request often needs several test cases. For example, "test the altitude ceiling" needs one test case for an altitude exactly at the ceiling, one just above it, and one well below it. Each condition becomes its own test case.
+Work out which test conditions the request covers, using the techniques below. A single request often needs several test cases. Each condition becomes its own test case.
+
+### Test design techniques
+
+Generate every test case the feature needs. Apply each technique that fits the feature, and note which one produced each planned test case:
+
+- **Equivalence partitioning:** split each input into valid and invalid partitions, based on what the source says. This covers typed fields and pickers, for example a pilot whose certification is current or lapsed. Write one test case per partition. Each invalid test case uses one invalid value and keeps everything else valid, so that it can fail for only one reason.
+- **Boundary value analysis (2-value):** for each input with an ordered limit, test the boundary value and its closest neighbour in the adjacent partition. Take the step size from the source. For example, a duration of 15 to 240 minutes gives 14, 15, 240 and 241. A zone ceiling of 120 m gives 120 and 121.
+- **State transition testing:** for anything with a lifecycle, build the states and transitions from `02 - State Machine`. Write one test case per valid transition that the UI offers, and one per invalid transition the source defines. Put the start state in **Preconditions**, make the trigger a UI action, and observe the resulting state on screen, for example with the `state-badge-<state>` selector. Actions that must not change state count too, such as "Check before submitting".
+
+Don't duplicate coverage. A boundary test case also covers its partition, so add a separate partition test case only for a partition no boundary test case reaches.
+
+### What the UI can test
+
+Every expected result has to be visible in the UI. If a condition can only be seen through the API, such as a status code or a value no screen displays (`authorisation_level`, for example), don't write it here. List it in your report for the API test case skill.
+
+`04 - Frontend Spec` says the form does not pre-filter: pickers offer combinations that can't pass, and the rules run only at "Check before submitting" and at submit. So observe a rule's result there, not while the form is being filled in. A gate result appears in the `flight-request-gate-result-<GATE>` card, with its `data-gate-status`, message and rule reference.
 
 A test case is atomic when:
 - Its summary describes one condition and one outcome, for example "Flight request with altitude 1 m above the zone ceiling is refused by the zone check".
@@ -41,11 +71,12 @@ Show the user the list of test cases you plan to create and wait for their confi
 
 - the ID it will get (see section 4)
 - the summary
+- the technique that produced it, and the value or transition it covers
 - the proposed priority, with a one-line reason
 - the source (Confluence page and section, file name, or "chat description")
 
 Ask in the same round about anything the source doesn't settle, for example:
-- **Interface:** whether to test through the user interface or the API, if the request doesn't say.
+- **Not visible in the UI:** any condition the request covers that can only be checked through the API. Say so, and leave it out of the plan.
 - **Values the rules depend on** that the source doesn't give, such as a limit, a format or an error message.
 - **Unresolved requirements:** if a test case depends on a requirement listed as open in `05 - Open Questions`, say so and ask how to handle it.
 - **Area:** if a test case doesn't fit any existing area folder, ask which area it belongs to.
@@ -74,9 +105,9 @@ If a new area is needed, agree its folder name and prefix with the user, then ad
 
 Every time this skill runs, read the template in `templates/test-case-template.md` before writing any test case, and build each file from it. Keep its sections, field order and table layout exactly. Replace every `<placeholder>` with real content, and leave no placeholder text behind. The template is the single definition of the test case format: if the format needs to change, change the template, not this file.
 
-Also read the finished example in `examples/TC-ACC-001-valid-registration-creates-l1-operator-and-signs-in.md`. It shows the level of detail expected:
+Also read the finished example in `examples/TC-ACC-000-valid-registration-through-the-form-signs-the-operator-in.md`. Its ID is reserved for the example, so it is not a real test case. It shows the level of detail expected:
 - preconditions with concrete data
-- one action per step, with the exact request and values
+- one action per step, with the exact `data-testid` and values
 - several observable expected results in one row
 - postconditions that explain how to re-run the test
 - a priority with a reason
@@ -90,8 +121,8 @@ Match its level of detail. Don't copy its content: every test case gets its own 
 - **Assigned To:** always leave it empty. The user fills it in.
 - **Business Rule:** the ID of the business rule the test case covers, as listed by the `cover-gaps` skill's `scripts/find_gaps.mjs` (for example `BR-ZONE-ALTITUDE`). Run that script to look the ID up when a test case comes from `06 - Business Rules`. (The script reads a local copy of that page; see the exception in `CLAUDE.md`.) Separate several IDs with commas. Write `N/A` when the test case doesn't cover a business rule, such as registration or login. This is how `cover-gaps` tells which rules already have test cases, so an ID missing here makes the rule look uncovered. Test cases written before this field existed may lack the row; treat that as `N/A`.
 - **Preconditions:** list everything that must be true before step 1, with concrete data. For example, "Operator account `op-a@test.example` exists at authorisation level L1 and is logged in", or "Zone DNI-OPN-1 exists with a ceiling of 120 m". If nothing is needed, write "None".
-- **Steps:** one action per step, in the imperative ("Enter…", "Click…", "Send…"). Name the exact screen, field, button or API call and the exact values to use. For example, "Enter `121` in the Altitude field", not "enter an altitude above the ceiling". Technical identifiers such as endpoints, request fields and `data-testid` values are welcome here, because the readers are testers.
-- **Expected results:** every step has at least one expected result in the same row, including setup-like steps such as "the form opens". Each result is something a tester can observe and compare: a message, a status, a value, a field state or a response code. Every step, whatever its number, can have one or as many expected results as the source supports. The number of results in a row has nothing to do with the step's position. Start each result with `•` and separate them with `<br>`, even when a row has only one. Avoid vague results such as "works correctly" or "an error is shown". Say which error, and where it appears.
+- **Steps:** one action per step, in the imperative ("Open…", "Enter…", "Select…", "Click…"). Name the exact screen, the field or button with its `data-testid`, and the exact values to use. For example, "Enter `121` in the Altitude field (`<data-testid>`)", not "enter an altitude above the ceiling". Never use an API call as a step.
+- **Expected results:** every step has at least one expected result in the same row, including setup-like steps such as "the form opens". Each result is something a tester can see on screen and compare: a message, a state badge, a displayed value, a field state or the page shown. Name the `data-testid` of the element to check. Never use a response code or a response body as a result. Every step, whatever its number, can have one or as many expected results as the source supports. The number of results in a row has nothing to do with the step's position. Start each result with `•` and separate them with `<br>`, even when a row has only one. Avoid vague results such as "works correctly" or "an error is shown". Say which error, and where it appears.
 - **Test data:** use concrete values. Values the rules depend on (limits, weights, times, ratings, zone settings) must come from the source. Purely identifying data, such as names, emails and serial numbers, can be invented, but make it look like test data (for example `Test Pilot A`, `SN-TEST-0001`).
 - **Postconditions:** what the system looks like afterwards, for example "Request remains in DRAFT", and any cleanup needed to run the test again. If nothing changes and no cleanup is needed, write "None".
 - **Priority:** propose one; the user confirms it in section 3. The scale is 1 (highest) to 4 (lowest):
@@ -106,6 +137,7 @@ Match its level of detail. Don't copy its content: every test case gets its own 
 
 Before saving, check each test case:
 - It covers one condition. If not, split it, and tell the user about the extra test case it produced.
+- It runs only through the UI, and every `data-testid` it names exists in the code.
 - Every step has at least one expected result, and every expected result is backed by the source.
 - No step or result uses vague wording that two testers could carry out or judge differently.
 - The ID is unique, and the file name starts with the ID.
@@ -114,6 +146,7 @@ Before saving, check each test case:
 ## 7. Updating existing test cases
 
 When the user asks you to change an existing test case:
+- If it is an API test case, don't update it or convert it to UI here. Older test cases in `test-cases/` are API test cases: tell the user they belong to the API test case skill.
 - Keep its ID, Date Created and file name.
 - Set Date Last Updated to today's date (`dd/mm/yyyy`).
 - If the change affects the summary so much that the file name no longer fits, ask before renaming the file.
@@ -121,4 +154,4 @@ When the user asks you to change an existing test case:
 
 ## 8. Report back
 
-List the files you created or changed with their IDs and summaries. Also list anything you couldn't cover because the source didn't specify it.
+List the files you created or changed with their IDs and summaries. Also list anything you couldn't cover because the source didn't specify it, and any condition left for the API test case skill.

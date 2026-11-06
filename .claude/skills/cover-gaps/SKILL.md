@@ -1,6 +1,6 @@
 ---
 name: cover-gaps
-description: Find SkyPermit business rules that have no test case yet and cover them. It lists the gaps with a script, writes low-level test cases for each uncovered rule with the low-level-test-cases skill, has every new test case checked by the test-case-reviewer subagent, removes test cases that are not compliant, logs those it cannot determine as open questions, and returns a JSON summary. Arguments, both optional and in any order are the maximum number of rules to cover, and a gate (PILOT, AIRCRAFT, ZONE, TIME_WINDOW). Use it whenever the user asks to cover gaps, find uncovered or untested business rules, check business-rule coverage, or fill missing test cases for a gate, even if they don't name the skill.
+description: Find SkyPermit business rules that have no test case yet and cover them. It lists the gaps with a script, writes low-level UI test cases for each uncovered rule with the ui-test-case-creator skill, has every new test case checked by the test-case-reviewer subagent, removes test cases that are not compliant, logs those it cannot determine as open questions, and returns a JSON summary. Arguments, both optional and in any order are the maximum number of rules to cover, and a gate (PILOT, AIRCRAFT, ZONE, TIME_WINDOW). Use it whenever the user asks to cover gaps, find uncovered or untested business rules, check business-rule coverage, or fill missing test cases for a gate, even if they don't name the skill.
 argument-hint: "[max] [PILOT|AIRCRAFT|ZONE|TIME_WINDOW]"
 disable-model-invocation: true
 allowed-tools: Read, Grep, Glob, Write(test-cases/**), mcp__atlassian__getConfluencePage, mcp__atlassian__getPagesInConfluenceSpace, mcp__atlassian__getConfluencePageDescendants, mcp__atlassian__searchConfluenceUsingCql
@@ -34,11 +34,11 @@ If a gap has `"unmapped": true`, the docs contain a rule the script doesn't know
 
 ## Step 2: Write test cases for each gap
 
-Take the gaps one at a time, in the order the script returned them. For each gap, invoke the `low-level-test-cases` skill and pass it the rule: its ID, gate, condition, `rule_reference`, `source`, `area`, and any `note` or `open_question`. Follow that skill completely, with these changes, because this run has no human in the loop:
+Take the gaps one at a time, in the order the script returned them. For each gap, invoke the `ui-test-case-creator` skill and pass it the rule: its ID, gate, condition, `rule_reference`, `source`, `area`, and any `note` or `open_question`. Follow that skill completely, with these changes, because this run has no human in the loop:
 
-- **No confirmation round (its section 3).** Plan the atomic test cases, sort them by priority, and write them straight away. Cover the rule with as many atomic test cases as its conditions need, for example a value at a boundary, just past it, and just inside it. Don't write variations that test the same thing twice. They make the review cost more and the coverage doesn't improve.
+- **No confirmation round (its section 3).** Plan the atomic test cases, sort them by priority, and write them straight away. Cover the rule with as many atomic test cases as its conditions need, for example a value at a boundary and its closest neighbour past it. Don't write variations that test the same thing twice. They make the review cost more and the coverage doesn't improve.
 - **No questions.** Where the skill would ask, decide as follows:
-  - Interface: use the API. The gates show up in the `422` response (`failing_gate`, `rule_reference`), so the API is the precise place to observe them.
+  - Interface: use the UI. Trigger the gates with "Check before submitting" and observe the `flight-request-gate-result-<GATE>` card (`data-gate-status`, message, rule reference). The two rules that aren't gates, the aircraft weight ceiling and the cancellation deadline, show up on their own form or action instead. If a rule can't be observed in the UI, write no test case for it and report it with `"test_cases": []` and a note.
   - Values or behaviour the sources don't settle, and anything that depends on an item still open in the Confluence page `05 - Open Questions` (the gap's `open_question` field flags these): write the result as **TBC** in the way the skill describes. Never invent an expected result. The reviewer will then give the test case CANNOT DETERMINE, and it goes into open questions, which is where it belongs.
 - **Business Rule row:** set it to the gap's rule ID, so the next run sees the rule as covered.
 - **Area:** use the gap's `area` unless the test case clearly belongs somewhere else.
@@ -58,7 +58,7 @@ From each report, take the **Verdict** line. Also take a one-to-two sentence rea
 | Verdict | Action |
 |---|---|
 | `COMPLIANT` | Keep the file. |
-| `COMPLIANT WITH MINOR ISSUES` | Keep the file. Put the reviewer's list of slips and fixes in the summary's `reason`, so the user can fix them with `low-level-test-cases`. Don't fix them here. |
+| `COMPLIANT WITH MINOR ISSUES` | Keep the file. Put the reviewer's list of slips and fixes in the summary's `reason`, so the user can fix them with `ui-test-case-creator`. Don't fix them here. |
 | `COMPLIANT WITH DOCS, CODE DIFFERS` | Keep the file. The test case is correct and would expose a likely product defect, so flag it in the summary. |
 | `NOT COMPLIANT` | Delete the file from `test-cases/`. Append its ID to `test-cases/retired-ids.txt` (create the file if needed), so the number is never reused. |
 | `CANNOT DETERMINE` | Keep the file, and add an entry to `open-questions.md` at the repo root (format below). |

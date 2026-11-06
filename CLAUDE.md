@@ -8,7 +8,7 @@ This repo (`skypermit-qa-kit`) is a kit for **generating testware**, such as tes
 
 It is **not** for automated tests. Don't write test scripts, test frameworks or automation code (Playwright, Vitest, etc.) here, and don't add build or test tooling for that purpose.
 
-When the user asks for a test plan without saying which kind, ask whether they want a full test plan or a one-page one. Use the `one-page-test-plan` skill only for a one-page plan, which is written in Markdown and exported to a one-page PDF. Test cases are low-level and atomic, one Markdown file per test case, written with the `low-level-test-cases` skill. The format for any other testware hasn't been decided yet. Ask before choosing one.
+When the user asks for a test plan without saying which kind, ask whether they want a full test plan or a one-page one. Use the `one-page-test-plan` skill only for a one-page plan, which is written in Markdown and exported to a one-page PDF. Test cases are low-level and atomic, one Markdown file per test case. UI/E2E test cases are written with the `ui-test-case-creator` skill, and API test cases will have their own separate skill. The format for any other testware hasn't been decided yet. Ask before choosing one.
 
 `README.md` is UTF-16 LE encoded (it was created on Windows). Convert it to UTF-8 before editing so diffs and tools work.
 
@@ -21,7 +21,7 @@ These directories are planned and may not exist yet:
 - `.claude/`: Claude Code configuration for this repo.
   - `.claude/skills/`: project skills for generating testware. Claude Code loads skills from this location automatically.
     - `one-page-test-plan/`: creates a one-page test plan for all stakeholders. Its `scripts/md_to_pdf.mjs` exports the Markdown to PDF using Node and headless Chrome or Edge.
-    - `low-level-test-cases/`: creates and updates atomic, low-level test cases in `test-cases/`. It defines the ID prefix for each area.
+    - `ui-test-case-creator/`: creates and updates atomic, low-level UI/E2E test cases in `test-cases/`, working through forms and `data-testid` selectors, using equivalence partitioning, boundary value analysis and state transition testing. It defines the ID prefix for each area.
     - `cover-gaps/`: finds business rules with no test case yet (its `scripts/find_gaps.mjs` matches each test case's **Business Rule** ID against `06-business-rules.md` §5–§6 plus `07` corrections, read from the local docs folder: see the exception under "Source of requirements"), writes test cases for them, has each one reviewed, removes non-compliant ones and logs undecidable ones in `open-questions.md`. Summaries go to `reports/cover-gaps-*.json`; IDs of removed test cases go to `test-cases/retired-ids.txt` so they are never reused.
     - `story-doc-check/`: takes a `jira-intake` record (by issue key, file path or pasted JSON, and it doesn't read Jira itself) and reports, for each acceptance criterion, whether the SkyPermit Docs Confluence space has it covered (with page, section and quote), contradicts it, or doesn't describe it. Uses only Confluence as evidence, is read-only and returns a table and a short summary in chat.
     - `jira-intake/`: takes a Jira issue key and returns a JSON record with `key`, `title`, `check_type`, `acceptance_criteria`, `confluence_url` and `notes`. Reads only Jira and never guesses: `check_type` comes only from a single `ui` or `api` label, and `confluence_url` only from a real link in the ticket. Missing values are `null`, with the reason in `notes`. Results go to chat and to `reports/jira-intake/<KEY>.json`.
