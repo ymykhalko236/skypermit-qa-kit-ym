@@ -1,0 +1,14 @@
+{
+  "key": "SKY-6",
+  "title": "API: submit повертає 422, якщо до початку польоту менше 6 годин",
+  "check_type": "api",
+  "acceptance_criteria": [
+    "`POST /api/v1/flight-requests/{id}/validate` для заявки з `window_start` менш ніж через 6 годин повертає `422` з тілом: `failing_gate` = TIME_WINDOW, `rule_reference` = TSD-4 §2.1, непорожній `message`. Стан лишається `DRAFT`.",
+    "`POST /api/v1/flight-requests/{id}/submit` для тієї ж заявки повертає `422` з тим самим тілом.",
+    "Після такого submit заявка в стані `REJECTED`, поля `failing_gate` і `rejection_reason` заповнені (`GET /api/v1/flight-requests/{id`}).",
+    "Повторний submit відхиленої заявки повертає `409`.",
+    "Заявка з `window_start` через 6 годин 30 хвилин (всі інші умови валідні) проходить `TIME_WINDOW` за lead time."
+  ],
+  "confluence_url": null,
+  "notes": "confluence_url is null: the ticket has no real Confluence link, only the text mention 'Confluence → простір SkyPermit → сторінки «03 — API contract» і «06 — Business rules», розділ 1.4.'"
+}
