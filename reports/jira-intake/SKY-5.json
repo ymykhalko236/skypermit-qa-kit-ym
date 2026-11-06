@@ -1,0 +1,14 @@
+{
+  "key": "SKY-5",
+  "title": "Оператор бачить відмову через комендантську годину в зоні KBP-CTR-3",
+  "check_type": "ui",
+  "acceptance_criteria": [
+    "Якщо будь-яка частина вікна польоту потрапляє в 23:00–05:00 за місцевим часом зони, перевірка заявки показує провал гейта `TIME_WINDOW`.",
+    "Причина відмови цитує правило **A-7 §1**, а не ZC-2026.1 §3.",
+    "Гейти `PILOT`, `AIRCRAFT` і `ZONE` показані як пройдені.",
+    "Перевірка не змінює стан заявки: вона лишається `DRAFT`.",
+    "Вікно 22:00–22:45 за місцевим часом (поза поправленою комендантською годиною, всі інші умови валідні) проходить `TIME_WINDOW`."
+  ],
+  "confluence_url": null,
+  "notes": "confluence_url is null: the ticket has no real Confluence link, only the text mention 'Confluence → простір SkyPermit → сторінка «06 — Business rules», розділ 1.4 і таблиця rule_reference у розділі 6.'"
+}

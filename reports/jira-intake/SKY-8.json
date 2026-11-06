@@ -1,0 +1,14 @@
+{
+  "key": "SKY-8",
+  "title": "Рецензент фільтрує чергу заявок за зоною",
+  "check_type": "ui",
+  "acceptance_criteria": [
+    "У черзі рецензента є фільтр за зоною зі списком усіх активних зон.",
+    "Вибір зони лишає в таблиці лише заявки в стані `UNDER_REVIEW` з цієї зони.",
+    "Фільтр працює разом із сортуванням за часом подання.",
+    "Скидання фільтра повертає повну чергу.",
+    "Якщо для обраної зони заявок немає, показується повідомлення «Немає заявок для цієї зони»."
+  ],
+  "confluence_url": null,
+  "notes": "confluence_url is null: the ticket has no real Confluence link, only the text mention 'Confluence → простір SkyPermit → сторінка «04 — Frontend spec», розділ Reviewer queue.'"
+}

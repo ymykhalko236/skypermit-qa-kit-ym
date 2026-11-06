@@ -1,5 +1,5 @@
 {
-  "fetched_at": "2026-11-02T19:29:26.725Z",
+  "fetched_at": "2026-11-06T17:43:05.977Z",
   "currency": "USD",
   "unit": "per 1M tokens",
   "source": "https://platform.claude.com/docs/en/about-claude/pricing.md",
@@ -182,13 +182,6 @@
       "cache_write_1h": 2,
       "cache_read": 0.1,
       "output": 5
-    },
-    "claude-haiku-3-5": {
-      "input": 0.8,
-      "cache_write_5m": 1,
-      "cache_write_1h": 1.6,
-      "cache_read": 0.08,
-      "output": 4
     }
   }
 }
