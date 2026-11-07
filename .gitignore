@@ -1,1 +1,4 @@
 .claude/settings.local.json
+
+# Playwright MCP output (screenshots, snapshots, logs)
+.playwright-mcp/

@@ -7,6 +7,17 @@
     "testomatio": {
       "type": "http",
       "url": "https://mcp.testomat.io/mcp/skypermit-f139b"
+    },
+    "playwright": {
+      "type": "stdio",
+      "command": "cmd",
+      "args": [
+        "/c",
+        "npx",
+        "@playwright/mcp@latest",
+        "--extension"
+      ],
+      "env": {}
     }
   }
 }
