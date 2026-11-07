@@ -1,0 +1,6 @@
+# Open questions
+
+| Date | Test case | Business rule | Question | Reviewer's reason | Status |
+|---|---|---|---|---|---|
+| 07/11/2026 | [TC-CHK-020](test-cases/checks/TC-CHK-020-aircraft-12001-g-c3-in-kbp-ctr-3-is-refused.md) | BR-AIRCRAFT-WEIGHT-BAND | Must the "Check before submitting" result show the rule reference (`ZC-2026.1 §2`) on the failed `AIRCRAFT` card? SKY-7 criterion 2 asks for it, but `04 - Frontend Spec` promises a rule reference only on the detail view of a rejected request. The SKY-7 owner or the docs owner needs to decide. | Everything else complies. The rule reference on the check result is required only by the Jira ticket, not by Confluence. The code shows it today (`components/GateResultsPanel.tsx:48-52`). | Open |
+| 07/11/2026 | [TC-CHK-022](test-cases/checks/TC-CHK-022-aircraft-failure-stops-check-before-zone-and-time-window.md) | BR-AIRCRAFT-WEIGHT-BAND | How should the check panel show a gate that wasn't reached because an earlier gate failed? The code marks it `NOT_EVALUATED` with a "not evaluated" badge. `04 - Frontend Spec` says only "per-gate pass/fail result". The docs owner needs to decide. | The display of unreached gates comes only from the code (`components/GateResultsPanel.tsx:13-21`, `:42-45`). `03 - API Contract` "Gate pipeline" says only that evaluation stops at the first failure. | Open |

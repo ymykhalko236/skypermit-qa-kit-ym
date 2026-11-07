@@ -10,5 +10,5 @@
     "Якщо для обраної зони заявок немає, показується повідомлення «Немає заявок для цієї зони»."
   ],
   "confluence_url": null,
-  "notes": "confluence_url is null: the ticket has no real Confluence link, only the text mention 'Confluence → простір SkyPermit → сторінка «04 — Frontend spec», розділ Reviewer queue.'"
+  "notes": "confluence_url is null: the ticket has no real Confluence link, only the text mention 'Confluence → простір SkyPermit → сторінка «04 — Frontend spec», розділ Reviewer queue'."
 }

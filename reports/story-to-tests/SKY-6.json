@@ -1,0 +1,9 @@
+{
+  "key": "SKY-6",
+  "title": "API: submit повертає 422, якщо до початку польоту менше 6 годин",
+  "run_at": "2026-11-07T15:40:00Z",
+  "stopped_at": "not_ui",
+  "test_cases": [],
+  "not_covered": [],
+  "notes": "check_type is api (labels: api, ws3). API tasks will have their own flow, which isn't built yet."
+}

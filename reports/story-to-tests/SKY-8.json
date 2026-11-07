@@ -1,0 +1,17 @@
+{
+  "key": "SKY-8",
+  "title": "Рецензент фільтрує чергу заявок за зоною",
+  "run_at": "2026-11-07T15:50:00Z",
+  "stopped_at": "no_cases_left",
+  "doc_check": { "covered": 0, "contradicts": 0, "not_described": 5 },
+  "implementation_check": { "implemented": 0, "partial": 0, "not_found": 5, "verdict": "not_implemented" },
+  "test_cases": [],
+  "not_covered": [
+    "Criterion 1: the zone filter isn't in 04 - Frontend Spec and has no data-testid (no control exists in app/reviewer/page.tsx)",
+    "Criterion 2: selecting a zone needs the missing filter control; the zone filter isn't described in the docs",
+    "Criterion 3: combining the filter with the submission-time sort needs the missing filter control; not described",
+    "Criterion 4: the reset control doesn't exist and has no data-testid; not described",
+    "Criterion 5: the zone-specific empty message doesn't exist and has no data-testid; its text isn't in the docs"
+  ],
+  "notes": "Gate 1 passed on the user's 'continue'. Step 3a wrote no case: every criterion needs the zone filter control, which has no data-testid, and the flow forbids steps that need a missing selector. Every expected result would also be TBC, because the docs don't describe the feature. Gate 2 and step 5 were skipped; nothing went to Testomat."
+}

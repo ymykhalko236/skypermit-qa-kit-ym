@@ -1,0 +1,49 @@
+{
+  "key": "SKY-7",
+  "title": "Оператор бачить відмову AIRCRAFT, якщо вагова категорія борту не дозволена в зоні",
+  "run_at": "2026-11-07T15:32:00Z",
+  "stopped_at": null,
+  "doc_check": { "covered": 4, "contradicts": 0, "not_described": 1 },
+  "implementation_check": { "implemented": 5, "partial": 0, "not_found": 0, "verdict": "implemented" },
+  "test_cases": [
+    {
+      "id": "TC-CHK-020",
+      "file": "test-cases/checks/TC-CHK-020-aircraft-12001-g-c3-in-kbp-ctr-3-is-refused.md",
+      "criterion": [1, 2, 5],
+      "verdict": "CANNOT DETERMINE",
+      "action": "open_question",
+      "tbc": true,
+      "approved": true,
+      "testomat": { "test_id": "09bd495c", "action": "created" },
+      "reason": "Only the TBC decides: the rule reference on the check result is required by SKY-7 criterion 2, not by Confluence (04 promises it only on the rejected request's detail view). The code shows it (components/GateResultsPanel.tsx:48-52)."
+    },
+    {
+      "id": "TC-CHK-021",
+      "file": "test-cases/checks/TC-CHK-021-aircraft-12000-g-c2-in-kbp-ctr-3-passes.md",
+      "criterion": 4,
+      "verdict": "COMPLIANT",
+      "action": "kept",
+      "tbc": false,
+      "approved": true,
+      "testomat": { "test_id": "68bbdee3", "action": "created" },
+      "reason": null
+    },
+    {
+      "id": "TC-CHK-022",
+      "file": "test-cases/checks/TC-CHK-022-aircraft-failure-stops-check-before-zone-and-time-window.md",
+      "criterion": 3,
+      "verdict": "CANNOT DETERMINE",
+      "action": "open_question",
+      "tbc": true,
+      "approved": true,
+      "testomat": { "test_id": "85bbce4c", "action": "created" },
+      "reason": "Only the TBC decides: the docs don't say how a gate that wasn't reached is shown. The code shows NOT_EVALUATED with a 'not evaluated' badge (components/GateResultsPanel.tsx:13-21, 42-45)."
+    }
+  ],
+  "not_covered": [],
+  "testomat": {
+    "suite": { "title": "Flight request", "suite_id": "8cc6d756", "action": "found" },
+    "run": { "run_id": "fb874445", "title": "SKY-7 · UI", "url": "https://app.testomat.io/projects/skypermit-f139b/runs/fb874445", "tests_count": 3 }
+  },
+  "notes": "Criterion 5 (stays DRAFT) is covered inside TC-CHK-020. The TC-CHK-022 reviewer suggested adding the DRAFT and rule-reference results there too; not applied, because TC-CHK-020 covers them."
+}

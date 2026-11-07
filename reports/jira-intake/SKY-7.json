@@ -1,0 +1,14 @@
+{
+  "key": "SKY-7",
+  "title": "Оператор бачить відмову AIRCRAFT, якщо вагова категорія борту не дозволена в зоні",
+  "check_type": "ui",
+  "acceptance_criteria": [
+    "Оператор може обрати у формі борт категорії C3 і зону `KBP-CTR-3`: форма не блокує вибір.",
+    "Перевірка заявки показує провал гейта `AIRCRAFT` з посиланням на **ZC-2026.1 §2**.",
+    "Гейт `PILOT` показаний як пройдений (пілот з рейтингом R_ADVANCED). Гейти `ZONE` і `TIME_WINDOW` не перевірялися, бо перевірка зупиняється на першому провалі.",
+    "Борт рівно 12 000 г (категорія C2) у тій самій зоні проходить `AIRCRAFT`.",
+    "Після перевірки заявка лишається в стані `DRAFT`."
+  ],
+  "confluence_url": null,
+  "notes": "confluence_url is null: the ticket has no real Confluence link, only the text mention 'Confluence → простір SkyPermit → сторінка «06 — Business rules», розділи 1.2 і 3'."
+}
