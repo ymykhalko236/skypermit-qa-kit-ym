@@ -31,7 +31,7 @@ Then check `check_type`:
 | `check_type` | Action |
 |---|---|
 | `"ui"` | Continue. |
-| `"api"` | Stop. Say: "<KEY> is an API task. API tasks will have their own flow, which isn't built yet." |
+| `"api"` | Stop. Say: "<KEY> is an API task. Run `/story-to-api-tests <KEY>` instead." |
 | `null` | Stop. Quote `notes`, and say that the task needs a single `ui` or `api` label before it can go through a flow. |
 
 Also stop if `acceptance_criteria` is empty, quoting `notes`. There is nothing to test.
@@ -166,7 +166,7 @@ Invoke `testomat-sync` with operation `run`:
 }
 ```
 
-Include the TBC cases too. The run only collects the tests: no results are written here.
+The run is titled `<KEY> · UI`. Include the TBC cases too. The run only collects the tests: no results are written here.
 
 ## Step 6: Summary
 
@@ -212,7 +212,7 @@ Then reply with a short summary: how many cases were written, kept and removed, 
 
 | The user wants to… | Use instead |
 |---|---|
-| take an API task through a flow | not built yet: the API orchestrator will have its own skill |
+| take an API task through a flow | `/story-to-api-tests <KEY>` |
 | only read a ticket | `jira-intake` |
 | only check criteria against the docs or the code | `story-doc-check` or the `implementation-check` subagent |
 | only write or review test cases | `ui-test-case-creator` or the `test-case-reviewer` subagent |

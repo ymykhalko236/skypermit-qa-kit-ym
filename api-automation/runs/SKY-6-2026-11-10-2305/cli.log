@@ -1,0 +1,163 @@
+Running your collection...
+postman
+
+SKY-6 API · API-OP-001–API-OP-006
+
+Folder 00 Setup
+Sub-folder SETUP Log in operator
+
+  POST https://skypermit.vercel.app/api/v1/auth/login [200 OK, 3.31 KB, 3.4 s]
+  Pass  Status is 200
+  Pass  authorisation_level is L1
+  Pass  status is ACTIVE
+
+Sub-folder SETUP Create pilot
+
+  POST https://skypermit.vercel.app/api/v1/pilots [201 Created, 705 B, 1620 ms]
+  Pass  Status is 201
+  Pass  id is present
+
+Sub-folder SETUP Create aircraft
+
+  POST https://skypermit.vercel.app/api/v1/aircraft [201 Created, 716 B, 1217 ms]
+  Pass  Status is 201
+  Pass  id is present
+
+Folder API-OP-001 Validate on a request starting 5 h 59 min ahead fails the TIME_WINDOW gate on lead time
+Sub-folder API-OP-001 Create request
+
+  POST https://skypermit.vercel.app/api/v1/flight-requests [201 Created, 988 B, 1599 ms]
+  Pass  Status is 201
+  Pass  state is DRAFT
+
+Sub-folder API-OP-001 Validate
+
+  POST https://skypermit.vercel.app/api/v1/flight-requests/cf3b7035-2c6f-4b13-8051-70ae2ad09277/validate [422 Unprocessable Entity, 525 B, 1400 ms]
+  Pass  Status is 422
+  Pass  failing_gate is TIME_WINDOW
+  Pass  rule_reference is TSD-4 §2.1
+  Pass  message is a non-empty string
+
+Folder API-OP-002 Submit on a request starting 5 h 59 min ahead moves it from DRAFT to REJECTED
+Sub-folder API-OP-002 Create request
+
+  POST https://skypermit.vercel.app/api/v1/flight-requests [201 Created, 988 B, 1363 ms]
+  Pass  Status is 201
+  Pass  state is DRAFT
+
+Sub-folder API-OP-002 Submit
+
+  POST https://skypermit.vercel.app/api/v1/flight-requests/ad3b75e7-67c3-4502-843a-1b8afd73f58a/submit [422 Unprocessable Entity, 523 B, 1919 ms]
+  Pass  Status is 422
+  Pass  failing_gate is TIME_WINDOW
+  Pass  rule_reference is TSD-4 §2.1
+  Pass  message is a non-empty string
+
+Sub-folder API-OP-002 Get request
+
+  GET https://skypermit.vercel.app/api/v1/flight-requests/ad3b75e7-67c3-4502-843a-1b8afd73f58a [200 OK, 835 B, 999 ms]
+  Pass  Status is 200
+  Pass  state is REJECTED
+  Pass  failing_gate is TIME_WINDOW
+  Pass  rule_reference is TSD-4 §2.1
+  Pass  rejection_reason is a non-empty string
+
+Folder API-OP-003 Validate on a request starting 6 h 01 min ahead passes every gate
+Sub-folder API-OP-003 Create request
+
+  POST https://skypermit.vercel.app/api/v1/flight-requests [201 Created, 988 B, 1697 ms]
+  Pass  Status is 201
+  Pass  state is DRAFT
+
+Sub-folder API-OP-003 Validate
+
+  POST https://skypermit.vercel.app/api/v1/flight-requests/673a6305-da66-44a5-a701-23893fde3b8f/validate [200 OK, 431 B, 2 s]
+  Pass  Status is 200
+  Pass  ok is true
+
+Folder API-OP-004 Validate that fails on lead time leaves the request in DRAFT
+Sub-folder API-OP-004 Create request
+
+  POST https://skypermit.vercel.app/api/v1/flight-requests [201 Created, 988 B, 1663 ms]
+  Pass  Status is 201
+  Pass  state is DRAFT
+
+Sub-folder API-OP-004 Validate
+
+  POST https://skypermit.vercel.app/api/v1/flight-requests/1de065bd-2080-44bd-93e5-5a2ea65b80ad/validate [422 Unprocessable Entity, 525 B, 1626 ms]
+  Pass  Status is 422
+  Pass  failing_gate is TIME_WINDOW
+  Pass  rule_reference is TSD-4 §2.1
+  Pass  message is a non-empty string
+
+Sub-folder API-OP-004 Get request
+
+  GET https://skypermit.vercel.app/api/v1/flight-requests/1de065bd-2080-44bd-93e5-5a2ea65b80ad [200 OK, 766 B, 1199 ms]
+  Pass  Status is 200
+  Pass  state is DRAFT
+
+Folder API-OP-005 A second submit after a lead-time rejection returns 409
+Sub-folder API-OP-005 Create request
+
+  POST https://skypermit.vercel.app/api/v1/flight-requests [201 Created, 988 B, 1397 ms]
+  Pass  Status is 201
+  Pass  state is DRAFT
+
+Sub-folder API-OP-005 Submit
+
+  POST https://skypermit.vercel.app/api/v1/flight-requests/0093ed53-7a62-4209-9421-09f48d3bc87a/submit [422 Unprocessable Entity, 523 B, 1773 ms]
+  Pass  Status is 422
+  Pass  failing_gate is TIME_WINDOW
+  Pass  rule_reference is TSD-4 §2.1
+  Pass  message is a non-empty string
+
+Sub-folder API-OP-005 Submit again
+
+  POST https://skypermit.vercel.app/api/v1/flight-requests/0093ed53-7a62-4209-9421-09f48d3bc87a/submit [409 Conflict, 457 B, 967 ms]
+  Pass  Status is 409
+
+Folder API-OP-006 Validate on a request starting 6 h 30 min ahead passes every gate
+Sub-folder API-OP-006 Create request
+
+  POST https://skypermit.vercel.app/api/v1/flight-requests [201 Created, 988 B, 1414 ms]
+  Pass  Status is 201
+  Pass  state is DRAFT
+
+Sub-folder API-OP-006 Validate
+
+  POST https://skypermit.vercel.app/api/v1/flight-requests/1744957a-3edb-46cc-8f87-0df7d48fd70f/validate [200 OK, 431 B, 1941 ms]
+  Pass  Status is 200
+  Pass  ok is true
+Generating run report [json]...
+Saving run report [json]...
+Report created successfully! Saved to: C:\Users\yaros\AppData\Local\Temp\postman-cli-run-y89xWZ\report.json
+
+--------------------------------------------------------------------------
+|                         |              executed |               failed |
+--------------------------+-----------------------+-----------------------
+|              iterations |                     1 |                    0 |
+--------------------------+-----------------------+-----------------------
+|                requests |                    18 |                    0 |
+--------------------------+-----------------------+-----------------------
+|            test-scripts |                    18 |                    0 |
+--------------------------+-----------------------+-----------------------
+|      prerequest-scripts |                     8 |                    0 |
+--------------------------+-----------------------+-----------------------
+|              assertions |                    47 |                    0 |
+--------------------------------------------------------------------------
+| total run duration: 30.6 s                                             |
+--------------------------------------------------------------------------
+| total data received: 5.77 KB (approx)                                  |
+--------------------------------------------------------------------------
+| average response time: 1623 ms [min: 967 ms, max: 3.4 s, s.d.: 526 ms] |
+--------------------------------------------------------------------------
+
+Uploading Postman CLI run data to Postman Cloud...
+Uploaded successfully! View on Postman: https://go.postman.co/workspace/f0f617bc-85b2-4d5a-9a4b-aff7c0a505ad/run/2892909-05abce4d-ab3d-42c9-887f-f084daefd3d4
+
+
+A new version of Postman CLI is available (v1.87.0). Refer https://go.pstmn.io/cli-release-notes for changelogs.
+To update your Postman CLI, run:
+
+postman update
+

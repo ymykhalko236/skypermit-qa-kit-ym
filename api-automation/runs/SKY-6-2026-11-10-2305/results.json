@@ -1,0 +1,213 @@
+{
+  "task_key": "SKY-6",
+  "collection": {
+    "uid": "2892909-90aba9e2-caaf-4ca3-bc96-3d3192831a76",
+    "name": "SKY-6 API · API-OP-001–API-OP-006"
+  },
+  "environment": {
+    "uid": "2892909-f20a1452-777a-4a0a-9012-da254e162707",
+    "name": "SkyPermit (Vercel)"
+  },
+  "started_at": "2026-11-10T21:05:02.389Z",
+  "finished_at": "2026-11-10T21:05:43.904Z",
+  "cli_exit_code": 0,
+  "run_folder": "api-automation/runs/SKY-6-2026-11-10-2305",
+  "postman_run_url": "https://go.postman.co/workspace/f0f617bc-85b2-4d5a-9a4b-aff7c0a505ad/run/2892909-05abce4d-ab3d-42c9-887f-f084daefd3d4",
+  "totals": {
+    "cases_passed": 6,
+    "cases_failed": 0,
+    "requests_executed": 18,
+    "assertions_executed": 47,
+    "assertions_failed": 0
+  },
+  "cases": [
+    {
+      "case_id": "API-OP-001",
+      "status": "passed",
+      "message": null,
+      "run_time_ms": 2999,
+      "requests": [
+        {
+          "name": "API-OP-001 Create request",
+          "http_status": 201,
+          "assertions_passed": 2,
+          "assertions_failed": 0
+        },
+        {
+          "name": "API-OP-001 Validate",
+          "http_status": 422,
+          "assertions_passed": 4,
+          "assertions_failed": 0
+        }
+      ]
+    },
+    {
+      "case_id": "API-OP-002",
+      "status": "passed",
+      "message": null,
+      "run_time_ms": 4281,
+      "requests": [
+        {
+          "name": "API-OP-002 Create request",
+          "http_status": 201,
+          "assertions_passed": 2,
+          "assertions_failed": 0
+        },
+        {
+          "name": "API-OP-002 Submit",
+          "http_status": 422,
+          "assertions_passed": 4,
+          "assertions_failed": 0
+        },
+        {
+          "name": "API-OP-002 Get request",
+          "http_status": 200,
+          "assertions_passed": 5,
+          "assertions_failed": 0
+        }
+      ]
+    },
+    {
+      "case_id": "API-OP-003",
+      "status": "passed",
+      "message": null,
+      "run_time_ms": 3706,
+      "requests": [
+        {
+          "name": "API-OP-003 Create request",
+          "http_status": 201,
+          "assertions_passed": 2,
+          "assertions_failed": 0
+        },
+        {
+          "name": "API-OP-003 Validate",
+          "http_status": 200,
+          "assertions_passed": 2,
+          "assertions_failed": 0
+        }
+      ]
+    },
+    {
+      "case_id": "API-OP-004",
+      "status": "passed",
+      "message": null,
+      "run_time_ms": 4488,
+      "requests": [
+        {
+          "name": "API-OP-004 Create request",
+          "http_status": 201,
+          "assertions_passed": 2,
+          "assertions_failed": 0
+        },
+        {
+          "name": "API-OP-004 Validate",
+          "http_status": 422,
+          "assertions_passed": 4,
+          "assertions_failed": 0
+        },
+        {
+          "name": "API-OP-004 Get request",
+          "http_status": 200,
+          "assertions_passed": 2,
+          "assertions_failed": 0
+        }
+      ]
+    },
+    {
+      "case_id": "API-OP-005",
+      "status": "passed",
+      "message": null,
+      "run_time_ms": 4137,
+      "requests": [
+        {
+          "name": "API-OP-005 Create request",
+          "http_status": 201,
+          "assertions_passed": 2,
+          "assertions_failed": 0
+        },
+        {
+          "name": "API-OP-005 Submit",
+          "http_status": 422,
+          "assertions_passed": 4,
+          "assertions_failed": 0
+        },
+        {
+          "name": "API-OP-005 Submit again",
+          "http_status": 409,
+          "assertions_passed": 1,
+          "assertions_failed": 0
+        }
+      ]
+    },
+    {
+      "case_id": "API-OP-006",
+      "status": "passed",
+      "message": null,
+      "run_time_ms": 3355,
+      "requests": [
+        {
+          "name": "API-OP-006 Create request",
+          "http_status": 201,
+          "assertions_passed": 2,
+          "assertions_failed": 0
+        },
+        {
+          "name": "API-OP-006 Validate",
+          "http_status": 200,
+          "assertions_passed": 2,
+          "assertions_failed": 0
+        }
+      ]
+    }
+  ],
+  "case_map": {
+    "API-OP-001": "d27a7f22",
+    "API-OP-002": "07cf2f9f",
+    "API-OP-003": "355e7b8b",
+    "API-OP-004": "498f23b0",
+    "API-OP-005": "808298f8",
+    "API-OP-006": "da9e283e"
+  },
+  "testomat_report": {
+    "run_id": "55b62cc6",
+    "results": [
+      {
+        "case_id": "API-OP-001",
+        "test_id": "d27a7f22",
+        "status": "passed",
+        "run_time_ms": 2999
+      },
+      {
+        "case_id": "API-OP-002",
+        "test_id": "07cf2f9f",
+        "status": "passed",
+        "run_time_ms": 4281
+      },
+      {
+        "case_id": "API-OP-003",
+        "test_id": "355e7b8b",
+        "status": "passed",
+        "run_time_ms": 3706
+      },
+      {
+        "case_id": "API-OP-004",
+        "test_id": "498f23b0",
+        "status": "passed",
+        "run_time_ms": 4488
+      },
+      {
+        "case_id": "API-OP-005",
+        "test_id": "808298f8",
+        "status": "passed",
+        "run_time_ms": 4137
+      },
+      {
+        "case_id": "API-OP-006",
+        "test_id": "da9e283e",
+        "status": "passed",
+        "run_time_ms": 3355
+      }
+    ]
+  },
+  "notes": []
+}

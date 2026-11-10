@@ -1,0 +1,2723 @@
+{
+  "run": {
+    "meta": {
+      "collectionId": "90aba9e2-caaf-4ca3-bc96-3d3192831a76",
+      "collectionName": "SKY-6 API · API-OP-001–API-OP-006",
+      "started": 1794344711296,
+      "completed": 1794344741983,
+      "duration": 30687
+    },
+    "summary": {
+      "iterations": {
+        "executed": 1,
+        "errors": 0
+      },
+      "executedRequests": {
+        "executed": 18,
+        "errors": 0
+      },
+      "prerequestScripts": {
+        "executed": 8,
+        "errors": 0
+      },
+      "postresponseScripts": {
+        "executed": 18,
+        "errors": 0
+      },
+      "tests": {
+        "executed": 47,
+        "failed": 0,
+        "passed": "***",
+        "skipped": 0
+      },
+      "timeStats": {
+        "responseAverage": 1623.7777777777778,
+        "responseMin": 967,
+        "responseMax": 3425,
+        "responseStandardDeviation": 526.5985774082523
+      }
+    },
+    "executions": [
+      {
+        "iterationCount": 0,
+        "requestExecuted": {
+          "id": "1ef28bc7-f8a7-48ac-bb2f-4c4012829e51",
+          "name": "SETUP Log in operator",
+          "url": {
+            "protocol": "https",
+            "path": [
+              "api",
+              "v1",
+              "auth",
+              "login"
+            ],
+            "host": [
+              "skypermit",
+              "vercel",
+              "app"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "User-Agent",
+              "value": "PostmanRuntime/7.56.2",
+              "system": true
+            },
+            {
+              "key": "Accept",
+              "value": "*/*",
+              "system": true
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache",
+              "system": true
+            },
+            {
+              "key": "Postman-Token",
+              "value": "aee9ae94-38e6-4077-be53-4b2b7c4f11df",
+              "system": true
+            },
+            {
+              "key": "Host",
+              "value": "skypermit.vercel.app",
+              "system": true
+            },
+            {
+              "key": "Accept-Encoding",
+              "value": "gzip, deflate, br",
+              "system": true
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive",
+              "system": true
+            },
+            {
+              "key": "Content-Length",
+              "value": "85",
+              "system": true
+            }
+          ],
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{\"email\":\"op-api-shared@test.example\",\"password\":\"***\"}",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          }
+        },
+        "response": {
+          "id": "1f33235f-580a-4045-ba31-3f715f68fd87",
+          "_details": {
+            "name": "OK",
+            "detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action.",
+            "code": 200,
+            "standardName": "OK"
+          },
+          "status": "OK",
+          "code": 200,
+          "headers": [
+            {
+              "key": "Cache-Control",
+              "value": "public, max-age=0, must-revalidate"
+            },
+            {
+              "key": "Content-Encoding",
+              "value": "br"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Date",
+              "value": "Tue, 10 Nov 2026 21:05:15 GMT"
+            },
+            {
+              "key": "Server",
+              "value": "Vercel"
+            },
+            {
+              "key": "Set-Cookie",
+              "value": "***"
+            },
+            {
+              "key": "Strict-Transport-Security",
+              "value": "max-age=63072000; includeSubDomains; preload"
+            },
+            {
+              "key": "X-Matched-Path",
+              "value": "/api/v1/auth/login"
+            },
+            {
+              "key": "X-Vercel-Cache",
+              "value": "MISS"
+            },
+            {
+              "key": "X-Vercel-Id",
+              "value": "arn1::iad1::4rtdt-1794344711821-9895301f8355"
+            },
+            {
+              "key": "Transfer-Encoding",
+              "value": "chunked"
+            }
+          ],
+          "stream": {
+            "type": "text",
+            "text": "{\"id\":\"105ee1cd-d022-4155-b37e-4c22d9afb6b4\",\"legal_name\":\"Test Operator API Shared\",\"national_id\":\"TEST-NID-API-SHARED\",\"email\":\"op-api-shared@test.example\",\"phone\":null,\"address_line\":null,\"city\":null,\"postal_code\":null,\"authorisation_level\":\"***\",\"registered_on\":\"2026-11-10\",\"status\":\"ACTIVE\",\"created_at\":\"2026-11-10T19:16:58.959878+00:00\",\"updated_at\":\"2026-11-10T19:16:58.959878+00:00\"}"
+          },
+          "cookies": [],
+          "responseTime": 3425,
+          "responseSize": 392,
+          "downloadedBytes": 273
+        },
+        "tests": [
+          {
+            "name": "Status is 200",
+            "status": "passed"
+          },
+          {
+            "name": "authorisation_level is L1",
+            "status": "passed"
+          },
+          {
+            "name": "status is ACTIVE",
+            "status": "passed"
+          }
+        ],
+        "errors": []
+      },
+      {
+        "iterationCount": 0,
+        "requestExecuted": {
+          "id": "9bfabe8a-2e60-4106-9044-467c76696126",
+          "name": "SETUP Create pilot",
+          "url": {
+            "protocol": "https",
+            "path": [
+              "api",
+              "v1",
+              "pilots"
+            ],
+            "host": [
+              "skypermit",
+              "vercel",
+              "app"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "User-Agent",
+              "value": "PostmanRuntime/7.56.2",
+              "system": true
+            },
+            {
+              "key": "Accept",
+              "value": "*/*",
+              "system": true
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache",
+              "system": true
+            },
+            {
+              "key": "Postman-Token",
+              "value": "0678b8b0-be53-4466-9c74-1e75bbba4e9c",
+              "system": true
+            },
+            {
+              "key": "Host",
+              "value": "skypermit.vercel.app",
+              "system": true
+            },
+            {
+              "key": "Accept-Encoding",
+              "value": "gzip, deflate, br",
+              "system": true
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive",
+              "system": true
+            },
+            {
+              "key": "Content-Length",
+              "value": "137",
+              "system": true
+            },
+            {
+              "key": "Cookie",
+              "value": "***",
+              "system": true
+            }
+          ],
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{\"full_name\":\"Test Pilot API\",\"national_id\":\"TEST-PIL-API-1794344714837\",\"rating\":\"R_BASIC\",\"certified_on\":\"2026-10-11\"}",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          }
+        },
+        "response": {
+          "id": "937a2511-9c36-40d4-bc1c-22381fe5a211",
+          "_details": {
+            "name": "Created",
+            "detail": "The request has been fulfilled and resulted in a new resource being created.",
+            "code": 201,
+            "standardName": "Created"
+          },
+          "status": "Created",
+          "code": 201,
+          "headers": [
+            {
+              "key": "Cache-Control",
+              "value": "public, max-age=0, must-revalidate"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Date",
+              "value": "Tue, 10 Nov 2026 21:05:16 GMT"
+            },
+            {
+              "key": "Server",
+              "value": "Vercel"
+            },
+            {
+              "key": "Strict-Transport-Security",
+              "value": "max-age=63072000; includeSubDomains; preload"
+            },
+            {
+              "key": "X-Matched-Path",
+              "value": "/api/v1/pilots"
+            },
+            {
+              "key": "X-Vercel-Cache",
+              "value": "MISS"
+            },
+            {
+              "key": "X-Vercel-Id",
+              "value": "arn1::iad1::4rtdt-1794344715240-ed6db5061865"
+            },
+            {
+              "key": "Transfer-Encoding",
+              "value": "chunked"
+            }
+          ],
+          "stream": {
+            "type": "text",
+            "text": "{\"id\":\"75238286-d1a8-4f30-b84f-01a760d1b967\",\"operator_id\":\"105ee1cd-d022-4155-b37e-4c22d9afb6b4\",\"full_name\":\"Test Pilot API\",\"national_id\":\"TEST-PIL-API-1794344714837\",\"rating\":\"R_BASIC\",\"certified_on\":\"2026-10-11\",\"status\":\"ACTIVE\",\"created_at\":\"2026-11-10T21:05:16.695327+00:00\",\"updated_at\":\"2026-11-10T21:05:16.695327+00:00\"}"
+          },
+          "cookies": [],
+          "responseTime": 1620,
+          "responseSize": 331,
+          "downloadedBytes": 331
+        },
+        "tests": [
+          {
+            "name": "Status is 201",
+            "status": "passed"
+          },
+          {
+            "name": "id is present",
+            "status": "passed"
+          }
+        ],
+        "errors": []
+      },
+      {
+        "iterationCount": 0,
+        "requestExecuted": {
+          "id": "62679b20-ac4f-4536-ae0c-bff92ec1a3ac",
+          "name": "SETUP Create aircraft",
+          "url": {
+            "protocol": "https",
+            "path": [
+              "api",
+              "v1",
+              "aircraft"
+            ],
+            "host": [
+              "skypermit",
+              "vercel",
+              "app"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "User-Agent",
+              "value": "PostmanRuntime/7.56.2",
+              "system": true
+            },
+            {
+              "key": "Accept",
+              "value": "*/*",
+              "system": true
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache",
+              "system": true
+            },
+            {
+              "key": "Postman-Token",
+              "value": "24511bb7-f9bf-4cea-af9f-d86de55be1d0",
+              "system": true
+            },
+            {
+              "key": "Host",
+              "value": "skypermit.vercel.app",
+              "system": true
+            },
+            {
+              "key": "Accept-Encoding",
+              "value": "gzip, deflate, br",
+              "system": true
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive",
+              "system": true
+            },
+            {
+              "key": "Content-Length",
+              "value": "117",
+              "system": true
+            },
+            {
+              "key": "Cookie",
+              "value": "***",
+              "system": true
+            }
+          ],
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{\"manufacturer\":\"TestMaker\",\"model\":\"TM-1\",\"serial_number\":\"SN-TEST-1794344714837\",\"mtom_grams\":800}",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          }
+        },
+        "response": {
+          "id": "2c343f0d-2f03-4275-a91c-d065f8cadf3e",
+          "_details": {
+            "name": "Created",
+            "detail": "The request has been fulfilled and resulted in a new resource being created.",
+            "code": 201,
+            "standardName": "Created"
+          },
+          "status": "Created",
+          "code": 201,
+          "headers": [
+            {
+              "key": "Cache-Control",
+              "value": "public, max-age=0, must-revalidate"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Date",
+              "value": "Tue, 10 Nov 2026 21:05:18 GMT"
+            },
+            {
+              "key": "Server",
+              "value": "Vercel"
+            },
+            {
+              "key": "Strict-Transport-Security",
+              "value": "max-age=63072000; includeSubDomains; preload"
+            },
+            {
+              "key": "X-Matched-Path",
+              "value": "/api/v1/aircraft"
+            },
+            {
+              "key": "X-Vercel-Cache",
+              "value": "MISS"
+            },
+            {
+              "key": "X-Vercel-Id",
+              "value": "arn1::iad1::4rtdt-1794344716938-167c4543af57"
+            },
+            {
+              "key": "Transfer-Encoding",
+              "value": "chunked"
+            }
+          ],
+          "stream": {
+            "type": "text",
+            "text": "{\"id\":\"47ad3b17-8a28-4e2c-9cfd-70050d3e4f31\",\"operator_id\":\"105ee1cd-d022-4155-b37e-4c22d9afb6b4\",\"manufacturer\":\"TestMaker\",\"model\":\"TM-1\",\"serial_number\":\"SN-TEST-1794344714837\",\"mtom_grams\":800,\"registered_on\":\"2026-11-10\",\"status\":\"ACTIVE\",\"created_at\":\"2026-11-10T21:05:17.991142+00:00\",\"updated_at\":\"2026-11-10T21:05:17.991142+00:00\"}"
+          },
+          "cookies": [],
+          "responseTime": 1217,
+          "responseSize": 340,
+          "downloadedBytes": 340
+        },
+        "tests": [
+          {
+            "name": "Status is 201",
+            "status": "passed"
+          },
+          {
+            "name": "id is present",
+            "status": "passed"
+          }
+        ],
+        "errors": []
+      },
+      {
+        "iterationCount": 0,
+        "requestExecuted": {
+          "id": "b7a70faa-d4c1-486b-a81c-d860d549cbd2",
+          "name": "API-OP-001 Create request",
+          "url": {
+            "protocol": "https",
+            "path": [
+              "api",
+              "v1",
+              "flight-requests"
+            ],
+            "host": [
+              "skypermit",
+              "vercel",
+              "app"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "User-Agent",
+              "value": "PostmanRuntime/7.56.2",
+              "system": true
+            },
+            {
+              "key": "Accept",
+              "value": "*/*",
+              "system": true
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache",
+              "system": true
+            },
+            {
+              "key": "Postman-Token",
+              "value": "a35cd362-9b80-4691-8af9-a87e7f84e70d",
+              "system": true
+            },
+            {
+              "key": "Host",
+              "value": "skypermit.vercel.app",
+              "system": true
+            },
+            {
+              "key": "Accept-Encoding",
+              "value": "gzip, deflate, br",
+              "system": true
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive",
+              "system": true
+            },
+            {
+              "key": "Content-Length",
+              "value": "267",
+              "system": true
+            },
+            {
+              "key": "Cookie",
+              "value": "***",
+              "system": true
+            }
+          ],
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{\"pilot_id\":\"75238286-d1a8-4f30-b84f-01a760d1b967\",\"aircraft_id\":\"47ad3b17-8a28-4e2c-9cfd-70050d3e4f31\",\"zone_code\":\"DNI-OPN-1\",\"window_start\":\"2026-11-11T03:04:17.844Z\",\"window_end\":\"2026-11-11T04:04:17.844Z\",\"requested_altitude_metres\":100}",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          }
+        },
+        "response": {
+          "id": "5a47b942-ae2e-427f-b2ae-801f9f487f67",
+          "_details": {
+            "name": "Created",
+            "detail": "The request has been fulfilled and resulted in a new resource being created.",
+            "code": 201,
+            "standardName": "Created"
+          },
+          "status": "Created",
+          "code": 201,
+          "headers": [
+            {
+              "key": "Cache-Control",
+              "value": "public, max-age=0, must-revalidate"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Date",
+              "value": "Tue, 10 Nov 2026 21:05:19 GMT"
+            },
+            {
+              "key": "Server",
+              "value": "Vercel"
+            },
+            {
+              "key": "Strict-Transport-Security",
+              "value": "max-age=63072000; includeSubDomains; preload"
+            },
+            {
+              "key": "X-Matched-Path",
+              "value": "/api/v1/flight-requests"
+            },
+            {
+              "key": "X-Vercel-Cache",
+              "value": "MISS"
+            },
+            {
+              "key": "X-Vercel-Id",
+              "value": "arn1::iad1::4rtdt-1794344718246-9d32062f707a"
+            },
+            {
+              "key": "Transfer-Encoding",
+              "value": "chunked"
+            }
+          ],
+          "stream": {
+            "type": "text",
+            "text": "{\"id\":\"cf3b7035-2c6f-4b13-8051-70ae2ad09277\",\"operator_id\":\"105ee1cd-d022-4155-b37e-4c22d9afb6b4\",\"pilot_id\":\"75238286-d1a8-4f30-b84f-01a760d1b967\",\"aircraft_id\":\"47ad3b17-8a28-4e2c-9cfd-70050d3e4f31\",\"zone_code\":\"DNI-OPN-1\",\"window_start\":\"2026-11-11T03:04:17.844+00:00\",\"window_end\":\"2026-11-11T04:04:17.844+00:00\",\"requested_altitude_metres\":100,\"flight_purpose\":null,\"state\":\"DRAFT\",\"rejection_reason\":null,\"failing_gate\":null,\"submitted_at\":null,\"decided_at\":null,\"decided_by\":null,\"created_at\":\"2026-11-10T21:05:19.653519+00:00\",\"updated_at\":\"2026-11-10T21:05:19.653519+00:00\",\"rule_reference\":null}"
+          },
+          "cookies": [],
+          "responseTime": 1599,
+          "responseSize": 605,
+          "downloadedBytes": 605
+        },
+        "tests": [
+          {
+            "name": "Status is 201",
+            "status": "passed"
+          },
+          {
+            "name": "state is DRAFT",
+            "status": "passed"
+          }
+        ],
+        "errors": []
+      },
+      {
+        "iterationCount": 0,
+        "requestExecuted": {
+          "id": "4c2e9e7d-71cd-496c-8dc3-742a7db3baa2",
+          "name": "API-OP-001 Validate",
+          "url": {
+            "protocol": "https",
+            "path": [
+              "api",
+              "v1",
+              "flight-requests",
+              "cf3b7035-2c6f-4b13-8051-70ae2ad09277",
+              "validate"
+            ],
+            "host": [
+              "skypermit",
+              "vercel",
+              "app"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "headers": [
+            {
+              "key": "User-Agent",
+              "value": "PostmanRuntime/7.56.2",
+              "system": true
+            },
+            {
+              "key": "Accept",
+              "value": "*/*",
+              "system": true
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache",
+              "system": true
+            },
+            {
+              "key": "Postman-Token",
+              "value": "1ad5beed-288e-45f1-8f1e-a365cb23b5f7",
+              "system": true
+            },
+            {
+              "key": "Host",
+              "value": "skypermit.vercel.app",
+              "system": true
+            },
+            {
+              "key": "Accept-Encoding",
+              "value": "gzip, deflate, br",
+              "system": true
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive",
+              "system": true
+            },
+            {
+              "key": "Cookie",
+              "value": "***",
+              "system": true
+            },
+            {
+              "key": "Content-Length",
+              "value": "0",
+              "system": true
+            }
+          ],
+          "method": "POST"
+        },
+        "response": {
+          "id": "c9d8a592-483b-4fbb-ad15-2a807fd4fe4b",
+          "_details": {
+            "name": "Unprocessable Entity",
+            "detail": "The request was well-formed but was unable to be followed due to semantic errors.",
+            "code": 422,
+            "standardName": "Unprocessable Entity (WebDAV) (RFC 4918)"
+          },
+          "status": "Unprocessable Entity",
+          "code": 422,
+          "headers": [
+            {
+              "key": "Cache-Control",
+              "value": "public, max-age=0, must-revalidate"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Date",
+              "value": "Tue, 10 Nov 2026 21:05:21 GMT"
+            },
+            {
+              "key": "Server",
+              "value": "Vercel"
+            },
+            {
+              "key": "Strict-Transport-Security",
+              "value": "max-age=63072000; includeSubDomains; preload"
+            },
+            {
+              "key": "X-Matched-Path",
+              "value": "/api/v1/flight-requests/[id]/validate"
+            },
+            {
+              "key": "X-Vercel-Cache",
+              "value": "MISS"
+            },
+            {
+              "key": "X-Vercel-Id",
+              "value": "arn1::iad1::r94r2-1794344719930-d5f407ec38cb"
+            },
+            {
+              "key": "Transfer-Encoding",
+              "value": "chunked"
+            }
+          ],
+          "stream": {
+            "type": "text",
+            "text": "{\"failing_gate\":\"TIME_WINDOW\",\"rule_reference\":\"TSD-4 §2.1\",\"message\":\"Window starts less than 6 hours from now.\"}"
+          },
+          "cookies": [],
+          "responseTime": 1400,
+          "responseSize": 115,
+          "downloadedBytes": 115
+        },
+        "tests": [
+          {
+            "name": "Status is 422",
+            "status": "passed"
+          },
+          {
+            "name": "failing_gate is TIME_WINDOW",
+            "status": "passed"
+          },
+          {
+            "name": "rule_reference is TSD-4 §2.1",
+            "status": "passed"
+          },
+          {
+            "name": "message is a non-empty string",
+            "status": "passed"
+          }
+        ],
+        "errors": []
+      },
+      {
+        "iterationCount": 0,
+        "requestExecuted": {
+          "id": "63998076-487b-4792-87b5-c0f4a769d0c1",
+          "name": "API-OP-002 Create request",
+          "url": {
+            "protocol": "https",
+            "path": [
+              "api",
+              "v1",
+              "flight-requests"
+            ],
+            "host": [
+              "skypermit",
+              "vercel",
+              "app"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "User-Agent",
+              "value": "PostmanRuntime/7.56.2",
+              "system": true
+            },
+            {
+              "key": "Accept",
+              "value": "*/*",
+              "system": true
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache",
+              "system": true
+            },
+            {
+              "key": "Postman-Token",
+              "value": "ac76ae5f-b961-4d42-8026-195fa3095036",
+              "system": true
+            },
+            {
+              "key": "Host",
+              "value": "skypermit.vercel.app",
+              "system": true
+            },
+            {
+              "key": "Accept-Encoding",
+              "value": "gzip, deflate, br",
+              "system": true
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive",
+              "system": true
+            },
+            {
+              "key": "Content-Length",
+              "value": "267",
+              "system": true
+            },
+            {
+              "key": "Cookie",
+              "value": "***",
+              "system": true
+            }
+          ],
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{\"pilot_id\":\"75238286-d1a8-4f30-b84f-01a760d1b967\",\"aircraft_id\":\"47ad3b17-8a28-4e2c-9cfd-70050d3e4f31\",\"zone_code\":\"DNI-OPN-1\",\"window_start\":\"2026-11-11T03:04:21.021Z\",\"window_end\":\"2026-11-11T04:04:21.021Z\",\"requested_altitude_metres\":100}",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          }
+        },
+        "response": {
+          "id": "90d41280-978a-4363-a286-487f3d660b09",
+          "_details": {
+            "name": "Created",
+            "detail": "The request has been fulfilled and resulted in a new resource being created.",
+            "code": 201,
+            "standardName": "Created"
+          },
+          "status": "Created",
+          "code": 201,
+          "headers": [
+            {
+              "key": "Cache-Control",
+              "value": "public, max-age=0, must-revalidate"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Date",
+              "value": "Tue, 10 Nov 2026 21:05:22 GMT"
+            },
+            {
+              "key": "Server",
+              "value": "Vercel"
+            },
+            {
+              "key": "Strict-Transport-Security",
+              "value": "max-age=63072000; includeSubDomains; preload"
+            },
+            {
+              "key": "X-Matched-Path",
+              "value": "/api/v1/flight-requests"
+            },
+            {
+              "key": "X-Vercel-Cache",
+              "value": "MISS"
+            },
+            {
+              "key": "X-Vercel-Id",
+              "value": "arn1::iad1::4rtdt-1794344721423-0569e94fb50b"
+            },
+            {
+              "key": "Transfer-Encoding",
+              "value": "chunked"
+            }
+          ],
+          "stream": {
+            "type": "text",
+            "text": "{\"id\":\"ad3b75e7-67c3-4502-843a-1b8afd73f58a\",\"operator_id\":\"105ee1cd-d022-4155-b37e-4c22d9afb6b4\",\"pilot_id\":\"75238286-d1a8-4f30-b84f-01a760d1b967\",\"aircraft_id\":\"47ad3b17-8a28-4e2c-9cfd-70050d3e4f31\",\"zone_code\":\"DNI-OPN-1\",\"window_start\":\"2026-11-11T03:04:21.021+00:00\",\"window_end\":\"2026-11-11T04:04:21.021+00:00\",\"requested_altitude_metres\":100,\"flight_purpose\":null,\"state\":\"DRAFT\",\"rejection_reason\":null,\"failing_gate\":null,\"submitted_at\":null,\"decided_at\":null,\"decided_by\":null,\"created_at\":\"2026-11-10T21:05:22.635935+00:00\",\"updated_at\":\"2026-11-10T21:05:22.635935+00:00\",\"rule_reference\":null}"
+          },
+          "cookies": [],
+          "responseTime": 1363,
+          "responseSize": 605,
+          "downloadedBytes": 605
+        },
+        "tests": [
+          {
+            "name": "Status is 201",
+            "status": "passed"
+          },
+          {
+            "name": "state is DRAFT",
+            "status": "passed"
+          }
+        ],
+        "errors": []
+      },
+      {
+        "iterationCount": 0,
+        "requestExecuted": {
+          "id": "f2a6a10d-0135-4363-ba8f-f7e6e673105b",
+          "name": "API-OP-002 Submit",
+          "url": {
+            "protocol": "https",
+            "path": [
+              "api",
+              "v1",
+              "flight-requests",
+              "ad3b75e7-67c3-4502-843a-1b8afd73f58a",
+              "submit"
+            ],
+            "host": [
+              "skypermit",
+              "vercel",
+              "app"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "headers": [
+            {
+              "key": "User-Agent",
+              "value": "PostmanRuntime/7.56.2",
+              "system": true
+            },
+            {
+              "key": "Accept",
+              "value": "*/*",
+              "system": true
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache",
+              "system": true
+            },
+            {
+              "key": "Postman-Token",
+              "value": "f9bcfe92-c194-4270-81e3-fe4c039bd3be",
+              "system": true
+            },
+            {
+              "key": "Host",
+              "value": "skypermit.vercel.app",
+              "system": true
+            },
+            {
+              "key": "Accept-Encoding",
+              "value": "gzip, deflate, br",
+              "system": true
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive",
+              "system": true
+            },
+            {
+              "key": "Cookie",
+              "value": "***",
+              "system": true
+            },
+            {
+              "key": "Content-Length",
+              "value": "0",
+              "system": true
+            }
+          ],
+          "method": "POST"
+        },
+        "response": {
+          "id": "9b35ba0f-bf62-45c6-8b7b-8c5ecf397380",
+          "_details": {
+            "name": "Unprocessable Entity",
+            "detail": "The request was well-formed but was unable to be followed due to semantic errors.",
+            "code": 422,
+            "standardName": "Unprocessable Entity (WebDAV) (RFC 4918)"
+          },
+          "status": "Unprocessable Entity",
+          "code": 422,
+          "headers": [
+            {
+              "key": "Cache-Control",
+              "value": "public, max-age=0, must-revalidate"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Date",
+              "value": "Tue, 10 Nov 2026 21:05:24 GMT"
+            },
+            {
+              "key": "Server",
+              "value": "Vercel"
+            },
+            {
+              "key": "Strict-Transport-Security",
+              "value": "max-age=63072000; includeSubDomains; preload"
+            },
+            {
+              "key": "X-Matched-Path",
+              "value": "/api/v1/flight-requests/[id]/submit"
+            },
+            {
+              "key": "X-Vercel-Cache",
+              "value": "MISS"
+            },
+            {
+              "key": "X-Vercel-Id",
+              "value": "arn1::iad1::ggql7-1794344722843-a64a339c6859"
+            },
+            {
+              "key": "Transfer-Encoding",
+              "value": "chunked"
+            }
+          ],
+          "stream": {
+            "type": "text",
+            "text": "{\"failing_gate\":\"TIME_WINDOW\",\"rule_reference\":\"TSD-4 §2.1\",\"message\":\"Window starts less than 6 hours from now.\"}"
+          },
+          "cookies": [],
+          "responseTime": 1919,
+          "responseSize": 115,
+          "downloadedBytes": 115
+        },
+        "tests": [
+          {
+            "name": "Status is 422",
+            "status": "passed"
+          },
+          {
+            "name": "failing_gate is TIME_WINDOW",
+            "status": "passed"
+          },
+          {
+            "name": "rule_reference is TSD-4 §2.1",
+            "status": "passed"
+          },
+          {
+            "name": "message is a non-empty string",
+            "status": "passed"
+          }
+        ],
+        "errors": []
+      },
+      {
+        "iterationCount": 0,
+        "requestExecuted": {
+          "id": "900435fb-1d31-42af-9879-9163dc5d24b5",
+          "name": "API-OP-002 Get request",
+          "url": {
+            "protocol": "https",
+            "path": [
+              "api",
+              "v1",
+              "flight-requests",
+              "ad3b75e7-67c3-4502-843a-1b8afd73f58a"
+            ],
+            "host": [
+              "skypermit",
+              "vercel",
+              "app"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "headers": [
+            {
+              "key": "User-Agent",
+              "value": "PostmanRuntime/7.56.2",
+              "system": true
+            },
+            {
+              "key": "Accept",
+              "value": "*/*",
+              "system": true
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache",
+              "system": true
+            },
+            {
+              "key": "Postman-Token",
+              "value": "e5796270-e9e5-40da-8198-040a2bf08fbc",
+              "system": true
+            },
+            {
+              "key": "Host",
+              "value": "skypermit.vercel.app",
+              "system": true
+            },
+            {
+              "key": "Accept-Encoding",
+              "value": "gzip, deflate, br",
+              "system": true
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive",
+              "system": true
+            },
+            {
+              "key": "Cookie",
+              "value": "***",
+              "system": true
+            }
+          ],
+          "method": "GET"
+        },
+        "response": {
+          "id": "d807b7b0-4f76-43b2-802d-48a84110fac0",
+          "_details": {
+            "name": "OK",
+            "detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action.",
+            "code": 200,
+            "standardName": "OK"
+          },
+          "status": "OK",
+          "code": 200,
+          "headers": [
+            {
+              "key": "Age",
+              "value": "0"
+            },
+            {
+              "key": "Cache-Control",
+              "value": "public, max-age=0, must-revalidate"
+            },
+            {
+              "key": "Content-Encoding",
+              "value": "br"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Date",
+              "value": "Tue, 10 Nov 2026 21:05:25 GMT"
+            },
+            {
+              "key": "Server",
+              "value": "Vercel"
+            },
+            {
+              "key": "Strict-Transport-Security",
+              "value": "max-age=63072000; includeSubDomains; preload"
+            },
+            {
+              "key": "X-Matched-Path",
+              "value": "/api/v1/flight-requests/[id]"
+            },
+            {
+              "key": "X-Vercel-Cache",
+              "value": "MISS"
+            },
+            {
+              "key": "X-Vercel-Id",
+              "value": "arn1::iad1::wmg22-1794344724811-a2d29db46ef0"
+            },
+            {
+              "key": "Transfer-Encoding",
+              "value": "chunked"
+            }
+          ],
+          "stream": {
+            "type": "text",
+            "text": "{\"id\":\"ad3b75e7-67c3-4502-843a-1b8afd73f58a\",\"operator_id\":\"105ee1cd-d022-4155-b37e-4c22d9afb6b4\",\"pilot_id\":\"75238286-d1a8-4f30-b84f-01a760d1b967\",\"aircraft_id\":\"47ad3b17-8a28-4e2c-9cfd-70050d3e4f31\",\"zone_code\":\"DNI-OPN-1\",\"window_start\":\"2026-11-11T03:04:21.021+00:00\",\"window_end\":\"2026-11-11T04:04:21.021+00:00\",\"requested_altitude_metres\":100,\"flight_purpose\":null,\"state\":\"REJECTED\",\"rejection_reason\":\"Window starts less than 6 hours from now.\",\"failing_gate\":\"TIME_WINDOW\",\"submitted_at\":\"2026-11-10T21:05:24.468+00:00\",\"decided_at\":\"2026-11-10T21:05:24.468+00:00\",\"decided_by\":null,\"created_at\":\"2026-11-10T21:05:22.635935+00:00\",\"updated_at\":\"2026-11-10T21:05:24.572271+00:00\",\"rule_reference\":\"TSD-4 §2.1\"}"
+          },
+          "cookies": [],
+          "responseTime": 999,
+          "responseSize": 719,
+          "downloadedBytes": 422
+        },
+        "tests": [
+          {
+            "name": "Status is 200",
+            "status": "passed"
+          },
+          {
+            "name": "state is REJECTED",
+            "status": "passed"
+          },
+          {
+            "name": "failing_gate is TIME_WINDOW",
+            "status": "passed"
+          },
+          {
+            "name": "rule_reference is TSD-4 §2.1",
+            "status": "passed"
+          },
+          {
+            "name": "rejection_reason is a non-empty string",
+            "status": "passed"
+          }
+        ],
+        "errors": []
+      },
+      {
+        "iterationCount": 0,
+        "requestExecuted": {
+          "id": "8bda0593-5a70-4a53-a0d9-1cd82e240eb4",
+          "name": "API-OP-003 Create request",
+          "url": {
+            "protocol": "https",
+            "path": [
+              "api",
+              "v1",
+              "flight-requests"
+            ],
+            "host": [
+              "skypermit",
+              "vercel",
+              "app"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "User-Agent",
+              "value": "PostmanRuntime/7.56.2",
+              "system": true
+            },
+            {
+              "key": "Accept",
+              "value": "*/*",
+              "system": true
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache",
+              "system": true
+            },
+            {
+              "key": "Postman-Token",
+              "value": "b58f9034-d010-4d3e-9a12-e3a3de73502b",
+              "system": true
+            },
+            {
+              "key": "Host",
+              "value": "skypermit.vercel.app",
+              "system": true
+            },
+            {
+              "key": "Accept-Encoding",
+              "value": "gzip, deflate, br",
+              "system": true
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive",
+              "system": true
+            },
+            {
+              "key": "Content-Length",
+              "value": "267",
+              "system": true
+            },
+            {
+              "key": "Cookie",
+              "value": "***",
+              "system": true
+            }
+          ],
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{\"pilot_id\":\"75238286-d1a8-4f30-b84f-01a760d1b967\",\"aircraft_id\":\"47ad3b17-8a28-4e2c-9cfd-70050d3e4f31\",\"zone_code\":\"DNI-OPN-1\",\"window_start\":\"2026-11-11T03:06:25.495Z\",\"window_end\":\"2026-11-11T04:06:25.495Z\",\"requested_altitude_metres\":100}",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          }
+        },
+        "response": {
+          "id": "b1424433-fbcd-4bfe-9211-183928d40f64",
+          "_details": {
+            "name": "Created",
+            "detail": "The request has been fulfilled and resulted in a new resource being created.",
+            "code": 201,
+            "standardName": "Created"
+          },
+          "status": "Created",
+          "code": 201,
+          "headers": [
+            {
+              "key": "Cache-Control",
+              "value": "public, max-age=0, must-revalidate"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Date",
+              "value": "Tue, 10 Nov 2026 21:05:27 GMT"
+            },
+            {
+              "key": "Server",
+              "value": "Vercel"
+            },
+            {
+              "key": "Strict-Transport-Security",
+              "value": "max-age=63072000; includeSubDomains; preload"
+            },
+            {
+              "key": "X-Matched-Path",
+              "value": "/api/v1/flight-requests"
+            },
+            {
+              "key": "X-Vercel-Cache",
+              "value": "MISS"
+            },
+            {
+              "key": "X-Vercel-Id",
+              "value": "arn1::iad1::82v9x-1794344725899-4f2709218293"
+            },
+            {
+              "key": "Transfer-Encoding",
+              "value": "chunked"
+            }
+          ],
+          "stream": {
+            "type": "text",
+            "text": "{\"id\":\"673a6305-da66-44a5-a701-23893fde3b8f\",\"operator_id\":\"105ee1cd-d022-4155-b37e-4c22d9afb6b4\",\"pilot_id\":\"75238286-d1a8-4f30-b84f-01a760d1b967\",\"aircraft_id\":\"47ad3b17-8a28-4e2c-9cfd-70050d3e4f31\",\"zone_code\":\"DNI-OPN-1\",\"window_start\":\"2026-11-11T03:06:25.495+00:00\",\"window_end\":\"2026-11-11T04:06:25.495+00:00\",\"requested_altitude_metres\":100,\"flight_purpose\":null,\"state\":\"DRAFT\",\"rejection_reason\":null,\"failing_gate\":null,\"submitted_at\":null,\"decided_at\":null,\"decided_by\":null,\"created_at\":\"2026-11-10T21:05:27.443084+00:00\",\"updated_at\":\"2026-11-10T21:05:27.443084+00:00\",\"rule_reference\":null}"
+          },
+          "cookies": [],
+          "responseTime": 1697,
+          "responseSize": 605,
+          "downloadedBytes": 605
+        },
+        "tests": [
+          {
+            "name": "Status is 201",
+            "status": "passed"
+          },
+          {
+            "name": "state is DRAFT",
+            "status": "passed"
+          }
+        ],
+        "errors": []
+      },
+      {
+        "iterationCount": 0,
+        "requestExecuted": {
+          "id": "b9af3721-d9db-40bc-8084-963e2c680a43",
+          "name": "API-OP-003 Validate",
+          "url": {
+            "protocol": "https",
+            "path": [
+              "api",
+              "v1",
+              "flight-requests",
+              "673a6305-da66-44a5-a701-23893fde3b8f",
+              "validate"
+            ],
+            "host": [
+              "skypermit",
+              "vercel",
+              "app"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "headers": [
+            {
+              "key": "User-Agent",
+              "value": "PostmanRuntime/7.56.2",
+              "system": true
+            },
+            {
+              "key": "Accept",
+              "value": "*/*",
+              "system": true
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache",
+              "system": true
+            },
+            {
+              "key": "Postman-Token",
+              "value": "6234318b-b8ee-4d2c-863f-d0fbbf127131",
+              "system": true
+            },
+            {
+              "key": "Host",
+              "value": "skypermit.vercel.app",
+              "system": true
+            },
+            {
+              "key": "Accept-Encoding",
+              "value": "gzip, deflate, br",
+              "system": true
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive",
+              "system": true
+            },
+            {
+              "key": "Cookie",
+              "value": "***",
+              "system": true
+            },
+            {
+              "key": "Content-Length",
+              "value": "0",
+              "system": true
+            }
+          ],
+          "method": "POST"
+        },
+        "response": {
+          "id": "e7651b38-d5ae-4761-bb06-422fc3ef4d1f",
+          "_details": {
+            "name": "OK",
+            "detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action.",
+            "code": 200,
+            "standardName": "OK"
+          },
+          "status": "OK",
+          "code": 200,
+          "headers": [
+            {
+              "key": "Cache-Control",
+              "value": "public, max-age=0, must-revalidate"
+            },
+            {
+              "key": "Content-Encoding",
+              "value": "br"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Date",
+              "value": "Tue, 10 Nov 2026 21:05:29 GMT"
+            },
+            {
+              "key": "Server",
+              "value": "Vercel"
+            },
+            {
+              "key": "Strict-Transport-Security",
+              "value": "max-age=63072000; includeSubDomains; preload"
+            },
+            {
+              "key": "X-Matched-Path",
+              "value": "/api/v1/flight-requests/[id]/validate"
+            },
+            {
+              "key": "X-Vercel-Cache",
+              "value": "MISS"
+            },
+            {
+              "key": "X-Vercel-Id",
+              "value": "arn1::iad1::dkhc4-1794344727689-319bfb4666f0"
+            },
+            {
+              "key": "Transfer-Encoding",
+              "value": "chunked"
+            }
+          ],
+          "stream": {
+            "type": "text",
+            "text": "{\"ok\":true}"
+          },
+          "cookies": [],
+          "responseTime": 2009,
+          "responseSize": 11,
+          "downloadedBytes": 17
+        },
+        "tests": [
+          {
+            "name": "Status is 200",
+            "status": "passed"
+          },
+          {
+            "name": "ok is true",
+            "status": "passed"
+          }
+        ],
+        "errors": []
+      },
+      {
+        "iterationCount": 0,
+        "requestExecuted": {
+          "id": "6b4fb075-669b-4085-9a21-32b44731ea19",
+          "name": "API-OP-004 Create request",
+          "url": {
+            "protocol": "https",
+            "path": [
+              "api",
+              "v1",
+              "flight-requests"
+            ],
+            "host": [
+              "skypermit",
+              "vercel",
+              "app"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "User-Agent",
+              "value": "PostmanRuntime/7.56.2",
+              "system": true
+            },
+            {
+              "key": "Accept",
+              "value": "*/*",
+              "system": true
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache",
+              "system": true
+            },
+            {
+              "key": "Postman-Token",
+              "value": "656d2312-4bf8-4e28-af8b-693de10069db",
+              "system": true
+            },
+            {
+              "key": "Host",
+              "value": "skypermit.vercel.app",
+              "system": true
+            },
+            {
+              "key": "Accept-Encoding",
+              "value": "gzip, deflate, br",
+              "system": true
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive",
+              "system": true
+            },
+            {
+              "key": "Content-Length",
+              "value": "267",
+              "system": true
+            },
+            {
+              "key": "Cookie",
+              "value": "***",
+              "system": true
+            }
+          ],
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{\"pilot_id\":\"75238286-d1a8-4f30-b84f-01a760d1b967\",\"aircraft_id\":\"47ad3b17-8a28-4e2c-9cfd-70050d3e4f31\",\"zone_code\":\"DNI-OPN-1\",\"window_start\":\"2026-11-11T03:04:29.379Z\",\"window_end\":\"2026-11-11T04:04:29.379Z\",\"requested_altitude_metres\":100}",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          }
+        },
+        "response": {
+          "id": "7d061ae7-ffb7-43a4-a36e-6cc3e9560641",
+          "_details": {
+            "name": "Created",
+            "detail": "The request has been fulfilled and resulted in a new resource being created.",
+            "code": 201,
+            "standardName": "Created"
+          },
+          "status": "Created",
+          "code": 201,
+          "headers": [
+            {
+              "key": "Cache-Control",
+              "value": "public, max-age=0, must-revalidate"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Date",
+              "value": "Tue, 10 Nov 2026 21:05:31 GMT"
+            },
+            {
+              "key": "Server",
+              "value": "Vercel"
+            },
+            {
+              "key": "Strict-Transport-Security",
+              "value": "max-age=63072000; includeSubDomains; preload"
+            },
+            {
+              "key": "X-Matched-Path",
+              "value": "/api/v1/flight-requests"
+            },
+            {
+              "key": "X-Vercel-Cache",
+              "value": "MISS"
+            },
+            {
+              "key": "X-Vercel-Id",
+              "value": "arn1::iad1::ggql7-1794344729781-fb0d86cef327"
+            },
+            {
+              "key": "Transfer-Encoding",
+              "value": "chunked"
+            }
+          ],
+          "stream": {
+            "type": "text",
+            "text": "{\"id\":\"1de065bd-2080-44bd-93e5-5a2ea65b80ad\",\"operator_id\":\"105ee1cd-d022-4155-b37e-4c22d9afb6b4\",\"pilot_id\":\"75238286-d1a8-4f30-b84f-01a760d1b967\",\"aircraft_id\":\"47ad3b17-8a28-4e2c-9cfd-70050d3e4f31\",\"zone_code\":\"DNI-OPN-1\",\"window_start\":\"2026-11-11T03:04:29.379+00:00\",\"window_end\":\"2026-11-11T04:04:29.379+00:00\",\"requested_altitude_metres\":100,\"flight_purpose\":null,\"state\":\"DRAFT\",\"rejection_reason\":null,\"failing_gate\":null,\"submitted_at\":null,\"decided_at\":null,\"decided_by\":null,\"created_at\":\"2026-11-10T21:05:31.281048+00:00\",\"updated_at\":\"2026-11-10T21:05:31.281048+00:00\",\"rule_reference\":null}"
+          },
+          "cookies": [],
+          "responseTime": 1663,
+          "responseSize": 605,
+          "downloadedBytes": 605
+        },
+        "tests": [
+          {
+            "name": "Status is 201",
+            "status": "passed"
+          },
+          {
+            "name": "state is DRAFT",
+            "status": "passed"
+          }
+        ],
+        "errors": []
+      },
+      {
+        "iterationCount": 0,
+        "requestExecuted": {
+          "id": "a610493e-ac06-4976-89ff-c817b706c6ac",
+          "name": "API-OP-004 Validate",
+          "url": {
+            "protocol": "https",
+            "path": [
+              "api",
+              "v1",
+              "flight-requests",
+              "1de065bd-2080-44bd-93e5-5a2ea65b80ad",
+              "validate"
+            ],
+            "host": [
+              "skypermit",
+              "vercel",
+              "app"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "headers": [
+            {
+              "key": "User-Agent",
+              "value": "PostmanRuntime/7.56.2",
+              "system": true
+            },
+            {
+              "key": "Accept",
+              "value": "*/*",
+              "system": true
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache",
+              "system": true
+            },
+            {
+              "key": "Postman-Token",
+              "value": "e0395c65-03ea-44f8-b0d6-1865c1b45037",
+              "system": true
+            },
+            {
+              "key": "Host",
+              "value": "skypermit.vercel.app",
+              "system": true
+            },
+            {
+              "key": "Accept-Encoding",
+              "value": "gzip, deflate, br",
+              "system": true
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive",
+              "system": true
+            },
+            {
+              "key": "Cookie",
+              "value": "***",
+              "system": true
+            },
+            {
+              "key": "Content-Length",
+              "value": "0",
+              "system": true
+            }
+          ],
+          "method": "POST"
+        },
+        "response": {
+          "id": "6385cb8c-62f3-4d12-8448-ef46e97561a7",
+          "_details": {
+            "name": "Unprocessable Entity",
+            "detail": "The request was well-formed but was unable to be followed due to semantic errors.",
+            "code": 422,
+            "standardName": "Unprocessable Entity (WebDAV) (RFC 4918)"
+          },
+          "status": "Unprocessable Entity",
+          "code": 422,
+          "headers": [
+            {
+              "key": "Cache-Control",
+              "value": "public, max-age=0, must-revalidate"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Date",
+              "value": "Tue, 10 Nov 2026 21:05:33 GMT"
+            },
+            {
+              "key": "Server",
+              "value": "Vercel"
+            },
+            {
+              "key": "Strict-Transport-Security",
+              "value": "max-age=63072000; includeSubDomains; preload"
+            },
+            {
+              "key": "X-Matched-Path",
+              "value": "/api/v1/flight-requests/[id]/validate"
+            },
+            {
+              "key": "X-Vercel-Cache",
+              "value": "MISS"
+            },
+            {
+              "key": "X-Vercel-Id",
+              "value": "arn1::iad1::5pb7t-1794344731512-e739a385d0b0"
+            },
+            {
+              "key": "Transfer-Encoding",
+              "value": "chunked"
+            }
+          ],
+          "stream": {
+            "type": "text",
+            "text": "{\"failing_gate\":\"TIME_WINDOW\",\"rule_reference\":\"TSD-4 §2.1\",\"message\":\"Window starts less than 6 hours from now.\"}"
+          },
+          "cookies": [],
+          "responseTime": 1626,
+          "responseSize": 115,
+          "downloadedBytes": 115
+        },
+        "tests": [
+          {
+            "name": "Status is 422",
+            "status": "passed"
+          },
+          {
+            "name": "failing_gate is TIME_WINDOW",
+            "status": "passed"
+          },
+          {
+            "name": "rule_reference is TSD-4 §2.1",
+            "status": "passed"
+          },
+          {
+            "name": "message is a non-empty string",
+            "status": "passed"
+          }
+        ],
+        "errors": []
+      },
+      {
+        "iterationCount": 0,
+        "requestExecuted": {
+          "id": "a5676c1c-e5e0-4310-8336-772a21964572",
+          "name": "API-OP-004 Get request",
+          "url": {
+            "protocol": "https",
+            "path": [
+              "api",
+              "v1",
+              "flight-requests",
+              "1de065bd-2080-44bd-93e5-5a2ea65b80ad"
+            ],
+            "host": [
+              "skypermit",
+              "vercel",
+              "app"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "headers": [
+            {
+              "key": "User-Agent",
+              "value": "PostmanRuntime/7.56.2",
+              "system": true
+            },
+            {
+              "key": "Accept",
+              "value": "*/*",
+              "system": true
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache",
+              "system": true
+            },
+            {
+              "key": "Postman-Token",
+              "value": "dfbf9c1a-1e34-429a-affd-41c5ce44b14a",
+              "system": true
+            },
+            {
+              "key": "Host",
+              "value": "skypermit.vercel.app",
+              "system": true
+            },
+            {
+              "key": "Accept-Encoding",
+              "value": "gzip, deflate, br",
+              "system": true
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive",
+              "system": true
+            },
+            {
+              "key": "Cookie",
+              "value": "***",
+              "system": true
+            }
+          ],
+          "method": "GET"
+        },
+        "response": {
+          "id": "9e5efb70-37c8-4ee8-9128-a915b9634c04",
+          "_details": {
+            "name": "OK",
+            "detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action.",
+            "code": 200,
+            "standardName": "OK"
+          },
+          "status": "OK",
+          "code": 200,
+          "headers": [
+            {
+              "key": "Age",
+              "value": "0"
+            },
+            {
+              "key": "Cache-Control",
+              "value": "public, max-age=0, must-revalidate"
+            },
+            {
+              "key": "Content-Encoding",
+              "value": "br"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Date",
+              "value": "Tue, 10 Nov 2026 21:05:34 GMT"
+            },
+            {
+              "key": "Server",
+              "value": "Vercel"
+            },
+            {
+              "key": "Strict-Transport-Security",
+              "value": "max-age=63072000; includeSubDomains; preload"
+            },
+            {
+              "key": "X-Matched-Path",
+              "value": "/api/v1/flight-requests/[id]"
+            },
+            {
+              "key": "X-Vercel-Cache",
+              "value": "MISS"
+            },
+            {
+              "key": "X-Vercel-Id",
+              "value": "arn1::iad1::84qj4-1794344733209-c569da14f5a1"
+            },
+            {
+              "key": "Transfer-Encoding",
+              "value": "chunked"
+            }
+          ],
+          "stream": {
+            "type": "text",
+            "text": "{\"id\":\"1de065bd-2080-44bd-93e5-5a2ea65b80ad\",\"operator_id\":\"105ee1cd-d022-4155-b37e-4c22d9afb6b4\",\"pilot_id\":\"75238286-d1a8-4f30-b84f-01a760d1b967\",\"aircraft_id\":\"47ad3b17-8a28-4e2c-9cfd-70050d3e4f31\",\"zone_code\":\"DNI-OPN-1\",\"window_start\":\"2026-11-11T03:04:29.379+00:00\",\"window_end\":\"2026-11-11T04:04:29.379+00:00\",\"requested_altitude_metres\":100,\"flight_purpose\":null,\"state\":\"DRAFT\",\"rejection_reason\":null,\"failing_gate\":null,\"submitted_at\":null,\"decided_at\":null,\"decided_by\":null,\"created_at\":\"2026-11-10T21:05:31.281048+00:00\",\"updated_at\":\"2026-11-10T21:05:31.281048+00:00\",\"rule_reference\":null}"
+          },
+          "cookies": [],
+          "responseTime": 1199,
+          "responseSize": 605,
+          "downloadedBytes": 353
+        },
+        "tests": [
+          {
+            "name": "Status is 200",
+            "status": "passed"
+          },
+          {
+            "name": "state is DRAFT",
+            "status": "passed"
+          }
+        ],
+        "errors": []
+      },
+      {
+        "iterationCount": 0,
+        "requestExecuted": {
+          "id": "5a1b2f76-60b8-4998-9608-3faf07b6805c",
+          "name": "API-OP-005 Create request",
+          "url": {
+            "protocol": "https",
+            "path": [
+              "api",
+              "v1",
+              "flight-requests"
+            ],
+            "host": [
+              "skypermit",
+              "vercel",
+              "app"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "User-Agent",
+              "value": "PostmanRuntime/7.56.2",
+              "system": true
+            },
+            {
+              "key": "Accept",
+              "value": "*/*",
+              "system": true
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache",
+              "system": true
+            },
+            {
+              "key": "Postman-Token",
+              "value": "ba537eaf-56f9-4ea7-a833-8ec390d57c7f",
+              "system": true
+            },
+            {
+              "key": "Host",
+              "value": "skypermit.vercel.app",
+              "system": true
+            },
+            {
+              "key": "Accept-Encoding",
+              "value": "gzip, deflate, br",
+              "system": true
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive",
+              "system": true
+            },
+            {
+              "key": "Content-Length",
+              "value": "267",
+              "system": true
+            },
+            {
+              "key": "Cookie",
+              "value": "***",
+              "system": true
+            }
+          ],
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{\"pilot_id\":\"75238286-d1a8-4f30-b84f-01a760d1b967\",\"aircraft_id\":\"47ad3b17-8a28-4e2c-9cfd-70050d3e4f31\",\"zone_code\":\"DNI-OPN-1\",\"window_start\":\"2026-11-11T03:04:34.085Z\",\"window_end\":\"2026-11-11T04:04:34.085Z\",\"requested_altitude_metres\":100}",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          }
+        },
+        "response": {
+          "id": "9db7e2ea-d8c9-408d-8cba-6cf2756ac91b",
+          "_details": {
+            "name": "Created",
+            "detail": "The request has been fulfilled and resulted in a new resource being created.",
+            "code": 201,
+            "standardName": "Created"
+          },
+          "status": "Created",
+          "code": 201,
+          "headers": [
+            {
+              "key": "Cache-Control",
+              "value": "public, max-age=0, must-revalidate"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Date",
+              "value": "Tue, 10 Nov 2026 21:05:35 GMT"
+            },
+            {
+              "key": "Server",
+              "value": "Vercel"
+            },
+            {
+              "key": "Strict-Transport-Security",
+              "value": "max-age=63072000; includeSubDomains; preload"
+            },
+            {
+              "key": "X-Matched-Path",
+              "value": "/api/v1/flight-requests"
+            },
+            {
+              "key": "X-Vercel-Cache",
+              "value": "MISS"
+            },
+            {
+              "key": "X-Vercel-Id",
+              "value": "arn1::iad1::84qj4-1794344734488-9becfeead478"
+            },
+            {
+              "key": "Transfer-Encoding",
+              "value": "chunked"
+            }
+          ],
+          "stream": {
+            "type": "text",
+            "text": "{\"id\":\"0093ed53-7a62-4209-9421-09f48d3bc87a\",\"operator_id\":\"105ee1cd-d022-4155-b37e-4c22d9afb6b4\",\"pilot_id\":\"75238286-d1a8-4f30-b84f-01a760d1b967\",\"aircraft_id\":\"47ad3b17-8a28-4e2c-9cfd-70050d3e4f31\",\"zone_code\":\"DNI-OPN-1\",\"window_start\":\"2026-11-11T03:04:34.085+00:00\",\"window_end\":\"2026-11-11T04:04:34.085+00:00\",\"requested_altitude_metres\":100,\"flight_purpose\":null,\"state\":\"DRAFT\",\"rejection_reason\":null,\"failing_gate\":null,\"submitted_at\":null,\"decided_at\":null,\"decided_by\":null,\"created_at\":\"2026-11-10T21:05:35.730979+00:00\",\"updated_at\":\"2026-11-10T21:05:35.730979+00:00\",\"rule_reference\":null}"
+          },
+          "cookies": [],
+          "responseTime": 1397,
+          "responseSize": 605,
+          "downloadedBytes": 605
+        },
+        "tests": [
+          {
+            "name": "Status is 201",
+            "status": "passed"
+          },
+          {
+            "name": "state is DRAFT",
+            "status": "passed"
+          }
+        ],
+        "errors": []
+      },
+      {
+        "iterationCount": 0,
+        "requestExecuted": {
+          "id": "46bda990-a0ab-432d-abdd-eb8d274ae72c",
+          "name": "API-OP-005 Submit",
+          "url": {
+            "protocol": "https",
+            "path": [
+              "api",
+              "v1",
+              "flight-requests",
+              "0093ed53-7a62-4209-9421-09f48d3bc87a",
+              "submit"
+            ],
+            "host": [
+              "skypermit",
+              "vercel",
+              "app"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "headers": [
+            {
+              "key": "User-Agent",
+              "value": "PostmanRuntime/7.56.2",
+              "system": true
+            },
+            {
+              "key": "Accept",
+              "value": "*/*",
+              "system": true
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache",
+              "system": true
+            },
+            {
+              "key": "Postman-Token",
+              "value": "b862d119-8e61-4f22-ae62-1a9434e5c19b",
+              "system": true
+            },
+            {
+              "key": "Host",
+              "value": "skypermit.vercel.app",
+              "system": true
+            },
+            {
+              "key": "Accept-Encoding",
+              "value": "gzip, deflate, br",
+              "system": true
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive",
+              "system": true
+            },
+            {
+              "key": "Cookie",
+              "value": "***",
+              "system": true
+            },
+            {
+              "key": "Content-Length",
+              "value": "0",
+              "system": true
+            }
+          ],
+          "method": "POST"
+        },
+        "response": {
+          "id": "df7e4aee-0e99-4e9a-b3f6-3f905783918b",
+          "_details": {
+            "name": "Unprocessable Entity",
+            "detail": "The request was well-formed but was unable to be followed due to semantic errors.",
+            "code": 422,
+            "standardName": "Unprocessable Entity (WebDAV) (RFC 4918)"
+          },
+          "status": "Unprocessable Entity",
+          "code": 422,
+          "headers": [
+            {
+              "key": "Cache-Control",
+              "value": "public, max-age=0, must-revalidate"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Date",
+              "value": "Tue, 10 Nov 2026 21:05:37 GMT"
+            },
+            {
+              "key": "Server",
+              "value": "Vercel"
+            },
+            {
+              "key": "Strict-Transport-Security",
+              "value": "max-age=63072000; includeSubDomains; preload"
+            },
+            {
+              "key": "X-Matched-Path",
+              "value": "/api/v1/flight-requests/[id]/submit"
+            },
+            {
+              "key": "X-Vercel-Cache",
+              "value": "MISS"
+            },
+            {
+              "key": "X-Vercel-Id",
+              "value": "arn1::iad1::dkhc4-1794344735967-61d8418bff61"
+            },
+            {
+              "key": "Transfer-Encoding",
+              "value": "chunked"
+            }
+          ],
+          "stream": {
+            "type": "text",
+            "text": "{\"failing_gate\":\"TIME_WINDOW\",\"rule_reference\":\"TSD-4 §2.1\",\"message\":\"Window starts less than 6 hours from now.\"}"
+          },
+          "cookies": [],
+          "responseTime": 1773,
+          "responseSize": 115,
+          "downloadedBytes": 115
+        },
+        "tests": [
+          {
+            "name": "Status is 422",
+            "status": "passed"
+          },
+          {
+            "name": "failing_gate is TIME_WINDOW",
+            "status": "passed"
+          },
+          {
+            "name": "rule_reference is TSD-4 §2.1",
+            "status": "passed"
+          },
+          {
+            "name": "message is a non-empty string",
+            "status": "passed"
+          }
+        ],
+        "errors": []
+      },
+      {
+        "iterationCount": 0,
+        "requestExecuted": {
+          "id": "b556721e-899a-48be-aac3-7e94d76d2aef",
+          "name": "API-OP-005 Submit again",
+          "url": {
+            "protocol": "https",
+            "path": [
+              "api",
+              "v1",
+              "flight-requests",
+              "0093ed53-7a62-4209-9421-09f48d3bc87a",
+              "submit"
+            ],
+            "host": [
+              "skypermit",
+              "vercel",
+              "app"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "headers": [
+            {
+              "key": "User-Agent",
+              "value": "PostmanRuntime/7.56.2",
+              "system": true
+            },
+            {
+              "key": "Accept",
+              "value": "*/*",
+              "system": true
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache",
+              "system": true
+            },
+            {
+              "key": "Postman-Token",
+              "value": "2c54617d-010f-4906-b2bf-cbbcafc84684",
+              "system": true
+            },
+            {
+              "key": "Host",
+              "value": "skypermit.vercel.app",
+              "system": true
+            },
+            {
+              "key": "Accept-Encoding",
+              "value": "gzip, deflate, br",
+              "system": true
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive",
+              "system": true
+            },
+            {
+              "key": "Cookie",
+              "value": "***",
+              "system": true
+            },
+            {
+              "key": "Content-Length",
+              "value": "0",
+              "system": true
+            }
+          ],
+          "method": "POST"
+        },
+        "response": {
+          "id": "dac08cc3-aca4-4be3-8976-7c1eba672eab",
+          "_details": {
+            "name": "Conflict",
+            "detail": "Indicates that the request could not be processed because of conflict in the request, such as an edit conflict.",
+            "code": 409,
+            "standardName": "Conflict"
+          },
+          "status": "Conflict",
+          "code": 409,
+          "headers": [
+            {
+              "key": "Cache-Control",
+              "value": "public, max-age=0, must-revalidate"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Date",
+              "value": "Tue, 10 Nov 2026 21:05:38 GMT"
+            },
+            {
+              "key": "Server",
+              "value": "Vercel"
+            },
+            {
+              "key": "Strict-Transport-Security",
+              "value": "max-age=63072000; includeSubDomains; preload"
+            },
+            {
+              "key": "X-Matched-Path",
+              "value": "/api/v1/flight-requests/[id]/submit"
+            },
+            {
+              "key": "X-Vercel-Cache",
+              "value": "MISS"
+            },
+            {
+              "key": "X-Vercel-Id",
+              "value": "arn1::iad1::p6ct2-1794344737832-09ac6638e9f4"
+            },
+            {
+              "key": "Transfer-Encoding",
+              "value": "chunked"
+            }
+          ],
+          "stream": {
+            "type": "text",
+            "text": "{\"error\":\"Cannot submit a flight request in state REJECTED.\"}"
+          },
+          "cookies": [],
+          "responseTime": 967,
+          "responseSize": 61,
+          "downloadedBytes": 61
+        },
+        "tests": [
+          {
+            "name": "Status is 409",
+            "status": "passed"
+          }
+        ],
+        "errors": []
+      },
+      {
+        "iterationCount": 0,
+        "requestExecuted": {
+          "id": "6cbb5c6d-6f17-431c-9a8a-9eb35a17c0d9",
+          "name": "API-OP-006 Create request",
+          "url": {
+            "protocol": "https",
+            "path": [
+              "api",
+              "v1",
+              "flight-requests"
+            ],
+            "host": [
+              "skypermit",
+              "vercel",
+              "app"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "headers": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "User-Agent",
+              "value": "PostmanRuntime/7.56.2",
+              "system": true
+            },
+            {
+              "key": "Accept",
+              "value": "*/*",
+              "system": true
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache",
+              "system": true
+            },
+            {
+              "key": "Postman-Token",
+              "value": "05ecd425-7bd0-439d-9fa8-6df6f88a1c14",
+              "system": true
+            },
+            {
+              "key": "Host",
+              "value": "skypermit.vercel.app",
+              "system": true
+            },
+            {
+              "key": "Accept-Encoding",
+              "value": "gzip, deflate, br",
+              "system": true
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive",
+              "system": true
+            },
+            {
+              "key": "Content-Length",
+              "value": "267",
+              "system": true
+            },
+            {
+              "key": "Cookie",
+              "value": "***",
+              "system": true
+            }
+          ],
+          "method": "POST",
+          "body": {
+            "mode": "raw",
+            "raw": "{\"pilot_id\":\"75238286-d1a8-4f30-b84f-01a760d1b967\",\"aircraft_id\":\"47ad3b17-8a28-4e2c-9cfd-70050d3e4f31\",\"zone_code\":\"DNI-OPN-1\",\"window_start\":\"2026-11-11T03:35:38.474Z\",\"window_end\":\"2026-11-11T04:35:38.474Z\",\"requested_altitude_metres\":100}",
+            "options": {
+              "raw": {
+                "language": "json"
+              }
+            }
+          }
+        },
+        "response": {
+          "id": "db4e7f69-4287-4328-8fb5-2184c4303359",
+          "_details": {
+            "name": "Created",
+            "detail": "The request has been fulfilled and resulted in a new resource being created.",
+            "code": 201,
+            "standardName": "Created"
+          },
+          "status": "Created",
+          "code": 201,
+          "headers": [
+            {
+              "key": "Cache-Control",
+              "value": "public, max-age=0, must-revalidate"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Date",
+              "value": "Tue, 10 Nov 2026 21:05:40 GMT"
+            },
+            {
+              "key": "Server",
+              "value": "Vercel"
+            },
+            {
+              "key": "Strict-Transport-Security",
+              "value": "max-age=63072000; includeSubDomains; preload"
+            },
+            {
+              "key": "X-Matched-Path",
+              "value": "/api/v1/flight-requests"
+            },
+            {
+              "key": "X-Vercel-Cache",
+              "value": "MISS"
+            },
+            {
+              "key": "X-Vercel-Id",
+              "value": "arn1::iad1::nbmcd-1794344738877-24d10d1c7114"
+            },
+            {
+              "key": "Transfer-Encoding",
+              "value": "chunked"
+            }
+          ],
+          "stream": {
+            "type": "text",
+            "text": "{\"id\":\"1744957a-3edb-46cc-8f87-0df7d48fd70f\",\"operator_id\":\"105ee1cd-d022-4155-b37e-4c22d9afb6b4\",\"pilot_id\":\"75238286-d1a8-4f30-b84f-01a760d1b967\",\"aircraft_id\":\"47ad3b17-8a28-4e2c-9cfd-70050d3e4f31\",\"zone_code\":\"DNI-OPN-1\",\"window_start\":\"2026-11-11T03:35:38.474+00:00\",\"window_end\":\"2026-11-11T04:35:38.474+00:00\",\"requested_altitude_metres\":100,\"flight_purpose\":null,\"state\":\"DRAFT\",\"rejection_reason\":null,\"failing_gate\":null,\"submitted_at\":null,\"decided_at\":null,\"decided_by\":null,\"created_at\":\"2026-11-10T21:05:40.146107+00:00\",\"updated_at\":\"2026-11-10T21:05:40.146107+00:00\",\"rule_reference\":null}"
+          },
+          "cookies": [],
+          "responseTime": 1414,
+          "responseSize": 605,
+          "downloadedBytes": 605
+        },
+        "tests": [
+          {
+            "name": "Status is 201",
+            "status": "passed"
+          },
+          {
+            "name": "state is DRAFT",
+            "status": "passed"
+          }
+        ],
+        "errors": []
+      },
+      {
+        "iterationCount": 0,
+        "requestExecuted": {
+          "id": "0df12a24-fc90-4d83-a467-aa5e4c9cd93f",
+          "name": "API-OP-006 Validate",
+          "url": {
+            "protocol": "https",
+            "path": [
+              "api",
+              "v1",
+              "flight-requests",
+              "1744957a-3edb-46cc-8f87-0df7d48fd70f",
+              "validate"
+            ],
+            "host": [
+              "skypermit",
+              "vercel",
+              "app"
+            ],
+            "query": [],
+            "variable": []
+          },
+          "headers": [
+            {
+              "key": "User-Agent",
+              "value": "PostmanRuntime/7.56.2",
+              "system": true
+            },
+            {
+              "key": "Accept",
+              "value": "*/*",
+              "system": true
+            },
+            {
+              "key": "Cache-Control",
+              "value": "no-cache",
+              "system": true
+            },
+            {
+              "key": "Postman-Token",
+              "value": "ba56e606-5e59-42e8-bf66-e73af51ffa61",
+              "system": true
+            },
+            {
+              "key": "Host",
+              "value": "skypermit.vercel.app",
+              "system": true
+            },
+            {
+              "key": "Accept-Encoding",
+              "value": "gzip, deflate, br",
+              "system": true
+            },
+            {
+              "key": "Connection",
+              "value": "keep-alive",
+              "system": true
+            },
+            {
+              "key": "Cookie",
+              "value": "***",
+              "system": true
+            },
+            {
+              "key": "Content-Length",
+              "value": "0",
+              "system": true
+            }
+          ],
+          "method": "POST"
+        },
+        "response": {
+          "id": "6bbff3d1-1ade-4f2a-8695-25e41da589a5",
+          "_details": {
+            "name": "OK",
+            "detail": "Standard response for successful HTTP requests. The actual response will depend on the request method used. In a GET request, the response will contain an entity corresponding to the requested resource. In a POST request the response will contain an entity describing or containing the result of the action.",
+            "code": 200,
+            "standardName": "OK"
+          },
+          "status": "OK",
+          "code": 200,
+          "headers": [
+            {
+              "key": "Cache-Control",
+              "value": "public, max-age=0, must-revalidate"
+            },
+            {
+              "key": "Content-Encoding",
+              "value": "br"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Date",
+              "value": "Tue, 10 Nov 2026 21:05:42 GMT"
+            },
+            {
+              "key": "Server",
+              "value": "Vercel"
+            },
+            {
+              "key": "Strict-Transport-Security",
+              "value": "max-age=63072000; includeSubDomains; preload"
+            },
+            {
+              "key": "X-Matched-Path",
+              "value": "/api/v1/flight-requests/[id]/validate"
+            },
+            {
+              "key": "X-Vercel-Cache",
+              "value": "MISS"
+            },
+            {
+              "key": "X-Vercel-Id",
+              "value": "arn1::iad1::mm8cs-1794344740374-d3d7458aa1a3"
+            },
+            {
+              "key": "Transfer-Encoding",
+              "value": "chunked"
+            }
+          ],
+          "stream": {
+            "type": "text",
+            "text": "{\"ok\":true}"
+          },
+          "cookies": [],
+          "responseTime": 1941,
+          "responseSize": 11,
+          "downloadedBytes": 17
+        },
+        "tests": [
+          {
+            "name": "Status is 200",
+            "status": "passed"
+          },
+          {
+            "name": "ok is true",
+            "status": "passed"
+          }
+        ],
+        "errors": []
+      }
+    ],
+    "runError": null
+  }
+}

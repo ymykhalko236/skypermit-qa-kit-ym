@@ -1,0 +1,109 @@
+{
+  "key": "SKY-6",
+  "title": "API: submit повертає 422, якщо до початку польоту менше 6 годин",
+  "run_at": "2026-11-10T21:06:20Z",
+  "stopped_at": null,
+  "doc_check": { "covered": 5, "contradicts": 0, "not_described": 0 },
+  "implementation_check": { "implemented": 5, "partial": 0, "not_found": 0, "verdict": "implemented" },
+  "rules": ["BR-TIME-LEAD-TIME"],
+  "test_cases": [
+    {
+      "id": "API-OP-001",
+      "file": "test-cases/api/API-OP-001-validate-with-lead-time-5-h-59-min-fails-time-window.md",
+      "rule": "BR-TIME-LEAD-TIME",
+      "criterion": 1,
+      "verdict": "COMPLIANT",
+      "action": "kept",
+      "tbc": false,
+      "approved": true,
+      "testomat": { "test_id": "d27a7f22", "action": "created" },
+      "in_collection": true,
+      "result": { "status": "passed", "message": null }
+    },
+    {
+      "id": "API-OP-002",
+      "file": "test-cases/api/API-OP-002-submit-with-lead-time-5-h-59-min-moves-request-to-rejected.md",
+      "rule": "BR-TIME-LEAD-TIME",
+      "criterion": 2,
+      "verdict": "COMPLIANT WITH MINOR ISSUES",
+      "action": "kept_minor_issues",
+      "tbc": false,
+      "approved": true,
+      "testomat": { "test_id": "07cf2f9f", "action": "created" },
+      "in_collection": true,
+      "result": { "status": "passed", "message": null }
+    },
+    {
+      "id": "API-OP-003",
+      "file": "test-cases/api/API-OP-003-validate-with-lead-time-6-h-01-min-passes.md",
+      "rule": "BR-TIME-LEAD-TIME",
+      "criterion": 5,
+      "verdict": "COMPLIANT",
+      "action": "kept",
+      "tbc": false,
+      "approved": true,
+      "testomat": { "test_id": "355e7b8b", "action": "created" },
+      "in_collection": true,
+      "result": { "status": "passed", "message": null }
+    },
+    {
+      "id": "API-OP-004",
+      "file": "test-cases/api/API-OP-004-validate-with-lead-time-too-short-leaves-request-in-draft.md",
+      "rule": "BR-TIME-LEAD-TIME",
+      "criterion": 1,
+      "verdict": "COMPLIANT",
+      "action": "kept",
+      "tbc": false,
+      "approved": true,
+      "testomat": { "test_id": "498f23b0", "action": "created" },
+      "in_collection": true,
+      "result": { "status": "passed", "message": null }
+    },
+    {
+      "id": "API-OP-005",
+      "file": "test-cases/api/API-OP-005-repeated-submit-after-lead-time-rejection-returns-409.md",
+      "rule": "BR-TIME-LEAD-TIME",
+      "criterion": 4,
+      "verdict": "COMPLIANT WITH MINOR ISSUES",
+      "action": "kept_minor_issues",
+      "tbc": false,
+      "approved": true,
+      "testomat": { "test_id": "808298f8", "action": "created" },
+      "in_collection": true,
+      "result": { "status": "passed", "message": null }
+    },
+    {
+      "id": "API-OP-006",
+      "file": "test-cases/api/API-OP-006-validate-with-lead-time-6-h-30-min-passes.md",
+      "rule": "BR-TIME-LEAD-TIME",
+      "criterion": 5,
+      "verdict": "COMPLIANT WITH MINOR ISSUES",
+      "action": "kept_minor_issues",
+      "tbc": false,
+      "approved": true,
+      "testomat": { "test_id": "da9e283e", "action": "created" },
+      "in_collection": true,
+      "result": { "status": "passed", "message": null }
+    }
+  ],
+  "not_covered": ["Exactly 6 h 00 min lead time: not testable, because the lead time shrinks between creating the request and the call"],
+  "testomat": {
+    "suite": { "title": "Flight request API", "suite_id": "69482277", "action": "created" },
+    "run": { "run_id": "55b62cc6", "title": "SKY-6 · API", "url": "https://app.testomat.io/projects/skypermit-f139b/runs/55b62cc6", "tests_count": 6, "closed": true, "status": "passed" }
+  },
+  "postman": {
+    "record": "api-automation/collections/SKY-6.json",
+    "collection_name": "SKY-6 API · API-OP-001–API-OP-006",
+    "collection_uid": "2892909-90aba9e2-caaf-4ca3-bc96-3d3192831a76",
+    "environment_name": "SkyPermit (Vercel)",
+    "excluded": []
+  },
+  "execution": {
+    "run_folder": "api-automation/runs/SKY-6-2026-11-10-2305/",
+    "postman_run_url": "https://go.postman.co/workspace/f0f617bc-85b2-4d5a-9a4b-aff7c0a505ad/run/2892909-05abce4d-ab3d-42c9-887f-f084daefd3d4",
+    "passed": 6,
+    "failed": 0,
+    "skipped": 0
+  },
+  "notes": "API-OP-001..005 already existed for BR-TIME-LEAD-TIME; API-OP-002 was updated to assert rejection_reason (criterion 3), and API-OP-006 was added at the user's request for criterion 5's exact value (6 h 30 min). API-OP-002 also covers criterion 3, and API-OP-004 covers criterion 1's DRAFT claim. SKYPERMIT_OPERATOR_PASSWORD was set only at Windows User scope, so it was copied into the run script's process without being displayed."
+}

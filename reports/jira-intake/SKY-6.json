@@ -10,5 +10,5 @@
     "Заявка з `window_start` через 6 годин 30 хвилин (всі інші умови валідні) проходить `TIME_WINDOW` за lead time."
   ],
   "confluence_url": null,
-  "notes": "confluence_url is null: the ticket has no real Confluence link, only the text mention 'Confluence → простір SkyPermit → сторінки «03 — API contract» і «06 — Business rules», розділ 1.4.'"
+  "notes": "confluence_url is null: the ticket has no real Confluence link, only the text mention 'Confluence → простір SkyPermit → сторінки «03 — API contract» і «06 — Business rules», розділ 1.4'."
 }

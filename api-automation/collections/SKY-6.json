@@ -1,0 +1,79 @@
+{
+  "task_key": "SKY-6",
+  "created_at": "2026-11-10T21:02:01Z",
+  "workspace_id": "f0f617bc-85b2-4d5a-9a4b-aff7c0a505ad",
+  "collection_uid": "2892909-90aba9e2-caaf-4ca3-bc96-3d3192831a76",
+  "collection_name": "SKY-6 API · API-OP-001–API-OP-006",
+  "environment_uid": "2892909-f20a1452-777a-4a0a-9012-da254e162707",
+  "environment_name": "SkyPermit (Vercel)",
+  "environment_reused": true,
+  "secrets": [
+    { "variable": "operatorPassword", "source": "env", "env": "SKYPERMIT_OPERATOR_PASSWORD" }
+  ],
+  "setup": ["SETUP Log in operator", "SETUP Create pilot", "SETUP Create aircraft"],
+  "setup_assertions": {
+    "SETUP Log in operator": ["Status is 200", "authorisation_level is L1", "status is ACTIVE"],
+    "SETUP Create pilot": ["Status is 201", "id is present"],
+    "SETUP Create aircraft": ["Status is 201", "id is present"]
+  },
+  "cases": [
+    {
+      "case_id": "API-OP-001",
+      "file": "test-cases/api/API-OP-001-validate-with-lead-time-5-h-59-min-fails-time-window.md",
+      "requests": ["API-OP-001 Create request", "API-OP-001 Validate"],
+      "assertions": {
+        "API-OP-001 Create request": ["Status is 201", "state is DRAFT"],
+        "API-OP-001 Validate": ["Status is 422", "failing_gate is TIME_WINDOW", "rule_reference is TSD-4 §2.1", "message is a non-empty string"]
+      }
+    },
+    {
+      "case_id": "API-OP-002",
+      "file": "test-cases/api/API-OP-002-submit-with-lead-time-5-h-59-min-moves-request-to-rejected.md",
+      "requests": ["API-OP-002 Create request", "API-OP-002 Submit", "API-OP-002 Get request"],
+      "assertions": {
+        "API-OP-002 Create request": ["Status is 201", "state is DRAFT"],
+        "API-OP-002 Submit": ["Status is 422", "failing_gate is TIME_WINDOW", "rule_reference is TSD-4 §2.1", "message is a non-empty string"],
+        "API-OP-002 Get request": ["Status is 200", "state is REJECTED", "failing_gate is TIME_WINDOW", "rule_reference is TSD-4 §2.1", "rejection_reason is a non-empty string"]
+      }
+    },
+    {
+      "case_id": "API-OP-003",
+      "file": "test-cases/api/API-OP-003-validate-with-lead-time-6-h-01-min-passes.md",
+      "requests": ["API-OP-003 Create request", "API-OP-003 Validate"],
+      "assertions": {
+        "API-OP-003 Create request": ["Status is 201", "state is DRAFT"],
+        "API-OP-003 Validate": ["Status is 200", "ok is true"]
+      }
+    },
+    {
+      "case_id": "API-OP-004",
+      "file": "test-cases/api/API-OP-004-validate-with-lead-time-too-short-leaves-request-in-draft.md",
+      "requests": ["API-OP-004 Create request", "API-OP-004 Validate", "API-OP-004 Get request"],
+      "assertions": {
+        "API-OP-004 Create request": ["Status is 201", "state is DRAFT"],
+        "API-OP-004 Validate": ["Status is 422", "failing_gate is TIME_WINDOW", "rule_reference is TSD-4 §2.1", "message is a non-empty string"],
+        "API-OP-004 Get request": ["Status is 200", "state is DRAFT"]
+      }
+    },
+    {
+      "case_id": "API-OP-005",
+      "file": "test-cases/api/API-OP-005-repeated-submit-after-lead-time-rejection-returns-409.md",
+      "requests": ["API-OP-005 Create request", "API-OP-005 Submit", "API-OP-005 Submit again"],
+      "assertions": {
+        "API-OP-005 Create request": ["Status is 201", "state is DRAFT"],
+        "API-OP-005 Submit": ["Status is 422", "failing_gate is TIME_WINDOW", "rule_reference is TSD-4 §2.1", "message is a non-empty string"],
+        "API-OP-005 Submit again": ["Status is 409"]
+      }
+    },
+    {
+      "case_id": "API-OP-006",
+      "file": "test-cases/api/API-OP-006-validate-with-lead-time-6-h-30-min-passes.md",
+      "requests": ["API-OP-006 Create request", "API-OP-006 Validate"],
+      "assertions": {
+        "API-OP-006 Create request": ["Status is 201", "state is DRAFT"],
+        "API-OP-006 Validate": ["Status is 200", "ok is true"]
+      }
+    }
+  ],
+  "excluded": []
+}
