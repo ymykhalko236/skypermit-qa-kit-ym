@@ -1,11 +1,49 @@
 {
-  "fetched_at": "2026-11-07T17:47:34.537Z",
+  "fetched_at": "2026-11-10T18:38:31.887Z",
   "currency": "USD",
   "unit": "per 1M tokens",
   "source": "https://platform.claude.com/docs/en/about-claude/pricing.md",
   "web_search_per_1k_requests": 10,
   "us_only_inference_multiplier": 1.1,
   "models": {
+    "claude-fable-5-2": {
+      "input": 8,
+      "cache_write_5m": 10,
+      "cache_write_1h": 16,
+      "cache_read": 0.2,
+      "output": 40,
+      "fast": {
+        "input": 16,
+        "output": 80,
+        "cache_write_5m": 20,
+        "cache_write_1h": 32,
+        "cache_read": 0.4,
+        "derived": [
+          "cache_write_5m",
+          "cache_write_1h",
+          "cache_read"
+        ]
+      }
+    },
+    "claude-mythos-5-2": {
+      "input": 8,
+      "cache_write_5m": 10,
+      "cache_write_1h": 16,
+      "cache_read": 0.2,
+      "output": 40,
+      "fast": {
+        "input": 16,
+        "output": 80,
+        "cache_write_5m": 20,
+        "cache_write_1h": 32,
+        "cache_read": 0.4,
+        "derived": [
+          "cache_write_5m",
+          "cache_write_1h",
+          "cache_read"
+        ]
+      }
+    },
     "claude-fable-5-1": {
       "input": 10,
       "cache_write_5m": 12.5,

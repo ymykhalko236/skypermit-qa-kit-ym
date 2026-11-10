@@ -1,6 +1,6 @@
 ---
 name: ui-test-case-creator
-description: Generate low-level, atomic UI/E2E test cases as Markdown files in test-cases/, one file per test case. This skill writes ONLY test cases that run through the SkyPermit web interface, using its forms and data-testid selectors. It derives every needed test case with equivalence partitioning, boundary value analysis and state transition testing. Each file has an ID, summary, dates, preconditions, numbered steps with an expected result for every step, postconditions, priority and source. Works from a file the user provides, from the SkyPermit requirements in the SkyPermit Docs Confluence space, or from a description given in the chat. Use it whenever the user asks to write, generate, create, add or update UI, E2E, form, manual or low-level test cases, or test cases for a specific requirement, rule, feature or bug, unless they ask for API test cases. Don't use it for API test cases (requests, status codes, response bodies), which belong to a separate API test case skill, or for test plans, test scenarios or automated test scripts.
+description: Generate low-level, atomic UI/E2E test cases as Markdown files in test-cases/, one file per test case. This skill writes ONLY test cases that run through the SkyPermit web interface, using its forms and data-testid selectors. It derives every needed test case with equivalence partitioning, boundary value analysis and state transition testing. Each file has an ID, summary, dates, preconditions, numbered steps with an expected result for every step, postconditions, priority and source. Works from a file the user provides, from the SkyPermit requirements in the SkyPermit Docs Confluence space, or from a description given in the chat. Use it whenever the user asks to write, generate, create, add or update UI, E2E, form, manual or low-level test cases, or test cases for a specific requirement, rule, feature or bug, unless they ask for API test cases. Don't use it for API test cases (requests, status codes, response bodies), which belong to the api-test-case-creator skill, or for test plans, test scenarios or automated test scripts.
 model: sonnet
 allowed-tools: mcp__atlassian__getConfluencePage, mcp__atlassian__getPagesInConfluenceSpace, mcp__atlassian__getConfluencePageDescendants, mcp__atlassian__searchConfluenceUsingCql
 ---
@@ -15,7 +15,7 @@ This skill writes **only UI/E2E test cases**. Each one drives the real web inter
 
 | The user wants to… | Use instead |
 |---|---|
-| write or update API test cases (requests, status codes, response bodies) | the separate API test case skill. If it doesn't exist yet, say so and stop. Don't write an API test case here. |
+| write or update API test cases (requests, status codes, response bodies) | `api-test-case-creator`. Don't write an API test case here. |
 | review a test case against the docs and the code | `test-case-reviewer` subagent |
 | find business rules that have no test case | `cover-gaps` |
 | write a test plan | `one-page-test-plan` (ask first whether they want a full or a one-page plan) |
@@ -54,7 +54,7 @@ Don't duplicate coverage. A boundary test case also covers its partition, so add
 
 ### What the UI can test
 
-Every expected result has to be visible in the UI. If a condition can only be seen through the API, such as a status code or a value no screen displays (`authorisation_level`, for example), don't write it here. List it in your report for the API test case skill.
+Every expected result has to be visible in the UI. If a condition can only be seen through the API, such as a status code or a value no screen displays (`authorisation_level`, for example), don't write it here. List it in your report for `api-test-case-creator`.
 
 `04 - Frontend Spec` says the form does not pre-filter: pickers offer combinations that can't pass, and the rules run only at "Check before submitting" and at submit. So observe a rule's result there, not while the form is being filled in. A gate result appears in the `flight-request-gate-result-<GATE>` card, with its `data-gate-status`, message and rule reference.
 
@@ -146,7 +146,7 @@ Before saving, check each test case:
 ## 7. Updating existing test cases
 
 When the user asks you to change an existing test case:
-- If it is an API test case, don't update it or convert it to UI here. Older test cases in `test-cases/` are API test cases: tell the user they belong to the API test case skill.
+- If it is an API test case, don't update it or convert it to UI here. Older test cases in `test-cases/` are API test cases: tell the user they belong to `api-test-case-creator`.
 - Keep its ID, Date Created and file name.
 - Set Date Last Updated to today's date (`dd/mm/yyyy`).
 - If the change affects the summary so much that the file name no longer fits, ask before renaming the file.
@@ -154,4 +154,4 @@ When the user asks you to change an existing test case:
 
 ## 8. Report back
 
-List the files you created or changed with their IDs and summaries. Also list anything you couldn't cover because the source didn't specify it, and any condition left for the API test case skill.
+List the files you created or changed with their IDs and summaries. Also list anything you couldn't cover because the source didn't specify it, and any condition left for `api-test-case-creator`.

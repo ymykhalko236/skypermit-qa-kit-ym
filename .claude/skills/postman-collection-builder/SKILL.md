@@ -24,15 +24,15 @@ This skill turns reviewed API test cases into a **new** Postman collection and e
 
 If either is missing, ask.
 
-### Case files (provisional)
+### Case files
 
-> **TODO:** the API case format and ID naming will be defined by the API test case creator skill, which doesn't exist yet. When it does, replace this section with its format and ID pattern, and update the matching section in `postman-cli-run`.
+Cases are written by the `api-test-case-creator` skill, in `test-cases/api/`, from its `templates/api-test-case-template.md`. The format, briefly:
 
-Until then:
-
-- The case ID and title come from the first heading: `# <case-id>: <title>`. If a file has no such heading, or two files share an ID, stop and list them.
-- For every request it makes, a case must state the method, the path, the request body (if any), the **expected status code** and the **expected response body** (fields and values, or at least which fields must be present). If any of these is missing, the case is left out (see "Stop conditions").
-- Set-up a case relies on (an operator, pilot, aircraft and so on) can be stated in its preconditions.
+- **ID and title:** the first heading, `# API-OP-<nnn>: <title>`. The ID pattern is `API-OP-` plus three digits. `API-OP-000` is the skill's example and is never built. If a file has no such heading, or two files share an ID, stop and list them.
+- **Preconditions:** the set-up data, each with the API call that creates it and its body values, times relative to now, `{stamp}` for unique values, and variables in braces (`{flightRequestId}`) for IDs used later. Secrets are named, never given. Build these as the case's set-up requests (or shared `SETUP` requests when several cases need the same data).
+- **Steps and Expected Results:** one row per request. The Request column gives the method, the path under `/api/v1`, exactly one `Auth:` line (an operator session, or `X-Reviewer-Id: <value>`, never both) and a `Body:` line. The Expected Result column starts with `Status <code>`; a `422` row also gives `failing_gate`, `rule_reference` and `message` (a non-empty string, not a fixed text); a `GET` row gives `state` and, when rejected, `failing_gate` and `rule_reference`.
+- **Case kinds:** boundary value and partition cases have one step, `POST .../validate`. State transition cases are request chains (`validate` → `GET`, `submit` → `GET` showing `REJECTED`, `submit` → repeated `submit` returning `409`): build each row as its own request, in order, in the case folder.
+- A case with any `**TBC:**` result is left out (see "Stop conditions").
 
 ## Sources
 
@@ -57,14 +57,15 @@ Read every case file and `openapi.yaml`. For each case, note its requests, expec
 Folder layout:
 
 ```
-00 Setup                    SETUP Register operator, SETUP Create pilot, ...
+00 Setup                    SETUP Log in operator, SETUP Create pilot, SETUP Create aircraft
 <case-id> <case title>      <case-id> Create request, <case-id> Submit, ...
 <case-id> <case title>      ...
 ```
 
-- **Request names.** Every request in a case folder starts with the case ID followed by a space: `TC-XXX-001 Submit`. Shared set-up requests start with `SETUP `. No other names are allowed, because the run skill reports any request it can't match.
+- **Request names.** Every request in a case folder starts with the case ID followed by a space: `API-OP-001 Submit`. Shared set-up requests start with `SETUP `. No other names are allowed, because the run skill reports any request it can't match.
 - **Order.** Cases in ID order. Within a case, in the order of its steps. A case may create its own set-up when its preconditions differ from the shared set-up.
-- **Test data.** Make every run independent: unique emails, national IDs and serial numbers from `Date.now()` in a pre-request script, and times relative to now (for example `window_start` 5 h 59 min ahead) computed in the pre-request script, exactly as the case states them.
+- **Shared operator.** Cases act as the permanent operator in `api-automation/test-accounts.json` (key `shared`). `SETUP Log in operator` is `POST /auth/login` with its email and `{{operatorPassword}}`, and asserts `200`, `authorisation_level` `L1` and `status` `ACTIVE`. Never register it: no `POST /operators` for that email.
+- **Test data.** Make every run independent: a fresh pilot and aircraft per run (`SETUP Create pilot`, `SETUP Create aircraft`, shared by every case whose preconditions give the same data), unique national IDs and serial numbers from `Date.now()` in a pre-request script, and times relative to now (for example `window_start` 5 h 59 min ahead) computed in the pre-request script, exactly as the case states them.
 - **Variables.** Values set at run time (IDs, stamps, computed times) are **collection variables**, set with `pm.collectionVariables.set`. Never use `pm.environment.set` or `pm.globals.set`.
 - **No shadowing.** No environment variable may share a name with a collection variable. Environment variables take priority, so an empty one would override the value the script sets. That is exactly what broke the SKY-6 run on 2026-11-08 (`operatorEmail`).
 - **Auth.** Use what `openapi.yaml` describes. With session cookies, rely on the Postman cookie jar and don't copy cookie values into variables.
@@ -85,8 +86,8 @@ The environment holds only `baseUrl` (`https://skypermit.vercel.app/api/v1`, typ
 
 Record where each secret's value will come from at run time:
 
-- `generate`: a throwaway credential for an account the run itself creates (for example the password of an operator registered in `SETUP`). The run skill makes a random value.
-- `env`: a credential for something that already exists (for example a seeded reviewer). The run skill reads it from the OS environment variable `SKYPERMIT_<UPPER_SNAKE_NAME>`, for example `reviewerPassword` → `SKYPERMIT_REVIEWER_PASSWORD`. Never ask the user to paste the value.
+- `generate`: a throwaway credential for an account the run itself creates. The run skill makes a random value. (Not used for the shared operator.)
+- `env`: a credential for something that already exists, such as the shared operator (`operatorPassword` → `SKYPERMIT_OPERATOR_PASSWORD`) or a seeded reviewer. The run skill reads it from the OS environment variable `SKYPERMIT_<UPPER_SNAKE_NAME>`, for example `reviewerPassword` → `SKYPERMIT_REVIEWER_PASSWORD`. Never ask the user to paste the value.
 
 ### 6. Create
 
@@ -104,27 +105,27 @@ Write `api-automation/collections/<KEY>.json`. If it exists, write `<KEY>-<yyyy-
   "created_at": "2026-11-08T12:00:00Z",
   "workspace_id": "f0f617bc-85b2-4d5a-9a4b-aff7c0a505ad",
   "collection_uid": "2892909-...",
-  "collection_name": "SKY-6 API · TC-XXX-001–TC-XXX-004",
+  "collection_name": "SKY-6 API · API-OP-001–API-OP-004",
   "environment_uid": "2892909-...",
   "environment_name": "SkyPermit · SKY-6 API",
   "environment_reused": false,
   "secrets": [
-    { "variable": "operatorPassword", "source": "generate" },
+    { "variable": "operatorPassword", "source": "env", "env": "SKYPERMIT_OPERATOR_PASSWORD" },
     { "variable": "reviewerPassword", "source": "env", "env": "SKYPERMIT_REVIEWER_PASSWORD" }
   ],
-  "setup": ["SETUP Register operator", "SETUP Create pilot"],
+  "setup": ["SETUP Log in operator", "SETUP Create pilot", "SETUP Create aircraft"],
   "cases": [
     {
-      "case_id": "TC-XXX-001",
-      "file": "test-cases/.../TC-XXX-001-....md",
-      "requests": ["TC-XXX-001 Create request", "TC-XXX-001 Submit"],
+      "case_id": "API-OP-001",
+      "file": "test-cases/api/API-OP-001-....md",
+      "requests": ["API-OP-001 Create request", "API-OP-001 Submit"],
       "assertions": {
-        "TC-XXX-001 Create request": ["Status is 201", "state is DRAFT"],
-        "TC-XXX-001 Submit": ["Status is 422", "failing_gate is TIME_WINDOW"]
+        "API-OP-001 Create request": ["Status is 201", "state is DRAFT"],
+        "API-OP-001 Submit": ["Status is 422", "failing_gate is TIME_WINDOW"]
       }
     }
   ],
-  "excluded": [{ "case_id": "TC-XXX-005", "reason": "expected body is TBC" }]
+  "excluded": [{ "case_id": "API-OP-005", "reason": "expected body is TBC" }]
 }
 ```
 
@@ -154,5 +155,5 @@ A single case with missing or TBC expectations doesn't stop the build: leave it 
 |---|---|
 | run a collection | `postman-cli-run` |
 | change, fix or delete an existing collection or environment | not this skill: do it as a separate, explicit request |
-| write API or UI test cases | the API test case skill / `ui-test-case-creator` |
+| write API or UI test cases | `api-test-case-creator` / `ui-test-case-creator` |
 | push cases or results to Testomat | `testomat-sync` |

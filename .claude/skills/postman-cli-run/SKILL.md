@@ -21,11 +21,9 @@ This skill runs a collection made by `postman-collection-builder` and reports, c
 - A task key (the record is `api-automation/collections/<KEY>.json`, or the newest `<KEY>-*.json`), or a record path. If there are several records for the key, ask which one.
 - Optionally, the Testomat IDs from `testomat-sync`: `run_id` from `run`, and each case's `test_id` from `upsert`. Without them, the results still come back, with `test_id` / `run_id` set to `null` and a note.
 
-### Case IDs (provisional)
+### Case IDs
 
-> **TODO:** case IDs follow the naming the API test case creator skill will define. When that skill exists, update this section and `postman-collection-builder` to match it.
-
-Results are matched by request name: a request belongs to a case when its name is the case ID, or starts with the case ID followed by a character other than a letter, digit or hyphen. Requests named `SETUP ...` are shared set-up.
+Case IDs follow `api-test-case-creator`: `API-OP-` plus three digits (for example `API-OP-004`), with case files in `test-cases/api/`. Results are matched by request name: a request belongs to a case when its name is the case ID, or starts with the case ID followed by a character other than a letter, digit or hyphen. Requests named `SETUP ...` are shared set-up.
 
 ## Steps
 
@@ -78,7 +76,7 @@ Reply with:
      "run_id": "19a56a4e",
      "results": [
        { "test_id": "b1209f7e", "status": "passed", "run_time_ms": 2893 },
-       { "test_id": "d407614f", "status": "failed", "message": "TC-XXX-002 Submit: Status is 422: expected response to have status code 422 but got 200 (HTTP 200)", "run_time_ms": 2984 }
+       { "test_id": "d407614f", "status": "failed", "message": "API-OP-002 Submit: Status is 422: expected response to have status code 422 but got 200 (HTTP 200)", "run_time_ms": 2984 }
      ]
    }
    ```

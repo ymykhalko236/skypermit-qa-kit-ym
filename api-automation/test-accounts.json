@@ -1,0 +1,22 @@
+{
+  "_note": "Permanent SkyPermit test accounts shared by API test cases. No secret values here: passwords live only in OS environment variables.",
+  "operators": [
+    {
+      "key": "shared",
+      "email": "op-api-shared@test.example",
+      "legal_name": "Test Operator API Shared",
+      "national_id": "TEST-NID-API-SHARED",
+      "id": "105ee1cd-d022-4155-b37e-4c22d9afb6b4",
+      "authorisation_level": "L1",
+      "status": "ACTIVE",
+      "base_url": "https://skypermit.vercel.app/api/v1",
+      "registered_at": "2026-11-10T19:16:58Z",
+      "password_secret": { "variable": "operatorPassword", "source": "env", "env": "SKYPERMIT_OPERATOR_PASSWORD" },
+      "rules": [
+        "Never register it again: log in with POST /auth/login.",
+        "Keep it ACTIVE and L1. Don't suspend it or raise its level.",
+        "Don't attach a pilot or aircraft to it for longer than one run: create both fresh per run."
+      ]
+    }
+  ]
+}
