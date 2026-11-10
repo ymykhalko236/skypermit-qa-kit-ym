@@ -341,6 +341,7 @@ const result = {
   testomat_report: {
     run_id: args.runId ?? null,
     results: sum.cases.map((c) => ({
+      case_id: c.case_id,
       test_id: sum.caseMap[c.case_id],
       status: c.status,
       ...(c.message ? { message: c.message } : {}),

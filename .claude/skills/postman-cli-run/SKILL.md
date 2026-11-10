@@ -75,8 +75,8 @@ Reply with:
    {
      "run_id": "19a56a4e",
      "results": [
-       { "test_id": "b1209f7e", "status": "passed", "run_time_ms": 2893 },
-       { "test_id": "d407614f", "status": "failed", "message": "API-OP-002 Submit: Status is 422: expected response to have status code 422 but got 200 (HTTP 200)", "run_time_ms": 2984 }
+       { "case_id": "API-OP-001", "test_id": "b1209f7e", "status": "passed", "run_time_ms": 2893 },
+       { "case_id": "API-OP-002", "test_id": null, "status": "failed", "message": "API-OP-002 Submit: Status is 422: expected response to have status code 422 but got 200 (HTTP 200)", "run_time_ms": 2984 }
      ]
    }
    ```

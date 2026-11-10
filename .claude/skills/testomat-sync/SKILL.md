@@ -88,7 +88,7 @@ Keep the wording exactly as in the file, so Testomat and the repo don't drift ap
 ...
 ```
 
-Copy every section, including any closing "To be confirmed" note. The only change is the "Steps and Expected Results" table, which becomes a `## Steps` list, with each `<br>` line as its own bullet:
+Copy every section, including any closing "To be confirmed" note. The only change is the "Steps and Expected Results" table, which becomes a `## Steps` list, with each `<br>` line as its own bullet. Drop a leading `•` from each line, so the list doesn't show two bullets:
 
 ```markdown
 1. Open `{BASE_URL}/operator/requests/new`.
@@ -156,13 +156,19 @@ Input:
   "run_id": "19a56a4e",
   "results": [
     { "test_id": "b1209f7e", "status": "failed", "message": "Step 9: expected status 422, got 200", "run_time_ms": 1500 },
-    { "test_id": "d407614f", "status": "passed" },
+    { "case_id": "API-OP-002", "test_id": null, "status": "passed" },
     { "test_id": "df51d109", "status": "skipped", "message": "Expected result to be confirmed by the rules owner" }
   ]
 }
 ```
 
-`status` is `passed`, `failed` or `skipped`. `message` is required for `failed`, and `run_time_ms` is optional.
+`run_id` is required. If it is missing or `null`, return `"error"` and ask the caller for it. Don't pick a run yourself.
+
+Each result names its test by `test_id`, `case_id` (`TC-...` or `API-OP-...`), or both. `status` is `passed`, `failed` or `skipped`. `message` is required for `failed`, and `run_time_ms` is optional. Other fields are ignored. This is the `testomat_report` that `postman-cli-run` prints, and it is accepted unchanged.
+
+### 0. Resolve case IDs
+
+For a result with no `test_id` (missing or `null`), look up its `case_id` as in upsert step 3: `tests_list` with `tql: "test % '<case-id>'"`, filtered to exact matches on `clean_title`. Exactly one match gives the `test_id`. No match, or more than one, is a `conflict`. When a result has both IDs, the lookup must return that same `test_id`, or it is a `conflict`. Any conflict fails the check in step 1, and nothing is written.
 
 ### 1. Check everything before writing
 
@@ -171,10 +177,11 @@ A half-written run is hard to tell from a finished one, so check the whole input
 - `runs_get`: the run exists and its status is `running`. Don't reopen or change a finished run.
 - `testruns_list` with `run_id`, `per_page: 100` and `fields: ["id", "test_id", "status"]`, reading every page: every `test_id` in `results` is in the run. Testomat already holds a pending row for each test, and that row's `id` is the `testrun_id`.
 - Every `status` is valid, and every `failed` result has a non-empty `message`.
+- Every resolved `test_id` appears only once in `results`.
 
 ### 2. Write the results
 
-For each result, call `testruns_update` with `testrun_id`, `run_id`, `status`, and `message` and `run_time` (milliseconds) when given. Update the existing rows: creating new ones would count tests twice.
+For each result, call `testruns_update` with `testrun_id`, `run_id`, `status`, and `message` and `run_time` (milliseconds) when given. Copy `status` and `message` exactly: a `failed` result is written as `failed` with its message, never shortened or reworded. Update the existing rows: creating new ones would count tests twice.
 
 ### 3. Close the run
 
@@ -192,12 +199,13 @@ If any tests would stay `pending`, leave the run open and list them in `pending`
   "failed": 1,
   "skipped": 1,
   "pending": [],
+  "conflicts": [],
   "url": "https://app.testomat.io/projects/skypermit-f139b/runs/19a56a4e",
   "notes": null
 }
 ```
 
-Take the counts and `status` from the `runs_update` response, not from the input, so they show what Testomat actually recorded.
+Take the counts and `status` from the `runs_update` response, not from the input, so they show what Testomat actually recorded. Each `conflicts` entry has the `case_id`, what the lookup found (with IDs) and why it wasn't used. When there are conflicts, nothing is written and `closed` is `false`.
 
 ## When not to use this skill
 
