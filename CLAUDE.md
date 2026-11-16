@@ -49,7 +49,7 @@ SkyPermit is a drone airspace authorisation system. Its requirements live in Con
 - `getPagesInConfluenceSpace` / `getConfluencePageDescendants`: list the pages.
 - `searchConfluenceUsingCql`: finds a term across the space.
 
-Don't read requirements from `../ct-gen-ai-skypermit/docs/` any more. The only exception is described below. If Confluence can't be reached (the server isn't connected, you aren't signed in, or a page is missing), stop and tell the user. Don't silently fall back to the local files.
+Don't read requirements from `../ct-gen-ai-skypermit/docs/` any more. The two exceptions (`find_gaps.mjs` and the `specs/` snapshot) are described below. If Confluence can't be reached (the server isn't connected, you aren't signed in, or a page is missing), stop and tell the user. Don't silently fall back to the local files.
 
 Read the pages in this order:
 
@@ -75,7 +75,16 @@ If a requirement is ambiguous or contradictory, raise it with the user. Don't pi
 
 ### Exception: `find_gaps.mjs` reads the local docs
 
-`.claude/skills/cover-gaps/scripts/find_gaps.mjs` is a Node script, and Node scripts can't call MCP tools. It keeps reading `06-business-rules.md` from `../ct-gen-ai-skypermit/docs/` (or from the folder given with `--docs`). It is the only part of the kit that reads requirements from local files. If its output disagrees with the Confluence page `06 - Business Rules`, tell the user that the local copy may be out of date.
+`.claude/skills/cover-gaps/scripts/find_gaps.mjs` is a Node script, and Node scripts can't call MCP tools. It keeps reading `06-business-rules.md` from `../ct-gen-ai-skypermit/docs/` (or from the folder given with `--docs`). Apart from the `specs/` snapshot below, it is the only part of the kit that reads requirements from local files. If its output disagrees with the Confluence page `06 - Business Rules`, tell the user that the local copy may be out of date.
+
+### Exception: `specs/` is a snapshot for skills and scripts
+
+`specs/` holds verbatim Markdown copies of two Confluence pages, saved on 2026-11-16 (page version 1) so that skills and scripts that can't call MCP tools have a local copy to read:
+
+- `specs/06-business-rules.md`: `06 - Business Rules` (688129)
+- `specs/02-state-machine.md`: `02 - State Machine` (196808), whose page heading is "Request Lifecycle"
+
+These files are a snapshot, not the source of truth. Confluence is. Don't edit their text; to refresh them, re-export the pages from Confluence unchanged. Whenever Confluence can be reached, read requirements from Confluence. If a snapshot disagrees with its Confluence page, follow Confluence and tell the user the snapshot is out of date.
 
 ### Confluence is read-only for this kit
 
