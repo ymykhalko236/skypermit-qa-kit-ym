@@ -1,0 +1,40 @@
+{
+  "expectations": [
+    {
+      "text": "A file named library-loans.design.json sits next to the spec, has the fields spec, focus, equivalence_classes, boundary_values, state_transitions, tests and unknowns, and passes check_design.mjs.",
+      "passed": false,
+      "evidence": "Markdown library-loans.test-design.md, no JSON design file"
+    },
+    {
+      "text": "The 7-day and 28-day loan period boundaries have inclusive: null, the boundary values 7 and 28 are expected unknown (6 and 29 invalid, 8 and 27 valid), and unknowns asks whether 'between 7 and 28' includes the ends.",
+      "passed": false,
+      "evidence": "7 and 28 marked 'accepted (inclusive assumption, Q5)' rather than unknown"
+    },
+    {
+      "text": "Boundaries the text does settle are marked from its words: age 'at least 12' (11 invalid, 12 valid, 13 valid), books 'up to 5' (5 valid, 6 invalid) and fines 'exceed 5.00 EUR' with a 0.01 EUR step (5.00 can borrow, 5.01 cannot).",
+      "passed": true,
+      "evidence": "Age 11/12/13, books 5th allowed / 6th refused, fines 4.99/5.00/5.01"
+    },
+    {
+      "text": "Matrix cells the spec neither lists nor forbids (for example renew from any state, or return from LOST) are marked unknown, not illegal, and are explained in unknowns, since the spec has no 'any other transition is forbidden' rule.",
+      "passed": false,
+      "evidence": "RETURNED/LOST rows marked 'invalid' and some cells 'n/a' with no rule forbidding them; ACTIVE × renew asserted legal"
+    },
+    {
+      "text": "The design does not invent error codes, messages or HTTP statuses for violations; unknowns asks what the system returns when a rule is broken.",
+      "passed": true,
+      "evidence": "No invented codes; questions about responses"
+    },
+    {
+      "text": "The design does not present empty, null, negative or wrong-type inputs as spec-defined classes; it asks about them in unknowns.",
+      "passed": false,
+      "evidence": "EP-AGE-4 (missing/negative/non-numeric age) listed as an invalid class"
+    }
+  ],
+  "summary": {
+    "passed": 2,
+    "failed": 4,
+    "total": 6,
+    "pass_rate": 0.33
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "spec": "D:/Staryi Kompik/Yaro/Work/ISTQB/CT-GenAI/SkyPermit/skypermit-qa-kit-ym/.claude/skills/test-design-workspace/iteration-1/flight-duration-bounds/with_skill/outputs/06-business-rules.md",
+  "focus": "§1.4 TIME_WINDOW — Duration (TSD-4 §3)",
+  "equivalence_classes": [
+    {"id": "EP-01", "parameter": "duration (window_end − window_start)", "class": "below 15 minutes", "valid": false, "representative": "5 minutes",
+     "quote": {"line": 97, "text": "15–240 minutes, inclusive at both ends."},
+     "response": {"value": "failing_gate TIME_WINDOW, rule_reference TSD-4 §3", "quote": {"line": 190, "text": "`TIME_WINDOW` | Duration out of range | `TSD-4 §3`"}}},
+    {"id": "EP-02", "parameter": "duration (window_end − window_start)", "class": "15–240 minutes inclusive", "valid": true, "representative": "120 minutes",
+     "quote": {"line": 97, "text": "15–240 minutes, inclusive at both ends."}},
+    {"id": "EP-03", "parameter": "duration (window_end − window_start)", "class": "above 240 minutes", "valid": false, "representative": "300 minutes",
+     "quote": {"line": 97, "text": "15–240 minutes, inclusive at both ends."},
+     "response": {"value": "failing_gate TIME_WINDOW, rule_reference TSD-4 §3", "quote": {"line": 190, "text": "`TIME_WINDOW` | Duration out of range | `TSD-4 §3`"}}},
+    {"id": "EP-04", "parameter": "window_end relative to window_start", "class": "window_end strictly after window_start", "valid": true, "representative": "window_end = window_start + 60 minutes",
+     "quote": {"line": 97, "text": "`window_end` strictly after `window_start`."}},
+    {"id": "EP-05", "parameter": "window_end relative to window_start", "class": "window_end at or before window_start", "valid": false, "representative": "window_end = window_start − 30 minutes",
+     "quote": {"line": 97, "text": "`window_end` strictly after `window_start`."}}
+  ],
+  "boundary_values": [
+    {"id": "BV-01", "parameter": "duration (window_end − window_start)", "boundary": "15 minutes (lower)", "inclusive": true, "step": "1 minute",
+     "values": [
+       {"value": "14 minutes", "expected": "invalid"},
+       {"value": "15 minutes", "expected": "valid"},
+       {"value": "16 minutes", "expected": "valid"}
+     ],
+     "quote": {"line": 97, "text": "15–240 minutes, inclusive at both ends."}},
+    {"id": "BV-02", "parameter": "duration (window_end − window_start)", "boundary": "240 minutes (upper)", "inclusive": true, "step": "1 minute",
+     "values": [
+       {"value": "239 minutes", "expected": "valid"},
+       {"value": "240 minutes", "expected": "valid"},
+       {"value": "241 minutes", "expected": "invalid"}
+     ],
+     "quote": {"line": 97, "text": "15–240 minutes, inclusive at both ends."}},
+    {"id": "BV-03", "parameter": "window_end relative to window_start", "boundary": "window_end = window_start", "inclusive": false, "step": "1 minute",
+     "values": [
+       {"value": "window_end = window_start − 1 minute", "expected": "invalid"},
+       {"value": "window_end = window_start", "expected": "invalid"},
+       {"value": "window_end = window_start + 1 minute (strictly after, but duration 1 minute < 15)", "expected": "invalid"}
+     ],
+     "quote": {"line": 97, "text": "`window_end` strictly after `window_start`."}}
+  ],
+  "state_transitions": {
+    "not_applicable": "The duration rule (line 97) is an input constraint on window_start/window_end only. It defines no states or transitions; request statuses named elsewhere in the file (line 99, line 170) belong to other rules and are outside this focus."
+  },
+  "tests": [
+    {"id": "T-01", "covers": ["EP-02", "EP-04"]},
+    {"id": "T-02", "covers": ["EP-01"]},
+    {"id": "T-03", "covers": ["EP-03"]},
+    {"id": "T-04", "covers": ["EP-05"]},
+    {"id": "T-05", "covers": ["BV-01"]},
+    {"id": "T-06", "covers": ["BV-01"]},
+    {"id": "T-07", "covers": ["BV-01"]},
+    {"id": "T-08", "covers": ["BV-02"]},
+    {"id": "T-09", "covers": ["BV-02"]},
+    {"id": "T-10", "covers": ["BV-02"]},
+    {"id": "T-11", "covers": ["BV-03"]},
+    {"id": "T-12", "covers": ["BV-03"]},
+    {"id": "T-13", "covers": ["BV-03"]}
+  ],
+  "unknowns": [
+    {"id": "U-01", "question": "When window_end is at or before window_start, is the failure reported as 'Duration out of range' (rule_reference TSD-4 §3), or under a different rule_reference or as a different error (for example a request-format error rather than a gate failure)?", "affects": ["EP-05", "BV-03"]},
+    {"id": "U-02", "question": "The rule_reference table gives the gate and citation for 'Duration out of range' but not the 422 message text. What message should a duration violation return?", "affects": ["EP-01", "EP-03", "BV-01", "BV-02"]},
+    {"id": "U-03", "question": "Are window times limited to whole minutes? If seconds are allowed, how is a duration such as 14 min 59 s or 240 min 1 s treated (rounded, truncated, or compared exactly)?", "affects": ["BV-01", "BV-02", "BV-03"]},
+    {"id": "U-04", "question": "How are missing, null or malformed window_start/window_end values handled (and timestamps with a non-UTC offset)? The text does not define these inputs.", "affects": ["EP-04", "EP-05"]}
+  ]
+}

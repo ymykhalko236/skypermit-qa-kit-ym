@@ -1,0 +1,133 @@
+{
+  "spec": "D:/Staryi Kompik/Yaro/Work/ISTQB/CT-GenAI/SkyPermit/skypermit-qa-kit-ym/.claude/skills/test-design-workspace/iteration-2/flight-duration-bounds/with_skill/outputs/06-business-rules.md",
+  "focus": "§1.4 TIME_WINDOW — Duration (window_end − window_start)",
+  "equivalence_classes": [
+    {
+      "id": "EP-01",
+      "parameter": "duration (window_end − window_start), minutes",
+      "class": "below 15 minutes (end still after start)",
+      "valid": false,
+      "representative": "5 minutes",
+      "quote": {"line": 97, "text": "15–240 minutes, inclusive at both ends."},
+      "response": {"value": "failing_gate TIME_WINDOW, rule_reference \"TSD-4 §3\"", "quote": {"line": 190, "text": "| `TIME_WINDOW` | Duration out of range | `TSD-4 §3` |"}}
+    },
+    {
+      "id": "EP-02",
+      "parameter": "duration (window_end − window_start), minutes",
+      "class": "15–240 minutes",
+      "valid": true,
+      "representative": "120 minutes",
+      "quote": {"line": 97, "text": "15–240 minutes, inclusive at both ends."}
+    },
+    {
+      "id": "EP-03",
+      "parameter": "duration (window_end − window_start), minutes",
+      "class": "above 240 minutes",
+      "valid": false,
+      "representative": "300 minutes",
+      "quote": {"line": 97, "text": "15–240 minutes, inclusive at both ends."},
+      "response": {"value": "failing_gate TIME_WINDOW, rule_reference \"TSD-4 §3\"", "quote": {"line": 190, "text": "| `TIME_WINDOW` | Duration out of range | `TSD-4 §3` |"}}
+    },
+    {
+      "id": "EP-04",
+      "parameter": "window_end relative to window_start",
+      "class": "window_end strictly after window_start",
+      "valid": true,
+      "representative": "window_end = window_start + 120 minutes",
+      "quote": {"line": 97, "text": "`window_end` strictly after `window_start`."}
+    },
+    {
+      "id": "EP-05",
+      "parameter": "window_end relative to window_start",
+      "class": "window_end at or before window_start",
+      "valid": false,
+      "representative": "window_end = window_start − 60 minutes",
+      "quote": {"line": 97, "text": "`window_end` strictly after `window_start`."}
+    }
+  ],
+  "boundary_values": [
+    {
+      "id": "BV-01",
+      "parameter": "duration (window_end − window_start), minutes",
+      "boundary": "15 minutes (lower limit)",
+      "inclusive": true,
+      "step": "1 minute",
+      "values": [
+        {"value": "14 minutes", "expected": "invalid", "response": {"value": "failing_gate TIME_WINDOW, rule_reference \"TSD-4 §3\"", "quote": {"line": 190, "text": "| `TIME_WINDOW` | Duration out of range | `TSD-4 §3` |"}}},
+        {"value": "15 minutes", "expected": "valid"},
+        {"value": "16 minutes", "expected": "valid"}
+      ],
+      "quote": {"line": 97, "text": "15–240 minutes, inclusive at both ends."}
+    },
+    {
+      "id": "BV-02",
+      "parameter": "duration (window_end − window_start), minutes",
+      "boundary": "240 minutes (upper limit)",
+      "inclusive": true,
+      "step": "1 minute",
+      "values": [
+        {"value": "239 minutes", "expected": "valid"},
+        {"value": "240 minutes", "expected": "valid"},
+        {"value": "241 minutes", "expected": "invalid", "response": {"value": "failing_gate TIME_WINDOW, rule_reference \"TSD-4 §3\"", "quote": {"line": 190, "text": "| `TIME_WINDOW` | Duration out of range | `TSD-4 §3` |"}}}
+      ],
+      "quote": {"line": 97, "text": "15–240 minutes, inclusive at both ends."}
+    },
+    {
+      "id": "BV-03",
+      "parameter": "window_end relative to window_start",
+      "boundary": "window_end = window_start",
+      "inclusive": false,
+      "step": "1 minute",
+      "values": [
+        {"value": "window_end = window_start − 1 minute", "expected": "invalid"},
+        {"value": "window_end = window_start", "expected": "invalid"},
+        {"value": "window_end = window_start + 1 minute", "expected": "invalid"}
+      ],
+      "quote": {"line": 97, "text": "`window_end` strictly after `window_start`."}
+    }
+  ],
+  "state_transitions": {
+    "not_applicable": "The duration rule is an input constraint on window_start/window_end. The spec names request statuses (lines 99, 170) but defines no lifecycle in which duration changes a request's state or depends on it; transitions belong to a design of the request lifecycle, not this rule."
+  },
+  "tests": [
+    {"id": "T-01", "covers": ["EP-02", "EP-04"]},
+    {"id": "T-02", "covers": ["EP-01"]},
+    {"id": "T-03", "covers": ["EP-03"]},
+    {"id": "T-04", "covers": ["EP-05"]},
+    {"id": "T-05", "covers": ["BV-01"]},
+    {"id": "T-06", "covers": ["BV-02"]},
+    {"id": "T-07", "covers": ["BV-03"]}
+  ],
+  "unknowns": [
+    {
+      "id": "U-01",
+      "question": "What HTTP status and message does a duration violation return? Line 190 gives gate TIME_WINDOW and rule_reference \"TSD-4 §3\", and lines 18/30 associate rule_reference/failing_gate with a 422 response, but the duration rule itself states neither the status code nor the message text.",
+      "affects": ["EP-01", "EP-03", "BV-01", "BV-02"]
+    },
+    {
+      "id": "U-02",
+      "question": "How is window_end at or before window_start reported? Is it the same TIME_WINDOW failure with rule_reference \"TSD-4 §3\" (\"Duration out of range\"), or is it refused earlier, when the request is written (for example a 400), before any gate runs? The spec does not say, and it also doesn't say whether window_end = window_start + 1 minute is reported as the 15-minute violation.",
+      "affects": ["EP-05", "BV-03"]
+    },
+    {
+      "id": "U-03",
+      "question": "At what precision is duration compared? Can window_start/window_end carry seconds (for example 14 min 59 s or 240 min 30 s), and if so are they rounded, truncated or compared exactly?",
+      "affects": ["BV-01", "BV-02", "BV-03"]
+    },
+    {
+      "id": "U-04",
+      "question": "How are missing, null, malformed or non-UTC-offset window_start/window_end values handled? The spec only says they are stored and compared in UTC (line 101).",
+      "affects": []
+    },
+    {
+      "id": "U-05",
+      "question": "In what order are the TIME_WINDOW conditions checked? If a window breaks the duration rule and also another TIME_WINDOW condition (lead time, advance booking, curfew, overlap), which rule_reference is returned? Line 30 only fixes the order between gates.",
+      "affects": ["EP-01", "EP-03", "EP-05", "BV-01", "BV-02", "BV-03"]
+    },
+    {
+      "id": "U-06",
+      "question": "When is the duration rule evaluated: on validate, on submit, when the draft is created or updated, or on all of these? The spec does not name the operation, so the tests can't yet say where to send the window.",
+      "affects": ["EP-01", "EP-02", "EP-03", "EP-04", "EP-05", "BV-01", "BV-02", "BV-03"]
+    }
+  ]
+}

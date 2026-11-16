@@ -1,0 +1,365 @@
+{
+  "metadata": {
+    "skill_name": "test-design",
+    "skill_path": "<path/to/skill>",
+    "executor_model": "<model-name>",
+    "analyzer_model": "<model-name>",
+    "timestamp": "2026-11-16T19:59:58Z",
+    "evals_run": [
+      "flight-duration-bounds",
+      "library-loans-open-gaps",
+      "request-lifecycle-matrix"
+    ],
+    "runs_per_configuration": 1
+  },
+  "runs": [
+    {
+      "eval_id": "flight-duration-bounds",
+      "eval_name": "flight-duration-bounds",
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 6,
+        "failed": 0,
+        "total": 6,
+        "time_seconds": 56.1,
+        "tokens": 63666,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "A file named 06-business-rules.design.json sits next to the spec, has the fields spec, focus, equivalence_classes, boundary_values, state_transitions, tests and unknowns, and passes check_design.mjs (every quote an exact substring of its numbered line, three values per boundary, all IDs resolve, nothing uncovered).",
+          "passed": true,
+          "evidence": "06-business-rules.design.json next to the spec; check_design.mjs: OK (1 warning on BV-03, explained)"
+        },
+        {
+          "text": "The design has a boundary at 15 minutes (14 invalid, 15 valid, 16 valid) and one at 240 minutes (239 valid, 240 valid, 241 invalid), both inclusive: true with a 1-minute step, quoting the 'inclusive at both ends' line.",
+          "passed": true,
+          "evidence": "BV-01 14/15/16 invalid/valid/valid, BV-02 239/240/241 valid/valid/invalid, inclusive true, step 1 minute, quoting line 97"
+        },
+        {
+          "text": "The rule 'window_end strictly after window_start' is represented as an exclusive boundary or class (end equal to start is invalid), quoting that text.",
+          "passed": true,
+          "evidence": "EP-05 'at or before' invalid; BV-03 end=start inclusive false, invalid, quoting 'strictly after'"
+        },
+        {
+          "text": "state_transitions is {\"not_applicable\": <reason>}, because the duration rule defines no states.",
+          "passed": true,
+          "evidence": "state_transitions = {not_applicable: ...}"
+        },
+        {
+          "text": "The design does not add classes for empty, null, negative or wrong-type durations as if the spec defined them; it asks about such inputs in unknowns instead.",
+          "passed": true,
+          "evidence": "No null/empty classes; U-04 asks about missing/null/malformed times"
+        },
+        {
+          "text": "No status code or error text appears unless it is quoted from the spec in a response field; if no response is given for duration violations, unknowns contains a question about it.",
+          "passed": true,
+          "evidence": "response only as quoted gate+citation from line 190; U-02 asks for message text"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": "library-loans-open-gaps",
+      "eval_name": "library-loans-open-gaps",
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.83,
+        "passed": 5,
+        "failed": 1,
+        "total": 6,
+        "time_seconds": 141.8,
+        "tokens": 68280,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "A file named library-loans.design.json sits next to the spec, has the fields spec, focus, equivalence_classes, boundary_values, state_transitions, tests and unknowns, and passes check_design.mjs.",
+          "passed": true,
+          "evidence": "library-loans.design.json; check_design.mjs: OK, no warnings"
+        },
+        {
+          "text": "The 7-day and 28-day loan period boundaries have inclusive: null, the boundary values 7 and 28 are expected unknown (6 and 29 invalid, 8 and 27 valid), and unknowns asks whether 'between 7 and 28' includes the ends.",
+          "passed": true,
+          "evidence": "BV-04/BV-05 inclusive null, 7 and 28 unknown, 6/29 invalid, 8/27 valid; U-08 asks"
+        },
+        {
+          "text": "Boundaries the text does settle are marked from its words: age 'at least 12' (11 invalid, 12 valid, 13 valid), books 'up to 5' (5 valid, 6 invalid) and fines 'exceed 5.00 EUR' with a 0.01 EUR step (5.00 can borrow, 5.01 cannot).",
+          "passed": true,
+          "evidence": "Age 11/12/13, books 4/5/6, fines 4.99/5.00/5.01 with 0.01 step, all from wording"
+        },
+        {
+          "text": "Matrix cells the spec neither lists nor forbids (for example renew from any state, or return from LOST) are marked unknown, not illegal, and are explained in unknowns, since the spec has no 'any other transition is forbidden' rule.",
+          "passed": false,
+          "evidence": "Unlisted cells are unknown (8 cells, U-17..U-19), but 'renew' — an action the text names on line 12 — is not in the matrix; it appears only as U-12"
+        },
+        {
+          "text": "The design does not invent error codes, messages or HTTP statuses for violations; unknowns asks what the system returns when a rule is broken.",
+          "passed": true,
+          "evidence": "No codes invented; U-01/04/06/09/11 ask what the system returns"
+        },
+        {
+          "text": "The design does not present empty, null, negative or wrong-type inputs as spec-defined classes; it asks about them in unknowns.",
+          "passed": true,
+          "evidence": "No null/empty classes; U-03 and U-10 ask"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": "request-lifecycle-matrix",
+      "eval_name": "request-lifecycle-matrix",
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 6,
+        "failed": 0,
+        "total": 6,
+        "time_seconds": 121.2,
+        "tokens": 67448,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "A file named 02-state-machine.design.json sits next to the spec, has the fields spec, focus, equivalence_classes, boundary_values, state_transitions, tests and unknowns, and passes check_design.mjs (every quote an exact substring of its numbered line, matrix complete, all IDs resolve, nothing uncovered).",
+          "passed": true,
+          "evidence": "02-state-machine.design.json; check_design.mjs: OK, no warnings"
+        },
+        {
+          "text": "state_transitions lists all seven states (DRAFT, SUBMITTED, UNDER_REVIEW, APPROVED, REJECTED, CANCELLED, COMPLETED) and the matrix has exactly one cell for every state × action pair.",
+          "passed": true,
+          "evidence": "7 states × 7 actions = 49 cells, one per pair"
+        },
+        {
+          "text": "Exactly the transitions in the spec's table are legal (including DRAFT×submit, UNDER_REVIEW×approve/reject, APPROVED×complete and cancel from DRAFT, SUBMITTED, UNDER_REVIEW and APPROVED), with the right target states; REJECTED, CANCELLED and COMPLETED rows are all illegal.",
+          "passed": true,
+          "evidence": "10 legal cells match the table rows exactly (incl. automatic gate events); REJECTED/CANCELLED/COMPLETED rows illegal"
+        },
+        {
+          "text": "Illegal cells quote the general 'any other pair is illegal / must return 409' rule and carry a response of 409 with a verbatim quote.",
+          "passed": true,
+          "evidence": "39 illegal cells quote lines 24/42/43 and carry response 409"
+        },
+        {
+          "text": "The 2-hour cancellation deadline for APPROVED requests appears as a boundary with three values (one step below, at, one step above 2 hours before window_start), and its inclusivity is either backed by a quote or set to null with expected unknown and a question in unknowns.",
+          "passed": true,
+          "evidence": "BV-01 1h/2h/3h, inclusive true backed by 'up to 2 hours' / 'Closer than that' quote; U-03 still asks to confirm. Step is 1 hour (coarse but the smallest unit in the text)"
+        },
+        {
+          "text": "Every EP, BV and ST id appears in the covers list of at least one test.",
+          "passed": true,
+          "evidence": "57 tests; checker confirms nothing uncovered"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": "flight-duration-bounds",
+      "eval_name": "flight-duration-bounds",
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.83,
+        "passed": 5,
+        "failed": 1,
+        "total": 6,
+        "time_seconds": 47.3,
+        "tokens": 58554,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "A file named 06-business-rules.design.json sits next to the spec, has the fields spec, focus, equivalence_classes, boundary_values, state_transitions, tests and unknowns, and passes check_design.mjs (every quote an exact substring of its numbered line, three values per boundary, all IDs resolve, nothing uncovered).",
+          "passed": false,
+          "evidence": "Markdown file flight-duration-test-design.md, no JSON design file"
+        },
+        {
+          "text": "The design has a boundary at 15 minutes (14 invalid, 15 valid, 16 valid) and one at 240 minutes (239 valid, 240 valid, 241 invalid), both inclusive: true with a 1-minute step, quoting the 'inclusive at both ends' line.",
+          "passed": true,
+          "evidence": "BV 14/15/16 and 239/240/241 with inclusive bounds and minute step"
+        },
+        {
+          "text": "The rule 'window_end strictly after window_start' is represented as an exclusive boundary or class (end equal to start is invalid), quoting that text.",
+          "passed": true,
+          "evidence": "EP-2 D=0 invalid, BV-1 at 0 from 'strictly after'"
+        },
+        {
+          "text": "state_transitions is {\"not_applicable\": <reason>}, because the duration rule defines no states.",
+          "passed": true,
+          "evidence": "Section says no state transitions can be derived"
+        },
+        {
+          "text": "The design does not add classes for empty, null, negative or wrong-type durations as if the spec defined them; it asks about such inputs in unknowns instead.",
+          "passed": true,
+          "evidence": "Null end time asked in U-5; no invented class"
+        },
+        {
+          "text": "No status code or error text appears unless it is quoted from the spec in a response field; if no response is given for duration violations, unknowns contains a question about it.",
+          "passed": true,
+          "evidence": "422/TIME_WINDOW/TSD-4 §3 derived from quoted lines 30 and 190; U-2 asks about reporting"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": "library-loans-open-gaps",
+      "eval_name": "library-loans-open-gaps",
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.17,
+        "passed": 1,
+        "failed": 5,
+        "total": 6,
+        "time_seconds": 52.4,
+        "tokens": 53270,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "A file named library-loans.design.json sits next to the spec, has the fields spec, focus, equivalence_classes, boundary_values, state_transitions, tests and unknowns, and passes check_design.mjs.",
+          "passed": false,
+          "evidence": "Markdown library-loans.test-design.md, no JSON design file"
+        },
+        {
+          "text": "The 7-day and 28-day loan period boundaries have inclusive: null, the boundary values 7 and 28 are expected unknown (6 and 29 invalid, 8 and 27 valid), and unknowns asks whether 'between 7 and 28' includes the ends.",
+          "passed": false,
+          "evidence": "BV-4 marks 7 'accepted (if inclusive)' rather than unknown, and gives two values instead of three"
+        },
+        {
+          "text": "Boundaries the text does settle are marked from its words: age 'at least 12' (11 invalid, 12 valid, 13 valid), books 'up to 5' (5 valid, 6 invalid) and fines 'exceed 5.00 EUR' with a 0.01 EUR step (5.00 can borrow, 5.01 cannot).",
+          "passed": false,
+          "evidence": "Two-value boundaries (11/12, 5.00/5.01); no step-above values such as 13 years"
+        },
+        {
+          "text": "Matrix cells the spec neither lists nor forbids (for example renew from any state, or return from LOST) are marked unknown, not illegal, and are explained in unknowns, since the spec has no 'any other transition is forbidden' rule.",
+          "passed": false,
+          "evidence": "Several unspecified cells marked 'invalid' or 'n/a' (e.g. LOST × due date passes), and ACTIVE × renew asserted legal without a quoted rule; invents a 'Declare lost' action"
+        },
+        {
+          "text": "The design does not invent error codes, messages or HTTP statuses for violations; unknowns asks what the system returns when a rule is broken.",
+          "passed": true,
+          "evidence": "No codes invented; Q14 asks about the response to invalid events"
+        },
+        {
+          "text": "The design does not present empty, null, negative or wrong-type inputs as spec-defined classes; it asks about them in unknowns.",
+          "passed": false,
+          "evidence": "Lists EP-1.4 and EP-4.4 (negative/empty/non-numeric) as classes, though flagged OPEN"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": "request-lifecycle-matrix",
+      "eval_name": "request-lifecycle-matrix",
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.5,
+        "passed": 3,
+        "failed": 3,
+        "total": 6,
+        "time_seconds": 64.0,
+        "tokens": 56348,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "A file named 02-state-machine.design.json sits next to the spec, has the fields spec, focus, equivalence_classes, boundary_values, state_transitions, tests and unknowns, and passes check_design.mjs (every quote an exact substring of its numbered line, matrix complete, all IDs resolve, nothing uncovered).",
+          "passed": false,
+          "evidence": "Markdown 02-state-machine.test-design.md, no JSON design file"
+        },
+        {
+          "text": "state_transitions lists all seven states (DRAFT, SUBMITTED, UNDER_REVIEW, APPROVED, REJECTED, CANCELLED, COMPLETED) and the matrix has exactly one cell for every state × action pair.",
+          "passed": false,
+          "evidence": "Matrix uses 5 caller actions only (35 cells); the automatic gates pass/fail actions it lists are left out of the matrix"
+        },
+        {
+          "text": "Exactly the transitions in the spec's table are legal (including DRAFT×submit, UNDER_REVIEW×approve/reject, APPROVED×complete and cancel from DRAFT, SUBMITTED, UNDER_REVIEW and APPROVED), with the right target states; REJECTED, CANCELLED and COMPLETED rows are all illegal.",
+          "passed": true,
+          "evidence": "Legal cells T1–T10 match the table; terminal rows all 409"
+        },
+        {
+          "text": "Illegal cells quote the general 'any other pair is illegal / must return 409' rule and carry a response of 409 with a verbatim quote.",
+          "passed": true,
+          "evidence": "Each illegal cell 409, general rule quoted verbatim once (L24-25)"
+        },
+        {
+          "text": "The 2-hour cancellation deadline for APPROVED requests appears as a boundary with three values (one step below, at, one step above 2 hours before window_start), and its inclusivity is either backed by a quote or set to null with expected unknown and a question in unknowns.",
+          "passed": true,
+          "evidence": "Boundary at exactly 2h ±1 minute, read as inclusive from 'up to', U2 asks to confirm"
+        },
+        {
+          "text": "Every EP, BV and ST id appears in the covers list of at least one test.",
+          "passed": false,
+          "evidence": "No tests list with covers; EP classes and paths are not traced to tests"
+        }
+      ],
+      "notes": []
+    }
+  ],
+  "run_summary": {
+    "with_skill": {
+      "pass_rate": {
+        "mean": 0.9433,
+        "stddev": 0.0981,
+        "min": 0.83,
+        "max": 1.0
+      },
+      "time_seconds": {
+        "mean": 106.3667,
+        "stddev": 44.7341,
+        "min": 56.1,
+        "max": 141.8
+      },
+      "tokens": {
+        "mean": 66464.6667,
+        "stddev": 2459.1579,
+        "min": 63666,
+        "max": 68280
+      }
+    },
+    "without_skill": {
+      "pass_rate": {
+        "mean": 0.5,
+        "stddev": 0.33,
+        "min": 0.17,
+        "max": 0.83
+      },
+      "time_seconds": {
+        "mean": 54.5667,
+        "stddev": 8.5582,
+        "min": 47.3,
+        "max": 64.0
+      },
+      "tokens": {
+        "mean": 56057.3333,
+        "stddev": 2653.9648,
+        "min": 53270,
+        "max": 58554
+      }
+    },
+    "delta": {
+      "pass_rate": "+0.44",
+      "time_seconds": "+51.8",
+      "tokens": "+10407"
+    }
+  },
+  "notes": [
+    "Assertion 1 (valid JSON design passing check_design.mjs) fails for every baseline: without the skill no run produced the required format, so this assertion is the main format discriminator.",
+    "The flight-duration content assertions (2-6) pass with and without the skill: on a single, well-worded rule the baseline already reasons well, so the skill's gain there is format and traceability only.",
+    "The biggest content gain is on the made-up spec with gaps: the baseline filled gaps with assumptions ('accepted (if inclusive)', 'invalid' for unlisted transitions, invented 'Declare lost' action, null/empty classes), while the skill kept them as unknowns.",
+    "The one with-skill miss: in library-loans the matrix left out 'renew', an action the text names; SKILL.md rule 7 should say that every operation the text names on the stateful object becomes a matrix action.",
+    "The skill costs about 2x time (106 s vs 55 s) and +19% tokens, mostly the checker loop and the larger JSON (e.g. 49-cell matrix with 57 tests)."
+  ]
+}

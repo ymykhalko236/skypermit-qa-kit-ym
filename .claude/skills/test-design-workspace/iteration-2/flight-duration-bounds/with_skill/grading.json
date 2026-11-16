@@ -1,0 +1,40 @@
+{
+  "expectations": [
+    {
+      "text": "A file named 06-business-rules.design.json sits next to the spec, has the fields spec, focus, equivalence_classes, boundary_values, state_transitions, tests and unknowns, and passes check_design.mjs (every quote an exact substring of its numbered line, three values per boundary, all IDs resolve, nothing uncovered).",
+      "passed": true,
+      "evidence": "06-business-rules.design.json; check_design.mjs OK (1 expected warning on BV-03)"
+    },
+    {
+      "text": "The design has a boundary at 15 minutes (14 invalid, 15 valid, 16 valid) and one at 240 minutes (239 valid, 240 valid, 241 invalid), both inclusive: true with a 1-minute step, quoting the 'inclusive at both ends' line.",
+      "passed": true,
+      "evidence": "BV-01 14/15/16 and BV-02 239/240/241, inclusive true, 1-minute step, quoting 'inclusive at both ends.' on line 97"
+    },
+    {
+      "text": "The rule 'window_end strictly after window_start' is represented as an exclusive boundary or class (end equal to start is invalid), quoting that text.",
+      "passed": true,
+      "evidence": "BV-03 end = start, inclusive false, quoting 'strictly after'; EP-05 'at or before' invalid"
+    },
+    {
+      "text": "state_transitions is {\"not_applicable\": <reason>}, because the duration rule defines no states.",
+      "passed": true,
+      "evidence": "state_transitions = {not_applicable}"
+    },
+    {
+      "text": "The design does not add classes for empty, null, negative or wrong-type durations as if the spec defined them; it asks about such inputs in unknowns instead.",
+      "passed": true,
+      "evidence": "No null/empty classes; U-04 asks about missing/null/malformed values"
+    },
+    {
+      "text": "No status code or error text appears unless it is quoted from the spec in a response field; if no response is given for duration violations, unknowns contains a question about it.",
+      "passed": true,
+      "evidence": "Response only quoted gate + rule_reference (line 190); U-01 asks for the status code and message rather than assuming 422"
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "failed": 0,
+    "total": 6,
+    "pass_rate": 1.0
+  }
+}

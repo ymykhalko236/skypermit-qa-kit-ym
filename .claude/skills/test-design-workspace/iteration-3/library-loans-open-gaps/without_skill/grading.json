@@ -1,0 +1,40 @@
+{
+  "expectations": [
+    {
+      "text": "A file named library-loans.design.json sits next to the spec, has the fields spec, focus, equivalence_classes, boundary_values, state_transitions, tests and unknowns, and passes check_design.mjs.",
+      "passed": false,
+      "evidence": "Markdown test-design file, no JSON design file"
+    },
+    {
+      "text": "The 7-day and 28-day loan period boundaries have inclusive: null, the boundary values 7 and 28 are expected unknown (6 and 29 invalid, 8 and 27 valid), and unknowns asks whether 'between 7 and 28' includes the ends.",
+      "passed": false,
+      "evidence": "'Between 7 and 28' read as inclusive by assumption (Q5)"
+    },
+    {
+      "text": "Boundaries the text does settle are marked from its words: age 'at least 12' (11 invalid, 12 valid, 13 valid), books 'up to 5' (5 valid, 6 invalid) and fines 'exceed 5.00 EUR' with a 0.01 EUR step (5.00 can borrow, 5.01 cannot).",
+      "passed": false,
+      "evidence": "Two-value boundaries (age 11/12, books 4/5, fines 5.00/5.01/5.25), no step-above value"
+    },
+    {
+      "text": "Matrix cells the spec neither lists nor forbids (for example renew from any state, or return from LOST) are marked unknown, not illegal, and are explained in unknowns, since the spec has no 'any other transition is forbidden' rule.",
+      "passed": false,
+      "evidence": "RETURNED/LOST rows marked 'invalid (assumed)' with no rule forbidding them"
+    },
+    {
+      "text": "The design does not invent error codes, messages or HTTP statuses for violations; unknowns asks what the system returns when a rule is broken.",
+      "passed": true,
+      "evidence": "No invented codes"
+    },
+    {
+      "text": "The design does not present empty, null, negative or wrong-type inputs as spec-defined classes; it asks about them in unknowns.",
+      "passed": false,
+      "evidence": "EP1.4 (missing/negative age) and EP4.4 (non-integer/empty period) listed as classes"
+    }
+  ],
+  "summary": {
+    "passed": 1,
+    "failed": 5,
+    "total": 6,
+    "pass_rate": 0.17
+  }
+}

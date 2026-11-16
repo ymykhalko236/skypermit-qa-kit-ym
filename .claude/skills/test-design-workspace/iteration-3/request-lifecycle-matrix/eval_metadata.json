@@ -1,0 +1,12 @@
+{
+  "eval_name": "request-lifecycle-matrix",
+  "prompt": "Please do the test design for the request lifecycle described in 02-state-machine.md. I want the full state transition table plus any partitions and boundaries it implies. Save the result next to the spec.\n\nInput files: 02-state-machine.md",
+  "assertions": [
+    "A file named 02-state-machine.design.json sits next to the spec, has the fields spec, focus, equivalence_classes, boundary_values, state_transitions, tests and unknowns, and passes check_design.mjs (every quote an exact substring of its numbered line, matrix complete, all IDs resolve, nothing uncovered).",
+    "state_transitions lists all seven states (DRAFT, SUBMITTED, UNDER_REVIEW, APPROVED, REJECTED, CANCELLED, COMPLETED) and the matrix has exactly one cell for every state × action pair.",
+    "Exactly the transitions in the spec's table are legal (including DRAFT×submit, UNDER_REVIEW×approve/reject, APPROVED×complete and cancel from DRAFT, SUBMITTED, UNDER_REVIEW and APPROVED), with the right target states; REJECTED, CANCELLED and COMPLETED rows are all illegal.",
+    "Illegal cells quote the general 'any other pair is illegal / must return 409' rule and carry a response of 409 with a verbatim quote.",
+    "The 2-hour cancellation deadline for APPROVED requests appears as a boundary with three values (one step below, at, one step above 2 hours before window_start). Its inclusivity is either settled by a quoted line that states both sides of the limit (and then no unknown asks whether exactly 2 hours is allowed), or set to null with the boundary value expected unknown and a question in unknowns; never decided and asked about at once.",
+    "Every EP, BV and ST id appears in the covers list of at least one test."
+  ]
+}

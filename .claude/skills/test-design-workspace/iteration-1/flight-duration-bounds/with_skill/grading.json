@@ -1,0 +1,40 @@
+{
+  "expectations": [
+    {
+      "text": "A file named 06-business-rules.design.json sits next to the spec, has the fields spec, focus, equivalence_classes, boundary_values, state_transitions, tests and unknowns, and passes check_design.mjs (every quote an exact substring of its numbered line, three values per boundary, all IDs resolve, nothing uncovered).",
+      "passed": true,
+      "evidence": "06-business-rules.design.json next to the spec; check_design.mjs: OK (1 warning on BV-03, explained)"
+    },
+    {
+      "text": "The design has a boundary at 15 minutes (14 invalid, 15 valid, 16 valid) and one at 240 minutes (239 valid, 240 valid, 241 invalid), both inclusive: true with a 1-minute step, quoting the 'inclusive at both ends' line.",
+      "passed": true,
+      "evidence": "BV-01 14/15/16 invalid/valid/valid, BV-02 239/240/241 valid/valid/invalid, inclusive true, step 1 minute, quoting line 97"
+    },
+    {
+      "text": "The rule 'window_end strictly after window_start' is represented as an exclusive boundary or class (end equal to start is invalid), quoting that text.",
+      "passed": true,
+      "evidence": "EP-05 'at or before' invalid; BV-03 end=start inclusive false, invalid, quoting 'strictly after'"
+    },
+    {
+      "text": "state_transitions is {\"not_applicable\": <reason>}, because the duration rule defines no states.",
+      "passed": true,
+      "evidence": "state_transitions = {not_applicable: ...}"
+    },
+    {
+      "text": "The design does not add classes for empty, null, negative or wrong-type durations as if the spec defined them; it asks about such inputs in unknowns instead.",
+      "passed": true,
+      "evidence": "No null/empty classes; U-04 asks about missing/null/malformed times"
+    },
+    {
+      "text": "No status code or error text appears unless it is quoted from the spec in a response field; if no response is given for duration violations, unknowns contains a question about it.",
+      "passed": true,
+      "evidence": "response only as quoted gate+citation from line 190; U-02 asks for message text"
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "failed": 0,
+    "total": 6,
+    "pass_rate": 1.0
+  }
+}

@@ -1,0 +1,68 @@
+Note: lsof not found, cannot check if port is in use
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 64169)
+Traceback (most recent call last):
+  File "C:\Users\yaros\AppData\Local\Python\pythoncore-3.15-64\Lib\socketserver.py", line 315, in _handle_request_noblock
+    self.process_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\yaros\AppData\Local\Python\pythoncore-3.15-64\Lib\socketserver.py", line 346, in process_request
+    self.finish_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\yaros\AppData\Local\Python\pythoncore-3.15-64\Lib\socketserver.py", line 359, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\yaros\.claude\skills\synced\286ee342-ea5a-4d86-a7b4-94b9b11e75d0_fe228bbc-e3b7-4c4b-bd90-e88fbc9a4d56\skill-creator\eval-viewer\generate_review.py", line 450, in __init__
+    super().__init__(*args, **kwargs)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\yaros\AppData\Local\Python\pythoncore-3.15-64\Lib\socketserver.py", line 763, in __init__
+    self.handle()
+    ~~~~~~~~~~~^^
+  File "C:\Users\yaros\AppData\Local\Python\pythoncore-3.15-64\Lib\http\server.py", line 474, in handle
+    self.handle_one_request()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\yaros\AppData\Local\Python\pythoncore-3.15-64\Lib\http\server.py", line 442, in handle_one_request
+    self.raw_requestline = self.rfile.readline(65537)
+                           ~~~~~~~~~~~~~~~~~~~^^^^^^^
+  File "C:\Users\yaros\AppData\Local\Python\pythoncore-3.15-64\Lib\socket.py", line 738, in readinto
+    return self._sock.recv_into(b)
+           ~~~~~~~~~~~~~~~~~~~~^^^
+ConnectionResetError: [WinError 10054] An existing connection was forcibly closed by the remote host
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 53119)
+Traceback (most recent call last):
+  File "C:\Users\yaros\AppData\Local\Python\pythoncore-3.15-64\Lib\socketserver.py", line 315, in _handle_request_noblock
+    self.process_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\yaros\AppData\Local\Python\pythoncore-3.15-64\Lib\socketserver.py", line 346, in process_request
+    self.finish_request(request, client_address)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\yaros\AppData\Local\Python\pythoncore-3.15-64\Lib\socketserver.py", line 359, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\yaros\.claude\skills\synced\286ee342-ea5a-4d86-a7b4-94b9b11e75d0_fe228bbc-e3b7-4c4b-bd90-e88fbc9a4d56\skill-creator\eval-viewer\generate_review.py", line 450, in __init__
+    super().__init__(*args, **kwargs)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\yaros\AppData\Local\Python\pythoncore-3.15-64\Lib\socketserver.py", line 763, in __init__
+    self.handle()
+    ~~~~~~~~~~~^^
+  File "C:\Users\yaros\AppData\Local\Python\pythoncore-3.15-64\Lib\http\server.py", line 474, in handle
+    self.handle_one_request()
+    ~~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\yaros\AppData\Local\Python\pythoncore-3.15-64\Lib\http\server.py", line 462, in handle_one_request
+    method()
+    ~~~~~~^^
+  File "C:\Users\yaros\.claude\skills\synced\286ee342-ea5a-4d86-a7b4-94b9b11e75d0_fe228bbc-e3b7-4c4b-bd90-e88fbc9a4d56\skill-creator\eval-viewer\generate_review.py", line 467, in do_GET
+    self.end_headers()
+    ~~~~~~~~~~~~~~~~^^
+  File "C:\Users\yaros\AppData\Local\Python\pythoncore-3.15-64\Lib\http\server.py", line 580, in end_headers
+    self.flush_headers()
+    ~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\yaros\AppData\Local\Python\pythoncore-3.15-64\Lib\http\server.py", line 584, in flush_headers
+    self.wfile.write(b"".join(self._headers_buffer))
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\yaros\AppData\Local\Python\pythoncore-3.15-64\Lib\socketserver.py", line 842, in write
+    self._sock.sendall(b)
+    ~~~~~~~~~~~~~~~~~~^^^
+ConnectionAbortedError: [WinError 10053] An established connection was aborted by the software in your host machine
+----------------------------------------

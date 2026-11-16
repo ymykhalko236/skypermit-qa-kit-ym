@@ -1,0 +1,40 @@
+{
+  "expectations": [
+    {
+      "text": "A file named 02-state-machine.design.json sits next to the spec, has the fields spec, focus, equivalence_classes, boundary_values, state_transitions, tests and unknowns, and passes check_design.mjs (every quote an exact substring of its numbered line, matrix complete, all IDs resolve, nothing uncovered).",
+      "passed": false,
+      "evidence": "Markdown test-design file, no JSON design file"
+    },
+    {
+      "text": "state_transitions lists all seven states (DRAFT, SUBMITTED, UNDER_REVIEW, APPROVED, REJECTED, CANCELLED, COMPLETED) and the matrix has exactly one cell for every state × action pair.",
+      "passed": false,
+      "evidence": "Matrix is 7 states × 5 actions (35 cells); automatic gate events not columns"
+    },
+    {
+      "text": "Exactly the transitions in the spec's table are legal (including DRAFT×submit, UNDER_REVIEW×approve/reject, APPROVED×complete and cancel from DRAFT, SUBMITTED, UNDER_REVIEW and APPROVED), with the right target states; REJECTED, CANCELLED and COMPLETED rows are all illegal.",
+      "passed": true,
+      "evidence": "Legal transitions T1-T9 match the table; terminal rows 409"
+    },
+    {
+      "text": "Illegal cells quote the general 'any other pair is illegal / must return 409' rule and carry a response of 409 with a verbatim quote.",
+      "passed": true,
+      "evidence": "Illegal cells 409, citing the general rule"
+    },
+    {
+      "text": "The 2-hour cancellation deadline for APPROVED requests appears as a boundary with three values (one step below, at, one step above 2 hours before window_start). Its inclusivity is either settled by a quoted line that states both sides of the limit (and then no unknown asks whether exactly 2 hours is allowed), or set to null with the boundary value expected unknown and a question in unknowns; never decided and asked about at once.",
+      "passed": true,
+      "evidence": "Exactly 2h left open as U7 rather than decided"
+    },
+    {
+      "text": "Every EP, BV and ST id appears in the covers list of at least one test.",
+      "passed": false,
+      "evidence": "No traceability list from tests to every class and cell"
+    }
+  ],
+  "summary": {
+    "passed": 3,
+    "failed": 3,
+    "total": 6,
+    "pass_rate": 0.5
+  }
+}
