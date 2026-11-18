@@ -1,0 +1,66 @@
+{
+  "spec": "specs/06-business-rules.md",
+  "focus": "§1.4 TIME_WINDOW: Duration (flight window length)",
+  "equivalence_classes": [
+    {"id": "EP-01", "parameter": "duration (window_end − window_start, minutes)", "class": "more than 0 and less than 15 minutes (window_end after window_start, but too short)", "valid": false, "representative": "10 minutes",
+     "quote": {"line": 97, "text": "15–240 minutes, inclusive at both ends."},
+     "response": {"value": "failing_gate TIME_WINDOW, rule_reference TSD-4 §3", "quote": {"line": 190, "text": "| `TIME_WINDOW` | Duration out of range | `TSD-4 §3` |"}}},
+    {"id": "EP-02", "parameter": "duration (window_end − window_start, minutes)", "class": "15–240 minutes", "valid": true, "representative": "120 minutes",
+     "quote": {"line": 97, "text": "15–240 minutes, inclusive at both ends."}},
+    {"id": "EP-03", "parameter": "duration (window_end − window_start, minutes)", "class": "above 240 minutes", "valid": false, "representative": "300 minutes",
+     "quote": {"line": 97, "text": "15–240 minutes, inclusive at both ends."},
+     "response": {"value": "failing_gate TIME_WINDOW, rule_reference TSD-4 §3", "quote": {"line": 190, "text": "| `TIME_WINDOW` | Duration out of range | `TSD-4 §3` |"}}},
+    {"id": "EP-04", "parameter": "duration (window_end − window_start, minutes)", "class": "0 minutes (window_end equal to window_start, zero-length window)", "valid": false, "representative": "window_start 10:00Z, window_end 10:00Z",
+     "quote": {"line": 97, "text": "`window_end` strictly after `window_start`."}},
+    {"id": "EP-05", "parameter": "duration (window_end − window_start, minutes)", "class": "below 0 minutes (window_end before window_start)", "valid": false, "representative": "window_start 10:00Z, window_end 09:30Z (−30 minutes)",
+     "quote": {"line": 97, "text": "`window_end` strictly after `window_start`."}}
+  ],
+  "boundary_values": [
+    {"id": "BV-01", "parameter": "duration (window_end − window_start, minutes)", "boundary": "15 minutes (minimum)", "inclusive": true, "step": "1 minute",
+     "values": [
+       {"value": "14 minutes", "expected": "invalid"},
+       {"value": "15 minutes", "expected": "valid"},
+       {"value": "16 minutes", "expected": "valid"}
+     ],
+     "quote": {"line": 97, "text": "15–240 minutes, inclusive at both ends."}},
+    {"id": "BV-02", "parameter": "duration (window_end − window_start, minutes)", "boundary": "240 minutes (maximum)", "inclusive": true, "step": "1 minute",
+     "values": [
+       {"value": "239 minutes", "expected": "valid"},
+       {"value": "240 minutes", "expected": "valid"},
+       {"value": "241 minutes", "expected": "invalid"}
+     ],
+     "quote": {"line": 97, "text": "15–240 minutes, inclusive at both ends."}},
+    {"id": "BV-03", "parameter": "duration (window_end − window_start, minutes)", "boundary": "0 minutes (window_end = window_start)", "inclusive": false, "step": "1 minute",
+     "values": [
+       {"value": "-1 minute (window_end 1 minute before window_start)", "expected": "invalid"},
+       {"value": "0 minutes (window_end = window_start)", "expected": "invalid"},
+       {"value": "1 minute (window_end 1 minute after window_start; passes \"strictly after\" but fails the 15-minute minimum)", "expected": "invalid"}
+     ],
+     "quote": {"line": 97, "text": "`window_end` strictly after `window_start`."}}
+  ],
+  "state_transitions": {
+    "not_applicable": "The duration rule (line 97) constrains only the flight window's input values. It is not tied to any request state, and this file defines no list of state transitions (request states appear only in the overlap and cancellation rules, outside this focus)."
+  },
+  "tests": [
+    {"id": "T-01", "covers": ["EP-02"]},
+    {"id": "T-02", "covers": ["EP-01"]},
+    {"id": "T-03", "covers": ["EP-03"]},
+    {"id": "T-04", "covers": ["EP-04", "BV-03"]},
+    {"id": "T-05", "covers": ["EP-05"]},
+    {"id": "T-06", "covers": ["BV-01"]},
+    {"id": "T-07", "covers": ["BV-01"]},
+    {"id": "T-08", "covers": ["BV-01"]},
+    {"id": "T-09", "covers": ["BV-02"]},
+    {"id": "T-10", "covers": ["BV-02"]},
+    {"id": "T-11", "covers": ["BV-02"]},
+    {"id": "T-12", "covers": ["BV-03"]},
+    {"id": "T-13", "covers": ["BV-03"]}
+  ],
+  "unknowns": [
+    {"id": "U-01", "question": "What status code and message are returned when the duration is out of range? The text gives failing_gate TIME_WINDOW and rule_reference `TSD-4 §3` (line 190), and says failing_gate appears in a 422 response (line 30), but it never states the status code for this condition directly, and it gives no message text.", "affects": ["EP-01", "EP-03", "BV-01", "BV-02"]},
+    {"id": "U-02", "question": "What is returned when window_end is not strictly after window_start (equal or earlier)? Is it the same duration failure (TIME_WINDOW, `TSD-4 §3`), or is it rejected earlier as an invalid request (for example when the draft is saved, with a different status)? The text gives no response for this condition.", "affects": ["EP-04", "EP-05", "BV-03"]},
+    {"id": "U-03", "question": "At what precision is the duration compared? The text uses whole minutes. How are windows with seconds handled (for example 14 min 59 s or 240 min 1 s), and are sub-minute timestamps accepted at all?", "affects": ["EP-01", "BV-01", "BV-02", "BV-03"]},
+    {"id": "U-04", "question": "How are inputs the text does not define handled: a missing window_start or window_end, malformed timestamps, or timestamps that aren't in UTC?", "affects": ["EP-01", "EP-02", "EP-03", "EP-04", "EP-05"]},
+    {"id": "U-05", "question": "In what order are the TIME_WINDOW conditions (lead time, advance booking, duration, curfew, overlap) checked? If a window breaks the duration rule and another TIME_WINDOW condition at once, which rule_reference is reported? Until this is answered, every test must keep the other conditions (and the PILOT, AIRCRAFT and ZONE gates) satisfied.", "affects": ["EP-01", "EP-03", "EP-04", "EP-05", "BV-01", "BV-02", "BV-03"]}
+  ]
+}

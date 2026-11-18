@@ -1,0 +1,1461 @@
+{
+  "spec": "specs/02-state-machine.md",
+  "focus": null,
+  "equivalence_classes": [
+    {
+      "id": "EP-01",
+      "parameter": "time between cancel and window_start (APPROVED request, hours)",
+      "class": "2 hours or more before window_start",
+      "valid": true,
+      "representative": "24 hours before window_start",
+      "quote": {
+        "line": 61,
+        "text": "allowed **up to 2 hours before `window_start`**"
+      }
+    },
+    {
+      "id": "EP-02",
+      "parameter": "time between cancel and window_start (APPROVED request, hours)",
+      "class": "less than 2 hours before window_start",
+      "valid": false,
+      "representative": "30 minutes before window_start",
+      "quote": {
+        "line": 61,
+        "text": "allowed **up to 2 hours before `window_start`**. Closer than that, the"
+      },
+      "response": {
+        "value": "409",
+        "quote": {
+          "line": 62,
+          "text": "cancel endpoint should reject it (`409`"
+        }
+      }
+    },
+    {
+      "id": "EP-03",
+      "parameter": "approve caller",
+      "class": "reviewer (request carries X-Reviewer-Id)",
+      "valid": true,
+      "representative": "approve an UNDER_REVIEW request with X-Reviewer-Id",
+      "quote": {
+        "line": 34,
+        "text": "Reviewer-only (`X-Reviewer-Id`)"
+      }
+    },
+    {
+      "id": "EP-04",
+      "parameter": "approve caller",
+      "class": "not a reviewer (no X-Reviewer-Id)",
+      "valid": false,
+      "representative": "approve an UNDER_REVIEW request with an operator session only",
+      "quote": {
+        "line": 34,
+        "text": "Reviewer-only (`X-Reviewer-Id`)"
+      }
+    },
+    {
+      "id": "EP-05",
+      "parameter": "reject caller",
+      "class": "reviewer",
+      "valid": true,
+      "representative": "reject an UNDER_REVIEW request with X-Reviewer-Id and a note",
+      "quote": {
+        "line": 35,
+        "text": "Reviewer-only; `note` required"
+      }
+    },
+    {
+      "id": "EP-06",
+      "parameter": "reject caller",
+      "class": "not a reviewer",
+      "valid": false,
+      "representative": "reject an UNDER_REVIEW request with an operator session and a note",
+      "quote": {
+        "line": 35,
+        "text": "Reviewer-only; `note` required"
+      }
+    },
+    {
+      "id": "EP-07",
+      "parameter": "reject note",
+      "class": "note given",
+      "valid": true,
+      "representative": "note = \"Pilot documentation incomplete\"",
+      "quote": {
+        "line": 35,
+        "text": "Reviewer-only; `note` required"
+      }
+    },
+    {
+      "id": "EP-08",
+      "parameter": "reject note",
+      "class": "note missing",
+      "valid": false,
+      "representative": "reject body without a note field",
+      "quote": {
+        "line": 35,
+        "text": "Reviewer-only; `note` required"
+      }
+    },
+    {
+      "id": "EP-09",
+      "parameter": "how an APPROVED request becomes COMPLETED",
+      "class": "maintenance completion endpoint called",
+      "valid": true,
+      "representative": "call the completion endpoint on an APPROVED request",
+      "quote": {
+        "line": 36,
+        "text": "Maintenance endpoint only — never inferred from elapsed time"
+      }
+    },
+    {
+      "id": "EP-10",
+      "parameter": "how an APPROVED request becomes COMPLETED",
+      "class": "only time passes (window over, no completion call): request stays APPROVED",
+      "valid": false,
+      "representative": "APPROVED request whose window_end has passed, no completion call",
+      "quote": {
+        "line": 56,
+        "text": "Set **only** by the maintenance completion endpoint — never inferred from elapsed time."
+      }
+    },
+    {
+      "id": "EP-11",
+      "parameter": "submit outcome",
+      "class": "all gates pass: request ends in UNDER_REVIEW",
+      "valid": true,
+      "representative": "submit a DRAFT that meets every gate",
+      "quote": {
+        "line": 20,
+        "text": "either `UNDER_REVIEW` (all gates passed) or `REJECTED` (a gate failed)."
+      }
+    },
+    {
+      "id": "EP-12",
+      "parameter": "submit outcome",
+      "class": "a gate fails: request ends in REJECTED with failing_gate and rejection_reason populated",
+      "valid": false,
+      "representative": "submit a DRAFT whose altitude exceeds the zone ceiling",
+      "quote": {
+        "line": 33,
+        "text": "Same — `failing_gate`/`rejection_reason` populated"
+      }
+    },
+    {
+      "id": "EP-13",
+      "parameter": "submit outcome",
+      "class": "state seen by the caller after submit is never SUBMITTED",
+      "valid": true,
+      "representative": "GET the request right after submit: state is UNDER_REVIEW or REJECTED",
+      "quote": {
+        "line": 31,
+        "text": "Gates run synchronously; caller never observes `SUBMITTED` at rest"
+      }
+    },
+    {
+      "id": "EP-14",
+      "parameter": "state of another overlapping request for the same aircraft",
+      "class": "APPROVED or UNDER_REVIEW: counted by the overlap check",
+      "valid": false,
+      "representative": "an UNDER_REVIEW request for the same aircraft shares an instant with this window",
+      "quote": {
+        "line": 65,
+        "text": "**Aircraft schedule overlap.** Only `APPROVED` and `UNDER_REVIEW` requests"
+      }
+    },
+    {
+      "id": "EP-15",
+      "parameter": "state of another overlapping request for the same aircraft",
+      "class": "DRAFT, REJECTED, CANCELLED or COMPLETED: invisible to the overlap check",
+      "valid": true,
+      "representative": "a CANCELLED request for the same aircraft shares an instant with this window",
+      "quote": {
+        "line": 67,
+        "text": "gates. `DRAFT`, `REJECTED`, `CANCELLED` and `COMPLETED` are invisible to it"
+      }
+    },
+    {
+      "id": "EP-16",
+      "parameter": "submit after a passed validate",
+      "class": "another request for the same aircraft approved between validate and submit: submit fails",
+      "valid": false,
+      "representative": "validate passes, a conflicting request is approved, then submit",
+      "quote": {
+        "line": 68,
+        "text": "which is why a request that passed `validate` can still fail at `submit`,"
+      }
+    }
+  ],
+  "boundary_values": [
+    {
+      "id": "BV-01",
+      "parameter": "time between cancel and window_start (APPROVED request, hours)",
+      "boundary": "2 hours before window_start",
+      "inclusive": true,
+      "step": "1 hour",
+      "values": [
+        {
+          "value": "1 hour before window_start",
+          "expected": "invalid",
+          "response": {
+            "value": "409",
+            "quote": {
+              "line": 62,
+              "text": "cancel endpoint should reject it (`409`"
+            }
+          }
+        },
+        {
+          "value": "2 hours before window_start",
+          "expected": "valid"
+        },
+        {
+          "value": "3 hours before window_start",
+          "expected": "valid"
+        }
+      ],
+      "quote": {
+        "line": 61,
+        "text": "allowed **up to 2 hours before `window_start`**. Closer than that, the"
+      }
+    }
+  ],
+  "state_transitions": {
+    "states": [
+      "DRAFT",
+      "SUBMITTED",
+      "UNDER_REVIEW",
+      "APPROVED",
+      "REJECTED",
+      "CANCELLED",
+      "COMPLETED"
+    ],
+    "actions": [
+      "submit",
+      "gates pass (automatic)",
+      "gates fail (automatic)",
+      "approve",
+      "reject",
+      "complete",
+      "cancel"
+    ],
+    "matrix": [
+      {
+        "id": "ST-01",
+        "from": "DRAFT",
+        "action": "submit",
+        "result": "legal",
+        "to": "SUBMITTED",
+        "quote": {
+          "line": 31,
+          "text": "| `DRAFT` | submit | `SUBMITTED` → immediately `UNDER_REVIEW` or `REJECTED` |"
+        }
+      },
+      {
+        "id": "ST-02",
+        "from": "DRAFT",
+        "action": "gates pass (automatic)",
+        "result": "illegal",
+        "to": null,
+        "quote": {
+          "line": 24,
+          "text": "**Any `(from, action)` pair not"
+        }
+      },
+      {
+        "id": "ST-03",
+        "from": "DRAFT",
+        "action": "gates fail (automatic)",
+        "result": "illegal",
+        "to": null,
+        "quote": {
+          "line": 24,
+          "text": "**Any `(from, action)` pair not"
+        }
+      },
+      {
+        "id": "ST-04",
+        "from": "DRAFT",
+        "action": "approve",
+        "result": "illegal",
+        "to": null,
+        "quote": {
+          "line": 24,
+          "text": "**Any `(from, action)` pair not"
+        },
+        "response": {
+          "value": "409",
+          "quote": {
+            "line": 25,
+            "text": "is illegal and must return `409`"
+          }
+        }
+      },
+      {
+        "id": "ST-05",
+        "from": "DRAFT",
+        "action": "reject",
+        "result": "illegal",
+        "to": null,
+        "quote": {
+          "line": 24,
+          "text": "**Any `(from, action)` pair not"
+        },
+        "response": {
+          "value": "409",
+          "quote": {
+            "line": 25,
+            "text": "is illegal and must return `409`"
+          }
+        }
+      },
+      {
+        "id": "ST-06",
+        "from": "DRAFT",
+        "action": "complete",
+        "result": "illegal",
+        "to": null,
+        "quote": {
+          "line": 24,
+          "text": "**Any `(from, action)` pair not"
+        },
+        "response": {
+          "value": "409",
+          "quote": {
+            "line": 25,
+            "text": "is illegal and must return `409`"
+          }
+        }
+      },
+      {
+        "id": "ST-07",
+        "from": "DRAFT",
+        "action": "cancel",
+        "result": "legal",
+        "to": "CANCELLED",
+        "quote": {
+          "line": 37,
+          "text": "| `DRAFT` | cancel | `CANCELLED` |"
+        }
+      },
+      {
+        "id": "ST-08",
+        "from": "SUBMITTED",
+        "action": "submit",
+        "result": "illegal",
+        "to": null,
+        "quote": {
+          "line": 24,
+          "text": "**Any `(from, action)` pair not"
+        },
+        "response": {
+          "value": "409",
+          "quote": {
+            "line": 25,
+            "text": "is illegal and must return `409`"
+          }
+        }
+      },
+      {
+        "id": "ST-09",
+        "from": "SUBMITTED",
+        "action": "gates pass (automatic)",
+        "result": "legal",
+        "to": "UNDER_REVIEW",
+        "quote": {
+          "line": 32,
+          "text": "| `SUBMITTED` | (gates pass, automatic) | `UNDER_REVIEW` |"
+        }
+      },
+      {
+        "id": "ST-10",
+        "from": "SUBMITTED",
+        "action": "gates fail (automatic)",
+        "result": "legal",
+        "to": "REJECTED",
+        "quote": {
+          "line": 33,
+          "text": "| `SUBMITTED` | (gates fail, automatic) | `REJECTED` |"
+        }
+      },
+      {
+        "id": "ST-11",
+        "from": "SUBMITTED",
+        "action": "approve",
+        "result": "illegal",
+        "to": null,
+        "quote": {
+          "line": 24,
+          "text": "**Any `(from, action)` pair not"
+        },
+        "response": {
+          "value": "409",
+          "quote": {
+            "line": 25,
+            "text": "is illegal and must return `409`"
+          }
+        }
+      },
+      {
+        "id": "ST-12",
+        "from": "SUBMITTED",
+        "action": "reject",
+        "result": "illegal",
+        "to": null,
+        "quote": {
+          "line": 24,
+          "text": "**Any `(from, action)` pair not"
+        },
+        "response": {
+          "value": "409",
+          "quote": {
+            "line": 25,
+            "text": "is illegal and must return `409`"
+          }
+        }
+      },
+      {
+        "id": "ST-13",
+        "from": "SUBMITTED",
+        "action": "complete",
+        "result": "illegal",
+        "to": null,
+        "quote": {
+          "line": 24,
+          "text": "**Any `(from, action)` pair not"
+        },
+        "response": {
+          "value": "409",
+          "quote": {
+            "line": 25,
+            "text": "is illegal and must return `409`"
+          }
+        }
+      },
+      {
+        "id": "ST-14",
+        "from": "SUBMITTED",
+        "action": "cancel",
+        "result": "legal",
+        "to": "CANCELLED",
+        "quote": {
+          "line": 38,
+          "text": "| `SUBMITTED` | cancel | `CANCELLED` |"
+        }
+      },
+      {
+        "id": "ST-15",
+        "from": "UNDER_REVIEW",
+        "action": "submit",
+        "result": "illegal",
+        "to": null,
+        "quote": {
+          "line": 43,
+          "text": "re-submitting something already `UNDER_REVIEW`"
+        },
+        "response": {
+          "value": "409",
+          "quote": {
+            "line": 25,
+            "text": "is illegal and must return `409`"
+          }
+        }
+      },
+      {
+        "id": "ST-16",
+        "from": "UNDER_REVIEW",
+        "action": "gates pass (automatic)",
+        "result": "illegal",
+        "to": null,
+        "quote": {
+          "line": 24,
+          "text": "**Any `(from, action)` pair not"
+        }
+      },
+      {
+        "id": "ST-17",
+        "from": "UNDER_REVIEW",
+        "action": "gates fail (automatic)",
+        "result": "illegal",
+        "to": null,
+        "quote": {
+          "line": 24,
+          "text": "**Any `(from, action)` pair not"
+        }
+      },
+      {
+        "id": "ST-18",
+        "from": "UNDER_REVIEW",
+        "action": "approve",
+        "result": "legal",
+        "to": "APPROVED",
+        "quote": {
+          "line": 34,
+          "text": "| `UNDER_REVIEW` | approve | `APPROVED` |"
+        }
+      },
+      {
+        "id": "ST-19",
+        "from": "UNDER_REVIEW",
+        "action": "reject",
+        "result": "legal",
+        "to": "REJECTED",
+        "quote": {
+          "line": 35,
+          "text": "| `UNDER_REVIEW` | reject | `REJECTED` |"
+        }
+      },
+      {
+        "id": "ST-20",
+        "from": "UNDER_REVIEW",
+        "action": "complete",
+        "result": "illegal",
+        "to": null,
+        "quote": {
+          "line": 24,
+          "text": "**Any `(from, action)` pair not"
+        },
+        "response": {
+          "value": "409",
+          "quote": {
+            "line": 25,
+            "text": "is illegal and must return `409`"
+          }
+        }
+      },
+      {
+        "id": "ST-21",
+        "from": "UNDER_REVIEW",
+        "action": "cancel",
+        "result": "legal",
+        "to": "CANCELLED",
+        "quote": {
+          "line": 39,
+          "text": "| `UNDER_REVIEW` | cancel | `CANCELLED` |"
+        }
+      },
+      {
+        "id": "ST-22",
+        "from": "APPROVED",
+        "action": "submit",
+        "result": "illegal",
+        "to": null,
+        "quote": {
+          "line": 24,
+          "text": "**Any `(from, action)` pair not"
+        },
+        "response": {
+          "value": "409",
+          "quote": {
+            "line": 25,
+            "text": "is illegal and must return `409`"
+          }
+        }
+      },
+      {
+        "id": "ST-23",
+        "from": "APPROVED",
+        "action": "gates pass (automatic)",
+        "result": "illegal",
+        "to": null,
+        "quote": {
+          "line": 24,
+          "text": "**Any `(from, action)` pair not"
+        }
+      },
+      {
+        "id": "ST-24",
+        "from": "APPROVED",
+        "action": "gates fail (automatic)",
+        "result": "illegal",
+        "to": null,
+        "quote": {
+          "line": 24,
+          "text": "**Any `(from, action)` pair not"
+        }
+      },
+      {
+        "id": "ST-25",
+        "from": "APPROVED",
+        "action": "approve",
+        "result": "illegal",
+        "to": null,
+        "quote": {
+          "line": 24,
+          "text": "**Any `(from, action)` pair not"
+        },
+        "response": {
+          "value": "409",
+          "quote": {
+            "line": 25,
+            "text": "is illegal and must return `409`"
+          }
+        }
+      },
+      {
+        "id": "ST-26",
+        "from": "APPROVED",
+        "action": "reject",
+        "result": "illegal",
+        "to": null,
+        "quote": {
+          "line": 24,
+          "text": "**Any `(from, action)` pair not"
+        },
+        "response": {
+          "value": "409",
+          "quote": {
+            "line": 25,
+            "text": "is illegal and must return `409`"
+          }
+        }
+      },
+      {
+        "id": "ST-27",
+        "from": "APPROVED",
+        "action": "complete",
+        "result": "legal",
+        "to": "COMPLETED",
+        "quote": {
+          "line": 36,
+          "text": "| `APPROVED` | complete | `COMPLETED` |"
+        }
+      },
+      {
+        "id": "ST-28",
+        "from": "APPROVED",
+        "action": "cancel",
+        "result": "legal",
+        "to": "CANCELLED",
+        "quote": {
+          "line": 40,
+          "text": "| `APPROVED` | cancel | `CANCELLED` |"
+        }
+      },
+      {
+        "id": "ST-29",
+        "from": "REJECTED",
+        "action": "submit",
+        "result": "illegal",
+        "to": null,
+        "quote": {
+          "line": 42,
+          "text": "`REJECTED`→anything"
+        },
+        "response": {
+          "value": "409",
+          "quote": {
+            "line": 25,
+            "text": "is illegal and must return `409`"
+          }
+        }
+      },
+      {
+        "id": "ST-30",
+        "from": "REJECTED",
+        "action": "gates pass (automatic)",
+        "result": "illegal",
+        "to": null,
+        "quote": {
+          "line": 42,
+          "text": "`REJECTED`→anything"
+        }
+      },
+      {
+        "id": "ST-31",
+        "from": "REJECTED",
+        "action": "gates fail (automatic)",
+        "result": "illegal",
+        "to": null,
+        "quote": {
+          "line": 42,
+          "text": "`REJECTED`→anything"
+        }
+      },
+      {
+        "id": "ST-32",
+        "from": "REJECTED",
+        "action": "approve",
+        "result": "illegal",
+        "to": null,
+        "quote": {
+          "line": 42,
+          "text": "`REJECTED`→anything"
+        },
+        "response": {
+          "value": "409",
+          "quote": {
+            "line": 25,
+            "text": "is illegal and must return `409`"
+          }
+        }
+      },
+      {
+        "id": "ST-33",
+        "from": "REJECTED",
+        "action": "reject",
+        "result": "illegal",
+        "to": null,
+        "quote": {
+          "line": 42,
+          "text": "`REJECTED`→anything"
+        },
+        "response": {
+          "value": "409",
+          "quote": {
+            "line": 25,
+            "text": "is illegal and must return `409`"
+          }
+        }
+      },
+      {
+        "id": "ST-34",
+        "from": "REJECTED",
+        "action": "complete",
+        "result": "illegal",
+        "to": null,
+        "quote": {
+          "line": 42,
+          "text": "`REJECTED`→anything"
+        },
+        "response": {
+          "value": "409",
+          "quote": {
+            "line": 25,
+            "text": "is illegal and must return `409`"
+          }
+        }
+      },
+      {
+        "id": "ST-35",
+        "from": "REJECTED",
+        "action": "cancel",
+        "result": "illegal",
+        "to": null,
+        "quote": {
+          "line": 42,
+          "text": "`REJECTED`→anything"
+        },
+        "response": {
+          "value": "409",
+          "quote": {
+            "line": 25,
+            "text": "is illegal and must return `409`"
+          }
+        }
+      },
+      {
+        "id": "ST-36",
+        "from": "CANCELLED",
+        "action": "submit",
+        "result": "illegal",
+        "to": null,
+        "quote": {
+          "line": 42,
+          "text": "`CANCELLED`→anything"
+        },
+        "response": {
+          "value": "409",
+          "quote": {
+            "line": 25,
+            "text": "is illegal and must return `409`"
+          }
+        }
+      },
+      {
+        "id": "ST-37",
+        "from": "CANCELLED",
+        "action": "gates pass (automatic)",
+        "result": "illegal",
+        "to": null,
+        "quote": {
+          "line": 42,
+          "text": "`CANCELLED`→anything"
+        }
+      },
+      {
+        "id": "ST-38",
+        "from": "CANCELLED",
+        "action": "gates fail (automatic)",
+        "result": "illegal",
+        "to": null,
+        "quote": {
+          "line": 42,
+          "text": "`CANCELLED`→anything"
+        }
+      },
+      {
+        "id": "ST-39",
+        "from": "CANCELLED",
+        "action": "approve",
+        "result": "illegal",
+        "to": null,
+        "quote": {
+          "line": 42,
+          "text": "`CANCELLED`→anything"
+        },
+        "response": {
+          "value": "409",
+          "quote": {
+            "line": 25,
+            "text": "is illegal and must return `409`"
+          }
+        }
+      },
+      {
+        "id": "ST-40",
+        "from": "CANCELLED",
+        "action": "reject",
+        "result": "illegal",
+        "to": null,
+        "quote": {
+          "line": 42,
+          "text": "`CANCELLED`→anything"
+        },
+        "response": {
+          "value": "409",
+          "quote": {
+            "line": 25,
+            "text": "is illegal and must return `409`"
+          }
+        }
+      },
+      {
+        "id": "ST-41",
+        "from": "CANCELLED",
+        "action": "complete",
+        "result": "illegal",
+        "to": null,
+        "quote": {
+          "line": 42,
+          "text": "`CANCELLED`→anything"
+        },
+        "response": {
+          "value": "409",
+          "quote": {
+            "line": 25,
+            "text": "is illegal and must return `409`"
+          }
+        }
+      },
+      {
+        "id": "ST-42",
+        "from": "CANCELLED",
+        "action": "cancel",
+        "result": "illegal",
+        "to": null,
+        "quote": {
+          "line": 42,
+          "text": "`CANCELLED`→anything"
+        },
+        "response": {
+          "value": "409",
+          "quote": {
+            "line": 25,
+            "text": "is illegal and must return `409`"
+          }
+        }
+      },
+      {
+        "id": "ST-43",
+        "from": "COMPLETED",
+        "action": "submit",
+        "result": "illegal",
+        "to": null,
+        "quote": {
+          "line": 43,
+          "text": "`COMPLETED`→anything"
+        },
+        "response": {
+          "value": "409",
+          "quote": {
+            "line": 25,
+            "text": "is illegal and must return `409`"
+          }
+        }
+      },
+      {
+        "id": "ST-44",
+        "from": "COMPLETED",
+        "action": "gates pass (automatic)",
+        "result": "illegal",
+        "to": null,
+        "quote": {
+          "line": 43,
+          "text": "`COMPLETED`→anything"
+        }
+      },
+      {
+        "id": "ST-45",
+        "from": "COMPLETED",
+        "action": "gates fail (automatic)",
+        "result": "illegal",
+        "to": null,
+        "quote": {
+          "line": 43,
+          "text": "`COMPLETED`→anything"
+        }
+      },
+      {
+        "id": "ST-46",
+        "from": "COMPLETED",
+        "action": "approve",
+        "result": "illegal",
+        "to": null,
+        "quote": {
+          "line": 43,
+          "text": "`COMPLETED`→anything"
+        },
+        "response": {
+          "value": "409",
+          "quote": {
+            "line": 25,
+            "text": "is illegal and must return `409`"
+          }
+        }
+      },
+      {
+        "id": "ST-47",
+        "from": "COMPLETED",
+        "action": "reject",
+        "result": "illegal",
+        "to": null,
+        "quote": {
+          "line": 43,
+          "text": "`COMPLETED`→anything"
+        },
+        "response": {
+          "value": "409",
+          "quote": {
+            "line": 25,
+            "text": "is illegal and must return `409`"
+          }
+        }
+      },
+      {
+        "id": "ST-48",
+        "from": "COMPLETED",
+        "action": "complete",
+        "result": "illegal",
+        "to": null,
+        "quote": {
+          "line": 43,
+          "text": "`COMPLETED`→anything"
+        },
+        "response": {
+          "value": "409",
+          "quote": {
+            "line": 25,
+            "text": "is illegal and must return `409`"
+          }
+        }
+      },
+      {
+        "id": "ST-49",
+        "from": "COMPLETED",
+        "action": "cancel",
+        "result": "illegal",
+        "to": null,
+        "quote": {
+          "line": 43,
+          "text": "`COMPLETED`→anything"
+        },
+        "response": {
+          "value": "409",
+          "quote": {
+            "line": 25,
+            "text": "is illegal and must return `409`"
+          }
+        }
+      }
+    ]
+  },
+  "tests": [
+    {
+      "id": "T-01",
+      "covers": [
+        "ST-01",
+        "ST-09",
+        "EP-11",
+        "EP-13"
+      ]
+    },
+    {
+      "id": "T-02",
+      "covers": [
+        "ST-01",
+        "ST-10",
+        "EP-12"
+      ]
+    },
+    {
+      "id": "T-03",
+      "covers": [
+        "ST-18",
+        "EP-03"
+      ]
+    },
+    {
+      "id": "T-04",
+      "covers": [
+        "ST-19",
+        "EP-05",
+        "EP-07"
+      ]
+    },
+    {
+      "id": "T-05",
+      "covers": [
+        "ST-27",
+        "EP-09"
+      ]
+    },
+    {
+      "id": "T-06",
+      "covers": [
+        "ST-07"
+      ]
+    },
+    {
+      "id": "T-07",
+      "covers": [
+        "ST-14"
+      ]
+    },
+    {
+      "id": "T-08",
+      "covers": [
+        "ST-21"
+      ]
+    },
+    {
+      "id": "T-09",
+      "covers": [
+        "ST-28",
+        "EP-01"
+      ]
+    },
+    {
+      "id": "T-10",
+      "covers": [
+        "ST-02"
+      ]
+    },
+    {
+      "id": "T-11",
+      "covers": [
+        "ST-03"
+      ]
+    },
+    {
+      "id": "T-12",
+      "covers": [
+        "ST-04"
+      ]
+    },
+    {
+      "id": "T-13",
+      "covers": [
+        "ST-05"
+      ]
+    },
+    {
+      "id": "T-14",
+      "covers": [
+        "ST-06"
+      ]
+    },
+    {
+      "id": "T-15",
+      "covers": [
+        "ST-08"
+      ]
+    },
+    {
+      "id": "T-16",
+      "covers": [
+        "ST-11"
+      ]
+    },
+    {
+      "id": "T-17",
+      "covers": [
+        "ST-12"
+      ]
+    },
+    {
+      "id": "T-18",
+      "covers": [
+        "ST-13"
+      ]
+    },
+    {
+      "id": "T-19",
+      "covers": [
+        "ST-15"
+      ]
+    },
+    {
+      "id": "T-20",
+      "covers": [
+        "ST-16"
+      ]
+    },
+    {
+      "id": "T-21",
+      "covers": [
+        "ST-17"
+      ]
+    },
+    {
+      "id": "T-22",
+      "covers": [
+        "ST-20"
+      ]
+    },
+    {
+      "id": "T-23",
+      "covers": [
+        "ST-22"
+      ]
+    },
+    {
+      "id": "T-24",
+      "covers": [
+        "ST-23"
+      ]
+    },
+    {
+      "id": "T-25",
+      "covers": [
+        "ST-24"
+      ]
+    },
+    {
+      "id": "T-26",
+      "covers": [
+        "ST-25"
+      ]
+    },
+    {
+      "id": "T-27",
+      "covers": [
+        "ST-26"
+      ]
+    },
+    {
+      "id": "T-28",
+      "covers": [
+        "ST-29"
+      ]
+    },
+    {
+      "id": "T-29",
+      "covers": [
+        "ST-30"
+      ]
+    },
+    {
+      "id": "T-30",
+      "covers": [
+        "ST-31"
+      ]
+    },
+    {
+      "id": "T-31",
+      "covers": [
+        "ST-32"
+      ]
+    },
+    {
+      "id": "T-32",
+      "covers": [
+        "ST-33"
+      ]
+    },
+    {
+      "id": "T-33",
+      "covers": [
+        "ST-34"
+      ]
+    },
+    {
+      "id": "T-34",
+      "covers": [
+        "ST-35"
+      ]
+    },
+    {
+      "id": "T-35",
+      "covers": [
+        "ST-36"
+      ]
+    },
+    {
+      "id": "T-36",
+      "covers": [
+        "ST-37"
+      ]
+    },
+    {
+      "id": "T-37",
+      "covers": [
+        "ST-38"
+      ]
+    },
+    {
+      "id": "T-38",
+      "covers": [
+        "ST-39"
+      ]
+    },
+    {
+      "id": "T-39",
+      "covers": [
+        "ST-40"
+      ]
+    },
+    {
+      "id": "T-40",
+      "covers": [
+        "ST-41"
+      ]
+    },
+    {
+      "id": "T-41",
+      "covers": [
+        "ST-42"
+      ]
+    },
+    {
+      "id": "T-42",
+      "covers": [
+        "ST-43"
+      ]
+    },
+    {
+      "id": "T-43",
+      "covers": [
+        "ST-44"
+      ]
+    },
+    {
+      "id": "T-44",
+      "covers": [
+        "ST-45"
+      ]
+    },
+    {
+      "id": "T-45",
+      "covers": [
+        "ST-46"
+      ]
+    },
+    {
+      "id": "T-46",
+      "covers": [
+        "ST-47"
+      ]
+    },
+    {
+      "id": "T-47",
+      "covers": [
+        "ST-48"
+      ]
+    },
+    {
+      "id": "T-48",
+      "covers": [
+        "ST-49"
+      ]
+    },
+    {
+      "id": "T-49",
+      "covers": [
+        "EP-02"
+      ]
+    },
+    {
+      "id": "T-50",
+      "covers": [
+        "EP-04"
+      ]
+    },
+    {
+      "id": "T-51",
+      "covers": [
+        "EP-06"
+      ]
+    },
+    {
+      "id": "T-52",
+      "covers": [
+        "EP-08"
+      ]
+    },
+    {
+      "id": "T-53",
+      "covers": [
+        "EP-10"
+      ]
+    },
+    {
+      "id": "T-54",
+      "covers": [
+        "EP-14"
+      ]
+    },
+    {
+      "id": "T-55",
+      "covers": [
+        "EP-15"
+      ]
+    },
+    {
+      "id": "T-56",
+      "covers": [
+        "EP-16"
+      ]
+    },
+    {
+      "id": "T-57",
+      "covers": [
+        "BV-01"
+      ]
+    },
+    {
+      "id": "T-58",
+      "covers": [
+        "BV-01"
+      ]
+    },
+    {
+      "id": "T-59",
+      "covers": [
+        "BV-01"
+      ]
+    }
+  ],
+  "unknowns": [
+    {
+      "id": "U-01",
+      "question": "What does the system return when someone who isn't a reviewer (no X-Reviewer-Id) calls approve or reject? The text says these actions are reviewer-only but gives no status code or message.",
+      "affects": [
+        "EP-04",
+        "EP-06"
+      ]
+    },
+    {
+      "id": "U-02",
+      "question": "What does the system return when reject is called without a note? And does an empty or whitespace-only note count as given?",
+      "affects": [
+        "EP-07",
+        "EP-08"
+      ]
+    },
+    {
+      "id": "U-03",
+      "question": "SUBMITTED is transient and \"should never be observed\" (line 51). How can a test put a request in SUBMITTED to exercise cancel and the illegal actions from it, or should these cells be checked only by code review?",
+      "affects": [
+        "ST-08",
+        "ST-09",
+        "ST-10",
+        "ST-11",
+        "ST-12",
+        "ST-13",
+        "ST-14"
+      ]
+    },
+    {
+      "id": "U-04",
+      "question": "\"gates pass\" and \"gates fail\" are automatic, not caller-invoked. The general rule makes them illegal from every state except SUBMITTED, but how is that observable or testable, and does the 409 apply to them at all?",
+      "affects": [
+        "ST-02",
+        "ST-03",
+        "ST-16",
+        "ST-17",
+        "ST-23",
+        "ST-24",
+        "ST-30",
+        "ST-31",
+        "ST-37",
+        "ST-38",
+        "ST-44",
+        "ST-45"
+      ]
+    },
+    {
+      "id": "U-05",
+      "question": "At what precision is the 2-hour cancellation deadline compared (hours, minutes, seconds)? How is a cancel 1 h 59 min or 2 h 0 min 1 s before window_start handled?",
+      "affects": [
+        "BV-01"
+      ]
+    },
+    {
+      "id": "U-06",
+      "question": "Is a cancel at or after window_start (the window has already started or ended) \"closer than\" 2 hours and so refused with 409, or is it handled differently?",
+      "affects": [
+        "EP-02"
+      ]
+    },
+    {
+      "id": "U-07",
+      "question": "Cancel is \"Operator-initiated\". What happens when a reviewer, or an operator who doesn't own the request, tries to cancel? The text gives no rule or response.",
+      "affects": [
+        "ST-07",
+        "ST-14",
+        "ST-21",
+        "ST-28"
+      ]
+    },
+    {
+      "id": "U-08",
+      "question": "When submit fails because of an overlap, which failing_gate is reported? Line 66 puts the overlap check \"inside the `AIRCRAFT` / `TIME_WINDOW` gates\", which doesn't say which one.",
+      "affects": [
+        "EP-14",
+        "EP-16"
+      ]
+    },
+    {
+      "id": "U-09",
+      "question": "Line 34 says approve writes a ReviewAction row. Does reject write one too, and what must the row contain? The text names the row only for approve.",
+      "affects": [
+        "ST-18",
+        "ST-19"
+      ]
+    },
+    {
+      "id": "U-10",
+      "question": "Does the 409 for an illegal transition carry a body (error code, message, current state)? The text gives only the status code.",
+      "affects": [
+        "ST-04",
+        "ST-05",
+        "ST-06",
+        "ST-08",
+        "ST-11",
+        "ST-12",
+        "ST-13",
+        "ST-15",
+        "ST-20",
+        "ST-22",
+        "ST-25",
+        "ST-26",
+        "ST-29",
+        "ST-32",
+        "ST-33",
+        "ST-34",
+        "ST-35",
+        "ST-36",
+        "ST-39",
+        "ST-40",
+        "ST-41",
+        "ST-42",
+        "ST-43",
+        "ST-46",
+        "ST-47",
+        "ST-48",
+        "ST-49"
+      ]
+    }
+  ]
+}

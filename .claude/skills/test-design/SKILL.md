@@ -186,7 +186,27 @@ the only optional addition is `response` (see rule 5).
    boundary has three values, that the matrix is complete, that IDs resolve
    and that nothing is uncovered. Fix every error it reports and run it again
    until it passes. Treat warnings as prompts to look again.
-7. Reply with a short summary: the file path, the counts (classes,
+7. Once the checker passes, render the coverage page:
+
+   ```bash
+   node <skill-dir>/scripts/render-coverage.mjs <path-to>.design.json
+   ```
+
+   It writes `<spec-name>.coverage.html` next to the design file: a number
+   line for each numeric parameter (classes as bands whose ends use interval
+   brackets, `[ ]` included and `( )` excluded, single-value classes as
+   diamonds, boundaries marked as inclusive, exclusive or not settled, and
+   the three boundary values as dots), cards for each category parameter,
+   the state × action table, a quote → element → test table, and the
+   unknowns. It only reads the JSON, so if the page looks wrong, fix the JSON
+   (and re-run the checker), never the HTML. The bracket on a class end comes
+   from the class wording ("15–240", "at least 12" and "up to 5" include the
+   end; "below 15", "more than 0" and "exceeds 5" exclude it; "between 7
+   and 28" leaves it open), so word each numeric class so its ends are
+   clear, and give a single-value class its number first ("0 minutes
+   (…)"). Elements with no readable number are listed under their line or
+   shown as cards rather than placed; that is expected, not an error.
+8. Reply with a short summary: the file path, the coverage page path, the counts (classes,
    boundaries, cells by result, tests, unknowns), and the unknowns as a list
    of questions for the spec owner, since those are what someone has to
    answer before the tests can be finished.
